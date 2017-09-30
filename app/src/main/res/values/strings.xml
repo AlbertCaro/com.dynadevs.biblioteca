@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Biblioteca</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="nav_main">Principal</string>
+    <string name="nav_books">Libros</string>
+    <string name="nav_loans">Prestamos</string>
+    <string name="nav_fines">Multas</string>
+    <string name="nav_info">Información</string>
+    <string name="nav_help">Ayuda</string>
+    <string name="nav_about">Acerca de</string>
+    <string name="login_user">Código</string>
+    <string name="login_pass">Contraseña</string>
+    <string name="login_button">Ingresar</string>
+    <string name="login_invalid">Credenciales incorrectas</string>
+    <string name="login_blank_user">El usuario no puede quedar vacío</string>
+    <string name="login_blank_pass">La contraseña no puede quedar vacía</string>
+    <string name="detail_pages">Número de páginas:</string>
+    <string name="detail_editorial">Editorial:</string>
+    <string name="detail_edition">Edición:</string>
+    <string name="detail_copies">Número de ejemplares:</string>
+    <string name="search">Buscador</string>
+    <string name="user">Alberto Caro Navarro</string>
+    <string name="carrer">Tecnologías de la Información</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_book_list">Books</string>
+    <string name="title_book_detail">Book Detail</string>
+</resources>
