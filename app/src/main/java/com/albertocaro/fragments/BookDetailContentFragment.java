@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,12 @@ import com.albertocaro.classes.Book;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BookDetailFragment.OnFragmentInteractionListener} interface
+ * {@link BookDetailContentFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BookDetailFragment#newInstance} factory method to
+ * Use the {@link BookDetailContentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BookDetailFragment extends Fragment {
+public class BookDetailContentFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,9 +33,9 @@ public class BookDetailFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    TextView TvTitle, TvAutor, TvEditorial, TvDescription, TvEdition, TvPages, TvNumCopies;
+    TextView TvAutor, TvEditorial, TvDescription, TvEdition, TvPages, TvNumCopies;
 
-    public BookDetailFragment() {
+    public BookDetailContentFragment() {
         // Required empty public constructor
     }
 
@@ -44,11 +45,11 @@ public class BookDetailFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment BookDetailFragment.
+     * @return A new instance of fragment BookDetailContentFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BookDetailFragment newInstance(String param1, String param2) {
-        BookDetailFragment fragment = new BookDetailFragment();
+    public static BookDetailContentFragment newInstance(String param1, String param2) {
+        BookDetailContentFragment fragment = new BookDetailContentFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,14 +69,12 @@ public class BookDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_book_detail, container, false);
-
-        TvTitle = view.findViewById(R.id.tvTitleBookDetail);
+        View view = inflater.inflate(R.layout.fragment_book_detail_content, container, false);;
         TvAutor = view.findViewById(R.id.tvAutor);
         TvEditorial = view.findViewById(R.id.tvEditorial);
         TvEdition = view.findViewById(R.id.tvEdition);
         TvDescription = view.findViewById(R.id.tvDescription);
-        TvNumCopies = view.findViewById(R.id.tvNumCopies);
+        TvNumCopies = view.findViewById(R.id.tvCopies);
         TvPages = view.findViewById(R.id.tvPages);
 
         Bundle ObjectBook = getArguments();
@@ -83,10 +82,10 @@ public class BookDetailFragment extends Fragment {
 
         if (getArguments() != null) {
             book = (Book) ObjectBook.getSerializable("Object");
-            TvTitle.setText(book.getTitle());
+
             TvAutor.setText(book.getAutor());
             TvEditorial.setText(getString(R.string.detail_editorial)+" "+book.getEditorial());
-            TvEdition.setText(getString(R.string.detail_editorial)+" "+book.getEdition());
+            TvEdition.setText(getString(R.string.detail_edition)+" "+book.getEdition());
             TvDescription.setText(book.getDescription());
             TvNumCopies.setText(getString(R.string.detail_copies)+" "+book.getNumCopies());
             TvPages.setText(getString(R.string.detail_pages)+" "+book.getPages());

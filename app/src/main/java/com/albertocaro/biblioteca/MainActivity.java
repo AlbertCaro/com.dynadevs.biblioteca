@@ -1,5 +1,6 @@
 package com.albertocaro.biblioteca;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -142,11 +143,15 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void sendBook(Book book) {
-        BookDetailFragment bookDetail = new BookDetailFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("Object", book);
+        Intent intent = new Intent(this, BookDetailActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+        /*
+        BookDetailFragment bookDetail = new BookDetailFragment();
         bookDetail.setArguments(bundle);
-
         getSupportFragmentManager().beginTransaction().replace(R.id.clContenedor, bookDetail).addToBackStack(null).commit();
+        */
     }
 }
