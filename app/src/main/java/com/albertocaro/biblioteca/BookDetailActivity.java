@@ -13,7 +13,6 @@ import android.view.MenuItem;
 
 import com.albertocaro.classes.Book;
 import com.albertocaro.fragments.BookDetailContentFragment;
-import com.albertocaro.fragments.BookDetailFragment;
 
 
 public class BookDetailActivity extends AppCompatActivity implements BookDetailContentFragment.OnFragmentInteractionListener {

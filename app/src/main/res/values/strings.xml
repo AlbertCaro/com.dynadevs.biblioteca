@@ -11,6 +11,7 @@
     <string name="nav_info">Información</string>
     <string name="nav_help">Ayuda</string>
     <string name="nav_about">Acerca de</string>
+    <string name="nav_admin">Administrador</string>
     <string name="login_user">Código</string>
     <string name="login_pass">Contraseña</string>
     <string name="login_button">Ingresar</string>
@@ -21,9 +22,12 @@
     <string name="detail_editorial">Editorial:</string>
     <string name="detail_edition">Edición:</string>
     <string name="detail_copies">Número de ejemplares:</string>
-    <string name="search">Buscador</string>
+    <string name="search">Buscar</string>
     <string name="user">Alberto Caro Navarro</string>
-    <string name="carrer">Tecnologías de la Información</string>
+    <string name="career">Tecnologías de la Información</string>
+    <string name="university">Centro Universitario de los Valles</string>
+    <string name="library">Consulta de biblioteca</string>
+    <string name="welcome">¡Bienvenido!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

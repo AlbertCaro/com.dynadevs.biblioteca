@@ -19,7 +19,7 @@ import android.view.MenuItem;
 
 import com.albertocaro.classes.Book;
 import com.albertocaro.fragments.AboutFragment;
-import com.albertocaro.fragments.BookDetailFragment;
+import com.albertocaro.fragments.AdminFragment;
 import com.albertocaro.fragments.BooksFragment;
 import com.albertocaro.fragments.FinesFragment;
 import com.albertocaro.fragments.HelpFragment;
@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity
         FinesFragment.OnFragmentInteractionListener,
         HelpFragment.OnFragmentInteractionListener,
         AboutFragment.OnFragmentInteractionListener,
-        BookDetailFragment.OnFragmentInteractionListener,
         ComunicateBookInterface {
 
     ActionBar actionBar;
@@ -127,6 +126,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             actionBar.setTitle(R.string.nav_about);
             fragment = new AboutFragment();
+        } else if (id == R.id.nav_admin) {
+            actionBar.setTitle(R.string.nav_admin);
+            fragment = new AdminFragment();
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.clContenedor, fragment).commit();
@@ -148,10 +150,5 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, BookDetailActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
-        /*
-        BookDetailFragment bookDetail = new BookDetailFragment();
-        bookDetail.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().replace(R.id.clContenedor, bookDetail).addToBackStack(null).commit();
-        */
     }
 }

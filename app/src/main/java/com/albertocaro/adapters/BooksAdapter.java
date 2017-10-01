@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.albertocaro.biblioteca.R;
@@ -16,8 +18,8 @@ import java.util.ArrayList;
  */
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBooks> implements View.OnClickListener {
-    ArrayList<Book> BookList;
-    View.OnClickListener Listener;
+    private ArrayList<Book> BookList;
+    private View.OnClickListener Listener;
 
     public BooksAdapter(ArrayList<Book> bookList) {
         this.BookList = bookList;
@@ -44,6 +46,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
         this.Listener = Listener;
     }
 
+
     @Override
     public void onClick(View view) {
         if (Listener != null)
@@ -57,4 +60,6 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
             TvTitle = itemView.findViewById(R.id.tvTitleBook);
         }
     }
+
+
 }

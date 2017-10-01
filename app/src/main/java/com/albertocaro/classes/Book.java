@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 
 public class Book implements Serializable {
+    private Integer id;
     private String Title, Autor, Editorial, Edition, Description;
     private int numCopies, pages;
 
