@@ -38,6 +38,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.albertocaro.biblioteca.BookListActivity" />
         </activity>
+        <activity android:name=".AdminRegisterActivity"></activity>
     </application>
 
 </manifest>

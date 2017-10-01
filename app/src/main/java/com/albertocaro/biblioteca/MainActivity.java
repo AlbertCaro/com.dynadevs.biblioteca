@@ -26,15 +26,10 @@ import com.albertocaro.fragments.HelpFragment;
 import com.albertocaro.fragments.LoansFragment;
 import com.albertocaro.fragments.MainFragment;
 import com.albertocaro.interfaces.ComunicateBookInterface;
+import com.albertocaro.interfaces.FragmentsListenerInterface;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        MainFragment.OnFragmentInteractionListener,
-        BooksFragment.OnFragmentInteractionListener,
-        LoansFragment.OnFragmentInteractionListener,
-        FinesFragment.OnFragmentInteractionListener,
-        HelpFragment.OnFragmentInteractionListener,
-        AboutFragment.OnFragmentInteractionListener,
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentsListenerInterface,
         ComunicateBookInterface {
 
     ActionBar actionBar;
