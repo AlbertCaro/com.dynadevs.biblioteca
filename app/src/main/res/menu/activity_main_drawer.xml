@@ -31,10 +31,6 @@
                 android:id="@+id/nav_about"
                 android:icon="@drawable/ic_acercade"
                 android:title="@string/nav_about" />
-            <item
-                android:id="@+id/nav_admin"
-                android:icon="@drawable/ic_admin"
-                android:title="@string/nav_admin" />
         </menu>
     </item>
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.albertocaro.biblioteca">
+    package="com.dynadevs.biblioteca">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -10,11 +11,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name="com.dynadevs.biblioteca.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SplashActivity"
+            android:name="com.dynadevs.biblioteca.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,22 +24,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.dynadevs.biblioteca.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".BookListActivity"
-            android:label="@string/title_book_list"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".BookDetailActivity"
+            android:name="com.dynadevs.biblioteca.BookDetailActivity"
             android:label="@string/title_book_detail"
-            android:parentActivityName=".BookListActivity"
+            android:parentActivityName="com.dynadevs.biblioteca.MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.albertocaro.biblioteca.BookListActivity" />
+                android:value="com.dynadevs.biblioteca.MainActivity" />
         </activity>
-        <activity android:name=".AdminRegisterActivity"></activity>
     </application>
 
 </manifest>
