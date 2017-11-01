@@ -21,7 +21,7 @@
     <string name="detail_pages">Número de páginas:</string>
     <string name="detail_editorial">Editorial:</string>
     <string name="detail_edition">Edición:</string>
-    <string name="detail_copies">Número de ejemplares:</string>
+    <string name="detail_copies">Número de ejemplares disponibles:</string>
     <string name="search">Buscar</string>
     <string name="user">Alberto Caro Navarro</string>
     <string name="career">Tecnologías de la Información</string>

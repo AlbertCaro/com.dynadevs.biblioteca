@@ -8,9 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.dynadevs.activities.R;
 import com.dynadevs.classes.Book;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +44,7 @@ public class BookDetailContentFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     TextView TvISBN, TvAutor, TvEditorial, TvDescription, TvEdition, TvPages, TvCopies;
+    private String CopiesText;
 
     public BookDetailContentFragment() {
         // Required empty public constructor
@@ -78,7 +90,7 @@ public class BookDetailContentFragment extends Fragment {
         TvCopies = view.findViewById(R.id.tvCopies);
 
         Bundle ObjectBook = getArguments();
-        Book book;
+        final Book book;
 
         if (getArguments() != null) {
             book = (Book) ObjectBook.getSerializable("Object");
@@ -89,7 +101,30 @@ public class BookDetailContentFragment extends Fragment {
             TvEdition.setText(getString(R.string.detail_edition)+" "+book.getEdition());
             TvDescription.setText(book.getDescription());
             TvPages.setText(getString(R.string.detail_pages)+" "+book.getPages());
-            TvCopies.setText(getString(R.string.detail_copies)+" "+book.getCopies());
+
+            RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+            String Url = "http://proyecto-muestra.hol.es/biblioteca/rest/ejemplares_disp.php?id="+book.getISBN();
+
+            StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        for(int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            TvCopies.setText(getString(R.string.detail_copies)+" "+jsonObject.getString("Disponibles")+"/"+book.getCopies());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
+            requestQueue.add(request);
         }
 
         return view;

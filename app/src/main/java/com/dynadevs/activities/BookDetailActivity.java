@@ -11,6 +11,8 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.dynadevs.classes.Book;
 import com.dynadevs.fragments.BookDetailContentFragment;
 import com.bumptech.glide.Glide;
@@ -48,6 +50,7 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
         actionBar.setTitle(book.getTitle());
         Glide.with(this).load(book.getPhoto()).centerCrop().into(IvPhoto);
         bookDetail.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.book_detail_container, bookDetail).addToBackStack(null).commit();
     }
 

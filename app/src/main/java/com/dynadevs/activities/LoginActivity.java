@@ -44,37 +44,40 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (!User.equals("") && !Pass.equals("")) {
                     RequestQueue requestQueue = Volley.newRequestQueue(context);
-                    String Url = "http://192.168.105.2/albertocaro/biblioteca/rest/usuarios.php?u="+User+"&p="+Pass;
+                    String Url = "http://albertocaro.000webhostapp.com/biblioteca/rest/usuarios.php?u="+User+"&p="+Pass;
                     StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             try {
                                 JSONArray jsonArray  = new JSONArray(response);
-                                JSONObject jsonObject = jsonArray.getJSONObject(0);
-                                user = new User(
-                                        jsonObject.getString("Codigo"),
-                                        jsonObject.getString("Usuario"),
-                                        "Tecnologías de la Información"
-                                );
+                                if (jsonArray.length() != 0) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                                    user = new User(
+                                            jsonObject.getString("Codigo"),
+                                            jsonObject.getString("Usuario"),
+                                            "Tecnologías de la Información"
+                                    );
 
-                                Toast.makeText(LoginActivity.this,"Bienvenido "+User,Toast.LENGTH_SHORT).show();
-                                Intent login = new Intent().setClass(LoginActivity.this, MainActivity.class);
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("user",user);
-                                login.putExtras(bundle);
-                                startActivity(login);
-                                finish();
+                                    Toast.makeText(LoginActivity.this,"Bienvenido "+User,Toast.LENGTH_SHORT).show();
+                                    Intent login = new Intent().setClass(LoginActivity.this, MainActivity.class);
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("user",user);
+                                    login.putExtras(bundle);
+                                    startActivity(login);
+                                    finish();
+                                } else {
+                                    Snackbar.make(view, R.string.login_invalid, Snackbar.LENGTH_LONG).show();
+                                }
                             } catch (JSONException e) {
-                                Snackbar.make(view, R.string.login_invalid, Snackbar.LENGTH_LONG).setAction("Action", null).show();
                                 e.printStackTrace();
                             }
                         }
                         }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-
+                                Toast.makeText(LoginActivity.this, "ERROR: "+error.getMessage(), Toast.LENGTH_SHORT).show();
                             }});
-
+                    requestQueue.add(request);
                 } else {
                     if (User.equals(""))
                         EtUser.setError(getString(R.string.login_blank_user));
