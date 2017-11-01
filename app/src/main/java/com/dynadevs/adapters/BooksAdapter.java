@@ -11,8 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dynadevs.biblioteca.BookDetailActivity;
-import com.dynadevs.biblioteca.R;
+import com.dynadevs.activities.BookDetailActivity;
+import com.dynadevs.activities.R;
 import com.dynadevs.classes.Book;
 import com.bumptech.glide.Glide;
 

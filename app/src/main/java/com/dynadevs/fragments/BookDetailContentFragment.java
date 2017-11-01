@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dynadevs.biblioteca.R;
+import com.dynadevs.activities.R;
 import com.dynadevs.classes.Book;
 
 /**
@@ -32,7 +32,7 @@ public class BookDetailContentFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    TextView TvAutor, TvEditorial, TvDescription, TvEdition, TvPages;
+    TextView TvISBN, TvAutor, TvEditorial, TvDescription, TvEdition, TvPages, TvCopies;
 
     public BookDetailContentFragment() {
         // Required empty public constructor
@@ -68,12 +68,14 @@ public class BookDetailContentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_book_detail_content, container, false);;
+        View view = inflater.inflate(R.layout.fragment_book_detail_content, container, false);
+        TvISBN = view.findViewById(R.id.tvISBN);
         TvAutor = view.findViewById(R.id.tvAutor);
         TvEditorial = view.findViewById(R.id.tvEditorial);
         TvEdition = view.findViewById(R.id.tvEdition);
         TvDescription = view.findViewById(R.id.tvDescription);
         TvPages = view.findViewById(R.id.tvPages);
+        TvCopies = view.findViewById(R.id.tvCopies);
 
         Bundle ObjectBook = getArguments();
         Book book;
@@ -81,11 +83,13 @@ public class BookDetailContentFragment extends Fragment {
         if (getArguments() != null) {
             book = (Book) ObjectBook.getSerializable("Object");
 
+            TvISBN.setText(getString(R.string.detail_ISBN)+" "+book.getISBN());
             TvAutor.setText(book.getAutor());
             TvEditorial.setText(getString(R.string.detail_editorial)+" "+book.getEditorial());
             TvEdition.setText(getString(R.string.detail_edition)+" "+book.getEdition());
             TvDescription.setText(book.getDescription());
             TvPages.setText(getString(R.string.detail_pages)+" "+book.getPages());
+            TvCopies.setText(getString(R.string.detail_copies)+" "+book.getCopies());
         }
 
         return view;

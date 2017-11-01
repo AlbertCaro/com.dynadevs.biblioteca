@@ -1,4 +1,4 @@
-package com.dynadevs.biblioteca;
+package com.dynadevs.activities;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.albertocaro.biblioteca", appContext.getPackageName());
+        assertEquals("com.dynadevs.biblioteca", appContext.getPackageName());
     }
 }

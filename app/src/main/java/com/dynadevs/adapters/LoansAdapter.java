@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.dynadevs.biblioteca.R;
+import com.dynadevs.activities.R;
 import com.dynadevs.classes.Loan;
 
 import java.util.ArrayList;

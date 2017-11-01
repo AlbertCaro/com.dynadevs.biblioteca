@@ -3,16 +3,30 @@ package com.dynadevs.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import com.dynadevs.biblioteca.R;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.dynadevs.activities.R;
 import com.dynadevs.adapters.LoansAdapter;
 import com.dynadevs.classes.Loan;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -36,8 +50,12 @@ public class LoansFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    RecyclerView recyclerView;
-    ArrayList<Loan> LoanList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private ArrayList<Loan> LoanList = new ArrayList<>();
+    private LoansAdapter Adapter;
+    private FloatingActionButton fab;
+    private LinearLayout linearLayout;
+    private SearchView searchView;
 
     public LoansFragment() {
         // Required empty public constructor
@@ -73,18 +91,62 @@ public class LoansFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_loans, container, false);
+        final View view =  inflater.inflate(R.layout.fragment_loans, container, false);
         recyclerView = view.findViewById(R.id.rvLoans);
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
-
-        LoanList.add(new Loan("Señor de los Anillos", "11/09/2001"));
-        LoanList.add(new Loan("Juegos del Hambre", "30/08/2005"));
-        LoanList.add(new Loan("Otro prestamo", "23/05/2004"));
-
-        LoansAdapter Adapter = new LoansAdapter(LoanList);
+        linearLayout = view.findViewById(R.id.emptyListLoan);
+        searchView = getActivity().findViewById(R.id.search);
+        searchView.setVisibility(View.VISIBLE);
+        fab = getActivity().findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_refrescar);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(view, "Refrescando la lista...", Snackbar.LENGTH_SHORT).show();
+                doRequest();
+            }
+        });
+        doRequest();
+        recyclerView.setHasFixedSize(true);
+        Adapter = new LoansAdapter(LoanList);
         recyclerView.setAdapter(Adapter);
-
         return view;
+    }
+
+    public void doRequest() {
+        LoanList.clear();
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        String Url = "http://albertocaro.000webhostapp.com/biblioteca/rest/prestamos.php?id=215818158";
+        StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    if (jsonArray.length() != 0) {
+                        recyclerView.setVisibility(View.VISIBLE);
+                        linearLayout.setVisibility(View.GONE);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            LoanList.add(new Loan(
+                                    jsonObject.getString("Titulo"),
+                                    jsonObject.getString("FechaLimite")));
+                        }
+                        Adapter.notifyDataSetChanged();
+                    } else {
+                        recyclerView.setVisibility(View.GONE);
+                        linearLayout.setVisibility(View.VISIBLE);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        requestQueue.add(request);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

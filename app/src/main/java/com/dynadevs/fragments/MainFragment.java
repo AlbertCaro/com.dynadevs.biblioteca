@@ -4,11 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dynadevs.biblioteca.R;
+import com.dynadevs.activities.R;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +28,8 @@ public class MainFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private SearchView searchView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,6 +68,9 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
+        searchView = getActivity().findViewById(R.id.search);
+        searchView.setVisibility(View.GONE);
         return inflater.inflate(R.layout.fragment_main, container, false);
     }
 

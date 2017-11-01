@@ -17,6 +17,7 @@
     <string name="login_invalid">Credenciales incorrectas</string>
     <string name="login_blank_user">El usuario no puede quedar vacío</string>
     <string name="login_blank_pass">La contraseña no puede quedar vacía</string>
+    <string name="detail_ISBN">ISBN: </string>
     <string name="detail_pages">Número de páginas:</string>
     <string name="detail_editorial">Editorial:</string>
     <string name="detail_edition">Edición:</string>
@@ -28,8 +29,10 @@
     <string name="library">Consulta de biblioteca</string>
     <string name="welcome">¡Bienvenido!</string>
     <string name="details">Detalles</string>
+    <string name="empty_booklist">No hay libros registrados.</string>
+    <string name="empty_fineslist">Deudas saldadas, sigue tu camino viajero/a.</string>
+    <string name="empty_loanlist">No tienes libros en tu posesión.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_book_list">Books</string>
     <string name="title_book_detail">Book Detail</string>

@@ -9,13 +9,16 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
-import com.dynadevs.biblioteca.R;
+import com.dynadevs.activities.R;
 import com.dynadevs.adapters.BooksAdapter;
 import com.dynadevs.classes.Book;
 import com.android.volley.Request;
@@ -56,6 +59,8 @@ public class BooksFragment extends Fragment {
     private BooksAdapter Adapter;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
+    private LinearLayout linearLayout;
+    private SearchView searchView;
     Activity activity;
 
     public BooksFragment() {
@@ -95,35 +100,64 @@ public class BooksFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_books, container, false);
         recyclerView = view.findViewById(R.id.rvBooks);
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
+        linearLayout = view.findViewById(R.id.emptyListBook);
+        searchView = getActivity().findViewById(R.id.search);
+        searchView.setVisibility(View.VISIBLE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         Adapter = new BooksAdapter(BookList, getContext());
         fab = getActivity().findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_refrescar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(view, "Refrescando lista...", Snackbar.LENGTH_SHORT);
+                Snackbar.make(view, "Refrescando la lista...", Snackbar.LENGTH_SHORT).show();
+                doRequest();
             }
         });
+        doRequest();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(Adapter);
+        return view;
+    }
+
+    public void doRequest() {
+        BookList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         String url = "http://albertocaro.000webhostapp.com/biblioteca/rest/libros.php";
-
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONArray jsonArray  = new JSONArray(response);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        BookList.add(new Book(
-                                jsonObject.getString("Titulo"),
-                                jsonObject.getString("Autor"),
-                                jsonObject.getString("Editorial"),
-                                jsonObject.getString("Edicion"),
-                                jsonObject.getString("Descripcion"),
-                                jsonObject.getString("Portada"),
-                                Integer.parseInt(jsonObject.getString("Paginas"))));
+                    if (jsonArray.length() != 0) {
+                        linearLayout.setVisibility(View.GONE);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            BookList.add(new Book(
+                                    jsonObject.getString("ISBN"),
+                                    jsonObject.getString("Titulo"),
+                                    jsonObject.getString("Autor"),
+                                    jsonObject.getString("Editorial"),
+                                    jsonObject.getString("Edicion"),
+                                    jsonObject.getString("Descripcion"),
+                                    jsonObject.getString("Portada"),
+                                    Integer.parseInt(jsonObject.getString("Paginas")),
+                                    Integer.parseInt(jsonObject.getString("Ejemplares"))));
+                        }
+                        Adapter.notifyDataSetChanged();
+                    } else {
+                        linearLayout.setVisibility(View.VISIBLE);
                     }
-                    Adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -131,13 +165,10 @@ public class BooksFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                error.printStackTrace();
             }
         });
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(Adapter);
         requestQueue.add(request);
-        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

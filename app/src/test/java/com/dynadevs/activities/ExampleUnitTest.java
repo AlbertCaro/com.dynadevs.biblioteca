@@ -1,4 +1,4 @@
-package com.dynadevs.biblioteca;
+package com.dynadevs.activities;
 
 import org.junit.Test;
 

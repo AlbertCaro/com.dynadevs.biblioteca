@@ -7,11 +7,11 @@ import java.io.Serializable;
  */
 
 public class Book implements Serializable {
-    private Integer id;
-    private String Title, Autor, Editorial, Edition, Description, Photo;
-    private int pages;
+    private String ISBN, Title, Autor, Editorial, Edition, Description, Photo;
+    private int pages, copies;
 
-    public Book (String Title, String Autor, String Editorial, String Edition, String Description, String Photo, int pages) {
+    public Book (String ISBN, String Title, String Autor, String Editorial, String Edition, String Description, String Photo, int pages, int copies) {
+        this.ISBN = ISBN;
         this.Title = Title;
         this.Autor = Autor;
         this.Editorial = Editorial;
@@ -19,6 +19,7 @@ public class Book implements Serializable {
         this.Photo = Photo;
         this.Description = Description;
         this.pages = pages;
+        this.copies = copies;
     }
 
     public String getTitle() {
@@ -47,5 +48,21 @@ public class Book implements Serializable {
 
     public int getPages() {
         return pages;
+    }
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
+    }
+
+    public int getCopies() {
+        return copies;
+    }
+
+    public void setCopies(int copies) {
+        this.copies = copies;
     }
 }
