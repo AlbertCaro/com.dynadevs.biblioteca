@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,12 +24,17 @@ import com.android.volley.toolbox.Volley;
 import com.dynadevs.activities.R;
 import com.dynadevs.adapters.LoansAdapter;
 import com.dynadevs.classes.Loan;
+import com.dynadevs.classes.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.dynadevs.classes.Utilities.isNetAvailible;
+import static com.dynadevs.classes.Utilities.md5;
+import static com.dynadevs.classes.Utilities.setMessage;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,10 +58,12 @@ public class LoansFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private ArrayList<Loan> LoanList = new ArrayList<>();
+    private ArrayList<Loan> LoanQuery = new ArrayList<>();
     private LoansAdapter Adapter;
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
     private SearchView searchView;
+    private TextView TvMessage;
 
     public LoansFragment() {
         // Required empty public constructor
@@ -92,31 +100,78 @@ public class LoansFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_loans, container, false);
+        TvMessage = view.findViewById(R.id.tvEmptyLoans);
         recyclerView = view.findViewById(R.id.rvLoans);
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
         linearLayout = view.findViewById(R.id.emptyListLoan);
         searchView = getActivity().findViewById(R.id.search);
         searchView.setVisibility(View.VISIBLE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                LoanQuery.clear();
+                for(int i = 0; i < LoanList.size(); i++) {
+                    if(LoanList.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) {
+                        LoanQuery.add(LoanList.get(i));
+                    }
+                }
+                Adapter.setLoanList(LoanQuery);
+                Adapter.notifyDataSetChanged();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                LoanQuery.clear();
+                for(int i = 0; i < LoanList.size(); i++) {
+                    if(LoanList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                        LoanQuery.add(LoanList.get(i));
+                    }
+                }
+                Adapter.setLoanList(LoanQuery);
+                Adapter.notifyDataSetChanged();
+                return false;
+            }
+        });
+        Bundle bundle = getArguments();
+        final User user = (User) bundle.getSerializable("user");
         fab = getActivity().findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_refrescar);
+        fab.show();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(view, "Refrescando la lista...", Snackbar.LENGTH_SHORT).show();
-                doRequest();
+                if (isNetAvailible(getActivity(), getContext())) {
+                    Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
+                    doRequest(user.getCode());
+                } else
+                    setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
             }
         });
-        doRequest();
+        if (isNetAvailible(getActivity(), getContext()))
+            doRequest(user.getCode());
+        else
+            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < 1)
+                    fab.show();
+                else
+                    fab.hide();
+            }
+        });
         recyclerView.setHasFixedSize(true);
-        Adapter = new LoansAdapter(LoanList);
+        Adapter = new LoansAdapter(LoanList, getContext());
         recyclerView.setAdapter(Adapter);
         return view;
     }
 
-    public void doRequest() {
+    public void doRequest(String Code) {
         LoanList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        String Url = "http://albertocaro.000webhostapp.com/biblioteca/rest/prestamos.php?id=215818158";
+        String Url = getString(R.string.server_url)+"biblioteca/rest/prestamos.php?id="+md5(Code);
         StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -133,8 +188,7 @@ public class LoansFragment extends Fragment {
                         }
                         Adapter.notifyDataSetChanged();
                     } else {
-                        recyclerView.setVisibility(View.GONE);
-                        linearLayout.setVisibility(View.VISIBLE);
+                        setMessage(getString(R.string.empty_loanlist), TvMessage, linearLayout, recyclerView);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

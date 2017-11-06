@@ -1,8 +1,7 @@
 package com.dynadevs.fragments;
 
+import android.app.Activity;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -24,8 +24,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dynadevs.activities.R;
-import com.dynadevs.adapters.FinesAdapter;
-import com.dynadevs.classes.Fine;
+import com.dynadevs.adapters.BooksAdapter;
+import com.dynadevs.classes.Book;
 import com.dynadevs.classes.User;
 
 import org.json.JSONArray;
@@ -41,12 +41,12 @@ import static com.dynadevs.classes.Utilities.setMessage;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FinesFragment.OnFragmentInteractionListener} interface
+ * {@link BookmarksFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FinesFragment#newInstance} factory method to
+ * Use the {@link BookmarksFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FinesFragment extends Fragment {
+public class BookmarksFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,16 +58,18 @@ public class FinesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private ArrayList<Book> BookList = new ArrayList<>();
+    private ArrayList<Book> BookQuery = new ArrayList<>();
+    private BooksAdapter Adapter;
+    private User user;
     private RecyclerView recyclerView;
-    private ArrayList<Fine> FineList = new ArrayList<>();
-    private ArrayList<Fine> FineQuery = new ArrayList<>();
-    private FinesAdapter Adapter;
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
     private SearchView searchView;
-    private TextView TvMessage;
+    private TextView TvAppTitle, TvMessage;
+    Activity activity;
 
-    public FinesFragment() {
+    public BookmarksFragment() {
         // Required empty public constructor
     }
 
@@ -77,11 +79,11 @@ public class FinesFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FinesFragment.
+     * @return A new instance of fragment BookmarksFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static FinesFragment newInstance(String param1, String param2) {
-        FinesFragment fragment = new FinesFragment();
+    public static BookmarksFragment newInstance(String param1, String param2) {
+        BookmarksFragment fragment = new BookmarksFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -101,49 +103,16 @@ public class FinesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_fines, container, false);
-        TvMessage = view.findViewById(R.id.tvEmptyFines);
-        recyclerView = view.findViewById(R.id.rvFines);
-        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
-        linearLayout = view.findViewById(R.id.emptyListFines);
-        searchView = getActivity().findViewById(R.id.search);
-        searchView.setVisibility(View.VISIBLE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                FineQuery.clear();
-                for(int i = 0; i < FineList.size(); i++) {
-                    if(FineList.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) {
-                        FineQuery.add(FineList.get(i));
-                    }
-                }
-                Adapter.setFineList(FineQuery);
-                Adapter.notifyDataSetChanged();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                FineQuery.clear();
-                for(int i = 0; i < FineList.size(); i++) {
-                    if(FineList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                        FineQuery.add(FineList.get(i));
-                    }
-                }
-                Adapter.setFineList(FineQuery);
-                Adapter.notifyDataSetChanged();
-                return false;
-            }
-        });
+        final View view = inflater.inflate(R.layout.fragment_bookmarks, container, false);
         Bundle bundle = getArguments();
-        final User user = (User) bundle.getSerializable("user");
+        user = (User) bundle.getSerializable("user");
         fab = getActivity().findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_refrescar);
         fab.show();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isNetAvailible(getActivity(), getContext())) {
+                if (isNetAvailible(getActivity(), getContext())){
                     Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
                     doRequest(user.getCode());
                 }
@@ -151,11 +120,47 @@ public class FinesFragment extends Fragment {
                     setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
             }
         });
-        if (isNetAvailible(getActivity(), getContext()))
-            doRequest(user.getCode());
-        else
-            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+        TvAppTitle = getActivity().findViewById(R.id.tvAppTitle);
+        TvMessage = view.findViewById(R.id.tvEmptyBookmarks);
+        recyclerView = view.findViewById(R.id.rvBookmarks);
+        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
+        linearLayout = view.findViewById(R.id.emptyListBookmark);
+        searchView = getActivity().findViewById(R.id.search);
+        searchView.setVisibility(View.VISIBLE);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                BookQuery.clear();
+                for(int i = 0; i < BookList.size(); i++) {
+                    if(BookList.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                            BookList.get(i).getAutor().toLowerCase().contains(query.toLowerCase()) ||
+                            BookList.get(i).getISBN().toLowerCase().contains(query.toLowerCase()) ||
+                            BookList.get(i).getEditorial().toLowerCase().contains(query.toLowerCase()))  {
+                        BookQuery.add(BookList.get(i));
+                    }
+                }
+                Adapter.setBookList(BookQuery);
+                Adapter.notifyDataSetChanged();
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                BookQuery.clear();
+                for(int i = 0; i < BookList.size(); i++) {
+                    if(BookList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase()) ||
+                            BookList.get(i).getAutor().toLowerCase().contains(newText.toLowerCase()) ||
+                            BookList.get(i).getISBN().toLowerCase().contains(newText.toLowerCase()) ||
+                            BookList.get(i).getEditorial().toLowerCase().contains(newText.toLowerCase()))  {
+                        BookQuery.add(BookList.get(i));
+                    }
+                }
+                Adapter.setBookList(BookQuery);
+                Adapter.notifyDataSetChanged();
+                return false;
+            }
+        });
+        Adapter = new BooksAdapter(BookList, user, getContext(), getActivity());
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -166,33 +171,43 @@ public class FinesFragment extends Fragment {
                     fab.hide();
             }
         });
+        if (isNetAvailible(getActivity(), getContext()))
+            doRequest(user.getCode());
+        else
+            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
         recyclerView.setHasFixedSize(true);
-        Adapter = new FinesAdapter(FineList, getContext());
         recyclerView.setAdapter(Adapter);
         return view;
     }
 
-    public void doRequest (String Code) {
-        FineList.clear();
+    public void doRequest(String Code) {
+        BookList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        String url = getString(R.string.server_url)+"biblioteca/rest/multas.php?id="+md5(Code);
+        String url = getString(R.string.server_url)+"biblioteca/rest/marcadores.php?id="+md5(Code);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
-                    JSONArray jsonArray = new JSONArray(response);
+                    JSONArray jsonArray  = new JSONArray(response);
                     if (jsonArray.length() != 0) {
                         recyclerView.setVisibility(View.VISIBLE);
                         linearLayout.setVisibility(View.GONE);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            FineList.add(new Fine(
+                            BookList.add(new Book(
+                                    jsonObject.getString("ISBN"),
                                     jsonObject.getString("Titulo"),
-                                    "$"+jsonObject.getDouble("Monto")));
+                                    jsonObject.getString("Autor"),
+                                    jsonObject.getString("Editorial"),
+                                    jsonObject.getString("Edicion"),
+                                    jsonObject.getString("Descripcion"),
+                                    jsonObject.getString("Portada"),
+                                    Integer.parseInt(jsonObject.getString("Paginas")),
+                                    Integer.parseInt(jsonObject.getString("Ejemplares"))));
                         }
                         Adapter.notifyDataSetChanged();
                     } else {
-                        setMessage(getString(R.string.empty_fineslist), TvMessage, linearLayout, recyclerView);
+                        setMessage(getString(R.string.empty_booklist), TvMessage, linearLayout, recyclerView);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

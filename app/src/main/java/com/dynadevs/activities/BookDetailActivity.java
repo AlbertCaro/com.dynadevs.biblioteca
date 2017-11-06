@@ -11,7 +11,11 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dynadevs.classes.Book;
 import com.dynadevs.fragments.BookDetailContentFragment;
@@ -46,12 +50,28 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
 
         BookDetailContentFragment bookDetail = new BookDetailContentFragment();
         IvPhoto = (ImageView) findViewById(R.id.ivPhoto);
-        Book book = (Book) bundle.getSerializable("Object");
+        Book book = (Book) bundle.getSerializable("book");
         actionBar.setTitle(book.getTitle());
-        Glide.with(this).load(book.getPhoto()).centerCrop().into(IvPhoto);
+        Glide.with(this).load(book.getPhoto(BookDetailActivity.this)).centerCrop().into(IvPhoto);
         bookDetail.setArguments(bundle);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.book_detail_container, bookDetail).addToBackStack(null).commit();
+    }
+
+    private void doRequest(String Id, String ISBN) {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = getString(R.string.server_url)+"biblioteca/rest/add_marcadores.php?id="+Id+"&isbn="+ISBN;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
     }
 
     @Override
@@ -74,5 +94,11 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

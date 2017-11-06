@@ -10,13 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.dynadevs.activities.R;
 import com.dynadevs.adapters.BooksAdapter;
@@ -33,6 +33,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import static com.dynadevs.classes.Utilities.isNetAvailible;
+import static com.dynadevs.classes.Utilities.setMessage;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +64,7 @@ public class BooksFragment extends Fragment {
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
     private SearchView searchView;
+    private TextView TvAppTitle, TvMessage;
     Activity activity;
 
     public BooksFragment() {
@@ -98,6 +102,22 @@ public class BooksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_books, container, false);
+        fab = getActivity().findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_refrescar);
+        fab.show();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isNetAvailible(getActivity(), getContext())){
+                    Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
+                    doRequest();
+                }
+                else
+                    setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+            }
+        });
+        TvAppTitle = getActivity().findViewById(R.id.tvAppTitle);
+        TvMessage = view.findViewById(R.id.tvEmptyBooks);
         recyclerView = view.findViewById(R.id.rvBooks);
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
         linearLayout = view.findViewById(R.id.emptyListBook);
@@ -106,25 +126,51 @@ public class BooksFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                BookQuery.clear();
+                for(int i = 0; i < BookList.size(); i++) {
+                    if(BookList.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                            BookList.get(i).getAutor().toLowerCase().contains(query.toLowerCase()) ||
+                            BookList.get(i).getISBN().toLowerCase().contains(query.toLowerCase()) ||
+                            BookList.get(i).getEditorial().toLowerCase().contains(query.toLowerCase()))  {
+                        BookQuery.add(BookList.get(i));
+                    }
+                }
+                Adapter.setBookList(BookQuery);
+                Adapter.notifyDataSetChanged();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                BookQuery.clear();
+                for(int i = 0; i < BookList.size(); i++) {
+                    if(BookList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase()) ||
+                            BookList.get(i).getAutor().toLowerCase().contains(newText.toLowerCase()) ||
+                            BookList.get(i).getISBN().toLowerCase().contains(newText.toLowerCase()) ||
+                            BookList.get(i).getEditorial().toLowerCase().contains(newText.toLowerCase()))  {
+                        BookQuery.add(BookList.get(i));
+                    }
+                }
+                Adapter.setBookList(BookQuery);
+                Adapter.notifyDataSetChanged();
                 return false;
             }
         });
-        Adapter = new BooksAdapter(BookList, getContext());
-        fab = getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_refrescar);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Adapter = new BooksAdapter(BookList, getContext(), getActivity());
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onClick(View v) {
-                Snackbar.make(view, "Refrescando la lista...", Snackbar.LENGTH_SHORT).show();
-                doRequest();
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < 1)
+                    fab.show();
+                else
+                    fab.hide();
             }
         });
-        doRequest();
+        if (isNetAvailible(getActivity(), getContext()))
+            doRequest();
+        else
+            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(Adapter);
         return view;
@@ -133,13 +179,14 @@ public class BooksFragment extends Fragment {
     public void doRequest() {
         BookList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        String url = "http://albertocaro.000webhostapp.com/biblioteca/rest/libros.php";
+        String url = getString(R.string.server_url)+"biblioteca/rest/libros.php";
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONArray jsonArray  = new JSONArray(response);
                     if (jsonArray.length() != 0) {
+                        recyclerView.setVisibility(View.VISIBLE);
                         linearLayout.setVisibility(View.GONE);
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -156,7 +203,7 @@ public class BooksFragment extends Fragment {
                         }
                         Adapter.notifyDataSetChanged();
                     } else {
-                        linearLayout.setVisibility(View.VISIBLE);
+                        setMessage(getString(R.string.empty_booklist), TvMessage, linearLayout, recyclerView);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

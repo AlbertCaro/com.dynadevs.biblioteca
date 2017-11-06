@@ -1,5 +1,6 @@
 package com.dynadevs.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import java.util.ArrayList;
 
 public class FinesAdapter extends RecyclerView.Adapter<FinesAdapter.ViewHolderFines> {
     private ArrayList<Fine> FineList;
+    private Context context;
 
-    public FinesAdapter (ArrayList<Fine> FineList) {
-        this.FineList = FineList;
+    public FinesAdapter(ArrayList<Fine> fineList, Context context) {
+        FineList = fineList;
+        this.context = context;
     }
 
     @Override
@@ -37,6 +40,10 @@ public class FinesAdapter extends RecyclerView.Adapter<FinesAdapter.ViewHolderFi
     @Override
     public int getItemCount() {
         return FineList.size();
+    }
+
+    public void setFineList(ArrayList<Fine> fineList) {
+        FineList = fineList;
     }
 
     class ViewHolderFines extends RecyclerView.ViewHolder {

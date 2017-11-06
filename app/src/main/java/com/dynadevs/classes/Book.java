@@ -1,5 +1,9 @@
 package com.dynadevs.classes;
 
+import android.app.Activity;
+
+import com.dynadevs.activities.R;
+
 import java.io.Serializable;
 
 /**
@@ -42,8 +46,8 @@ public class Book implements Serializable {
         return Edition;
     }
 
-    public String getPhoto() {
-        return "http://albertocaro.000webhostapp.com/biblioteca/images/"+Photo;
+    public String getPhoto(Activity activity) {
+        return activity.getString(R.string.server_url)+"biblioteca/images/"+Photo;
     }
 
     public int getPages() {

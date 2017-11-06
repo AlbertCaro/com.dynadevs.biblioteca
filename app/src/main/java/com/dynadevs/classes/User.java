@@ -7,13 +7,16 @@ import java.io.Serializable;
  */
 
 public class User implements Serializable {
-    private String Code;
-    private String Name, Career;
+    private String Code, Name, Email, University, Career, CareerAbrebiation, DrawerHeader;
 
-    public User(String code, String name, String career) {
+    public User(String code, String name, String email, String university, String career, String careerAbrebiation, String drawerHeader) {
         Code = code;
         Name = name;
+        Email = email;
+        University = university;
         Career = career;
+        CareerAbrebiation = careerAbrebiation;
+        DrawerHeader = drawerHeader;
     }
 
     public String getCode() {
@@ -32,11 +35,43 @@ public class User implements Serializable {
         Name = name;
     }
 
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getUniversity() {
+        return University;
+    }
+
+    public void setUniversity(String university) {
+        University = university;
+    }
+
     public String getCareer() {
         return Career;
     }
 
     public void setCareer(String career) {
         Career = career;
+    }
+
+    public String getCareerAbrebiation() {
+        return CareerAbrebiation;
+    }
+
+    public void setCareerAbrebiation(String careerAbrebiation) {
+        CareerAbrebiation = careerAbrebiation;
+    }
+
+    public String getDrawerHeader() {
+        return DrawerHeader;
+    }
+
+    public void setDrawerHeader(String drawerHeader) {
+        DrawerHeader = drawerHeader;
     }
 }

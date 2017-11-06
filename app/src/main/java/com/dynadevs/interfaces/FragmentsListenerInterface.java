@@ -1,6 +1,7 @@
 package com.dynadevs.interfaces;
 
 import com.dynadevs.fragments.AboutFragment;
+import com.dynadevs.fragments.BookmarksFragment;
 import com.dynadevs.fragments.BooksFragment;
 import com.dynadevs.fragments.FinesFragment;
 import com.dynadevs.fragments.HelpFragment;
@@ -13,6 +14,7 @@ import com.dynadevs.fragments.MainFragment;
 
 public interface FragmentsListenerInterface extends MainFragment.OnFragmentInteractionListener,
         BooksFragment.OnFragmentInteractionListener,
+        BookmarksFragment.OnFragmentInteractionListener,
         LoansFragment.OnFragmentInteractionListener,
         FinesFragment.OnFragmentInteractionListener,
         HelpFragment.OnFragmentInteractionListener,

@@ -1,17 +1,19 @@
 <resources>
     <string name="app_name">Biblioteca</string>
-
+    <string name="server_url">http://albertocaro.000webhostapp.com/</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configuración</string>
     <string name="nav_main">Principal</string>
     <string name="nav_books">Libros</string>
+    <string name="nav_bookmarks">Marcadores</string>
     <string name="nav_loans">Prestamos</string>
     <string name="nav_fines">Multas</string>
     <string name="nav_info">Información</string>
+    <string name="logout">Cerrar sesión</string>
     <string name="nav_help">Ayuda</string>
     <string name="nav_about">Acerca de</string>
-    <string name="login_user">Código</string>
+    <string name="login_user">Usuario</string>
     <string name="login_pass">Contraseña</string>
     <string name="login_button">Ingresar</string>
     <string name="login_invalid">Credenciales incorrectas</string>
@@ -23,17 +25,21 @@
     <string name="detail_edition">Edición:</string>
     <string name="detail_copies">Número de ejemplares disponibles:</string>
     <string name="search">Buscar</string>
-    <string name="user">Alberto Caro Navarro</string>
-    <string name="career">Tecnologías de la Información</string>
-    <string name="university">Centro Universitario de los Valles</string>
+    <string name="user_name">Nombre completo</string>
+    <string name="user_mail">Correo eléctronico</string>
+    <string name="user_career">Carrera</string>
+    <string name="university">Universidad</string>
     <string name="library">Consulta de biblioteca</string>
     <string name="welcome">¡Bienvenido!</string>
     <string name="details">Detalles</string>
+    <string name="fines_title">Título</string>
+    <string name="fines_money">Monto</string>
     <string name="empty_booklist">No hay libros registrados.</string>
     <string name="empty_fineslist">Deudas saldadas, sigue tu camino viajero/a.</string>
     <string name="empty_loanlist">No tienes libros en tu posesión.</string>
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_book_list">Books</string>
     <string name="title_book_detail">Book Detail</string>
+    <string name="update_list">Actualizando la lista…</string>
+    <string name="unavalible_internet">No hay conexión a internet.</string>
 </resources>

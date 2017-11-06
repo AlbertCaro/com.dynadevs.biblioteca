@@ -1,5 +1,6 @@
 package com.dynadevs.adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,14 @@ import java.util.ArrayList;
  */
 
 public class LoansAdapter extends RecyclerView.Adapter<LoansAdapter.ViewHolderLoans> {
-
     private ArrayList<Loan> LoanList;
+    private Context context;
 
-    public LoansAdapter (ArrayList<Loan> LoansList) {
-        this.LoanList = LoansList;
+    public LoansAdapter(ArrayList<Loan> loanList, Context context) {
+        LoanList = loanList;
+        this.context = context;
     }
+
     @Override
     public LoansAdapter.ViewHolderLoans onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_loans,null,false);
@@ -37,6 +40,10 @@ public class LoansAdapter extends RecyclerView.Adapter<LoansAdapter.ViewHolderLo
     @Override
     public int getItemCount() {
         return LoanList.size();
+    }
+
+    public void setLoanList(ArrayList<Loan> loanList) {
+        LoanList = loanList;
     }
 
     class ViewHolderLoans extends RecyclerView.ViewHolder {

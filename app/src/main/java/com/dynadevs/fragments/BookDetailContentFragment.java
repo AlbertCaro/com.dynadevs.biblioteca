@@ -103,7 +103,7 @@ public class BookDetailContentFragment extends Fragment {
             TvPages.setText(getString(R.string.detail_pages)+" "+book.getPages());
 
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-            String Url = "http://proyecto-muestra.hol.es/biblioteca/rest/ejemplares_disp.php?id="+book.getISBN();
+            String Url = getString(R.string.server_url)+"biblioteca/rest/ejemplares_disp.php?id="+book.getISBN();
 
             StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
                 @Override
@@ -167,11 +167,5 @@ public class BookDetailContentFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        getActivity().finish();
     }
 }

@@ -6,8 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="230dp"
     android:orientation="vertical"
-    app:cardCornerRadius="3dp"
-    app:cardElevation="2dp">
+    app:cardCornerRadius="0dp"
+    app:cardElevation="1dp"
+    app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,10 +29,11 @@
         <ImageView
             android:id="@+id/imageView4"
             android:layout_width="0dp"
-            android:layout_height="45dp"
+            android:layout_height="57dp"
             android:alpha=".7"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@android:color/background_dark" />
 
@@ -41,26 +43,44 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
             android:text="Title"
-            android:textAlignment="textStart"
+            android:textAlignment="viewStart"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tvAutor"
             app:layout_constraintEnd_toStartOf="@+id/btnDetails"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView4" />
+            app:layout_constraintTop_toTopOf="@+id/imageView4"
+            app:layout_constraintVertical_bias="0.578" />
 
         <Button
             android:id="@+id/btnDetails"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/details"
             android:textAppearance="@style/TextAppearance.AppCompat.Button"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="@+id/imageView4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+        <TextView
+            android:id="@+id/tvAutor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="@android:color/darker_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnDetails"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>

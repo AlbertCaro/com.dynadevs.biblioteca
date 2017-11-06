@@ -1,5 +1,6 @@
 package com.dynadevs.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.dynadevs.activities.BookDetailActivity;
 import com.dynadevs.activities.R;
 import com.dynadevs.classes.Book;
 import com.bumptech.glide.Glide;
+import com.dynadevs.classes.User;
 
 import java.util.ArrayList;
 
@@ -24,12 +26,16 @@ import java.util.ArrayList;
 
 public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBooks> {
     private ArrayList<Book> BookList;
+    private User user;
     private Context context;
     private View.OnClickListener Listener;
+    private Activity activity;
 
-    public BooksAdapter(ArrayList<Book> bookList, Context context) {
+    public BooksAdapter(ArrayList<Book> bookList, User user, Context context, Activity activity) {
         BookList = bookList;
+        this.user = user;
         this.context = context;
+        this.activity = activity;
     }
 
     @Override
@@ -40,13 +46,16 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
 
     @Override
     public void onBindViewHolder(ViewHolderBooks holder, final int position) {
-        Glide.with(context).load(BookList.get(position).getPhoto()).centerCrop().into(holder.IvPhoto);
+        Glide.with(context).load(BookList.get(position).getPhoto(activity)).centerCrop().into(holder.IvPhoto);
         holder.TvTitle.setText(BookList.get(position).getTitle());
+        holder.TvAutor.setText(BookList.get(position).getAutor()+" - "+BookList.get(position).getEditorial());
+
         holder.BtnDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("Object", BookList.get(position));
+                bundle.putSerializable("user", user);
+                bundle.putSerializable("book", BookList.get(position));
                 Intent intent = new Intent(context, BookDetailActivity.class);
                 intent.putExtras(bundle);
                 context.startActivity(intent);
@@ -59,18 +68,21 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
         return BookList.size();
     }
 
+    public void setBookList(ArrayList<Book> bookList) {
+        BookList = bookList;
+    }
 
-    public class ViewHolderBooks extends RecyclerView.ViewHolder {
+    public static class ViewHolderBooks extends RecyclerView.ViewHolder {
         ImageView IvPhoto;
         TextView TvTitle;
+        TextView TvAutor;
         Button BtnDetails;
         public ViewHolderBooks(View itemView) {
             super(itemView);
             IvPhoto = itemView.findViewById(R.id.ivPhoto);
             TvTitle = itemView.findViewById(R.id.tvTitleBook);
+            TvAutor = itemView.findViewById(R.id.tvAutor);
             BtnDetails = itemView.findViewById(R.id.btnDetails);
         }
     }
-
-
 }

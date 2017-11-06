@@ -8,8 +8,10 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.dynadevs.activities.R;
+import com.dynadevs.classes.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +32,7 @@ public class MainFragment extends Fragment {
     private String mParam2;
 
     private SearchView searchView;
+    private TextView TvName, TvUniversity;
 
     private OnFragmentInteractionListener mListener;
 
@@ -68,10 +71,18 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        Bundle bundle = getArguments();
+        User user = (User) bundle.getSerializable("user");
+
+        TvName = view.findViewById(R.id.tvNameUserMain);
+        TvName.setText(user != null ? user.getName() : null);
+        TvUniversity = view.findViewById(R.id.tvUniversityMain);
+        TvUniversity.setText(user != null ? user.getUniversity() : null);
         searchView = getActivity().findViewById(R.id.search);
         searchView.setVisibility(View.GONE);
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -112,4 +123,6 @@ public class MainFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }
