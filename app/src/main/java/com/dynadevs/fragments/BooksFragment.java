@@ -15,9 +15,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.dynadevs.activities.R;
 import com.dynadevs.adapters.BooksAdapter;
 import com.dynadevs.classes.Book;
@@ -27,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.dynadevs.classes.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +71,7 @@ public class BooksFragment extends Fragment {
     private LinearLayout linearLayout;
     private SearchView searchView;
     private TextView TvAppTitle, TvMessage;
+    private ImageView IvMessage;
     Activity activity;
 
     public BooksFragment() {
@@ -102,8 +109,14 @@ public class BooksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_books, container, false);
+        IvMessage = view.findViewById(R.id.ivEmptyBooks);
+        TvMessage = view.findViewById(R.id.tvEmptyBooks);
+        recyclerView = view.findViewById(R.id.rvBooks);
+        linearLayout = view.findViewById(R.id.emptyListBook);
+        Bundle bundle = getArguments();
+        User user = (User) bundle.getSerializable("user");
         fab = getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_refrescar);
+        fab.setImageResource(R.drawable.ic_refresh);
         fab.show();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,16 +124,14 @@ public class BooksFragment extends Fragment {
                 if (isNetAvailible(getActivity(), getContext())){
                     Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
                     doRequest();
-                }
-                else
+                } else {
+                    IvMessage.setImageResource(R.drawable.ic_not_signal);
                     setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+                }
             }
         });
         TvAppTitle = getActivity().findViewById(R.id.tvAppTitle);
-        TvMessage = view.findViewById(R.id.tvEmptyBooks);
-        recyclerView = view.findViewById(R.id.rvBooks);
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
-        linearLayout = view.findViewById(R.id.emptyListBook);
         searchView = getActivity().findViewById(R.id.search);
         searchView.setVisibility(View.VISIBLE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -156,7 +167,7 @@ public class BooksFragment extends Fragment {
                 return false;
             }
         });
-        Adapter = new BooksAdapter(BookList, getContext(), getActivity());
+        Adapter = new BooksAdapter(BookList, user, getContext(), getActivity());
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -169,8 +180,10 @@ public class BooksFragment extends Fragment {
         });
         if (isNetAvailible(getActivity(), getContext()))
             doRequest();
-        else
+        else {
+            IvMessage.setImageResource(R.drawable.ic_not_signal);
             setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+        }
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(Adapter);
         return view;
@@ -203,6 +216,7 @@ public class BooksFragment extends Fragment {
                         }
                         Adapter.notifyDataSetChanged();
                     } else {
+                        IvMessage.setImageResource(R.drawable.ic_empty_books);
                         setMessage(getString(R.string.empty_booklist), TvMessage, linearLayout, recyclerView);
                     }
                 } catch (JSONException e) {
@@ -212,9 +226,17 @@ public class BooksFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                if (error instanceof TimeoutError) {
+                    IvMessage.setImageResource(R.drawable.ic_not_signal);
+                    setMessage(getString(R.string.unavalible_connection), TvMessage, linearLayout, recyclerView);
+                } else {
+                    Toast.makeText(getContext(), "VolleyError: "+error, Toast.LENGTH_LONG).show();
+                }
             }
         });
+        int socketTimeout = 300;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         requestQueue.add(request);
     }
 

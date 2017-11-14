@@ -1,7 +1,8 @@
 package com.dynadevs.classes;
 
 /**
- * Created by beto_ on 29/09/2017.
+ * Created by Alberto Caro Navarro on 29/09/2017.
+ * albertcaronava@gmail.com
  */
 
 public class Fine {

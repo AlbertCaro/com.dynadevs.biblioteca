@@ -2,19 +2,24 @@ package com.dynadevs.classes;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.dynadevs.activities.R;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by beto_ on 02/11/2017.
+ * Created by Alberto Caro Navarro on 02/11/2017.
+ * albertcaronava@gmail.com
  */
 
 public abstract class Utilities {
@@ -38,9 +43,68 @@ public abstract class Utilities {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        if (MD != null) {
+        if (MD != null)
             MD.update(string.getBytes(),0, string.length());
-        }
         return new BigInteger(1, MD != null ? MD.digest() : new byte[0]).toString(16);
+    }
+
+    public static void setCurrentThemeActivity (Activity activity) {
+        SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        switch (preferences.getInt("theme", 0)) {
+            case 0:
+                activity.setTheme(R.style.AppTheme);
+                break;
+            case 1:
+                activity.setTheme(R.style.RedTheme);
+                break;
+            case 2:
+                activity.setTheme(R.style.PurpleTheme);
+                break;
+            case 3:
+                activity.setTheme(R.style.GreenTheme);
+                break;
+            case 4:
+                activity.setTheme(R.style.AndroidTheme);
+                break;
+        }
+    }
+
+    public static SharedPreferences setCurrentTheme(Activity activity) {
+        SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        switch (preferences.getInt("theme", 0)) {
+            case 0:
+                activity.setTheme(R.style.AppTheme_NoActionBar);
+                break;
+            case 1:
+                activity.setTheme(R.style.RedTheme_NoActionBar);
+                break;
+            case 2:
+                activity.setTheme(R.style.PurpleTheme_NoActionBar);
+                break;
+            case 3:
+                activity.setTheme(R.style.GreenTheme_NoActionBar);
+                break;
+            case 4:
+                activity.setTheme(R.style.AndroidTheme_NoActionBar);
+                break;
+        }
+        return preferences;
+    }
+
+    public static User loadSesion (Activity activity) {
+        SharedPreferences preferences = activity.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        if (preferences.contains("code")) {
+            return new User(
+                    preferences.getString("code",""),
+                    preferences.getString("name",""),
+                    preferences.getString("email",""),
+                    preferences.getString("university",""),
+                    preferences.getString("career",""),
+                    preferences.getString("acronym",""),
+                    preferences.getString("image","")
+            );
+        } else {
+            return null;
+        }
     }
 }

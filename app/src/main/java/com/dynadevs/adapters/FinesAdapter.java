@@ -13,7 +13,8 @@ import com.dynadevs.classes.Fine;
 import java.util.ArrayList;
 
 /**
- * Created by beto_ on 29/09/2017.
+ * Created by Alberto Caro Navarro on 29/09/2017.
+ * albertcaronava@gmail.com
  */
 
 public class FinesAdapter extends RecyclerView.Adapter<FinesAdapter.ViewHolderFines> {
@@ -27,7 +28,7 @@ public class FinesAdapter extends RecyclerView.Adapter<FinesAdapter.ViewHolderFi
 
     @Override
     public FinesAdapter.ViewHolderFines onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_fines,null,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_fines, parent,false);
         return new ViewHolderFines(view);
     }
 

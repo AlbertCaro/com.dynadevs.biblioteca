@@ -19,9 +19,9 @@
         <ImageView
             android:id="@+id/ivEmptyBooks"
             android:layout_width="match_parent"
-            android:layout_height="367dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/splashicon" />
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/ic_empty_books" />
 
         <TextView
             android:id="@+id/tvEmptyBooks"

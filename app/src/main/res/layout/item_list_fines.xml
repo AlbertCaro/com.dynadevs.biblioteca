@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="4dp"
+    app:cardCornerRadius="@dimen/cardview_default_elevation"
     app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
@@ -16,9 +15,9 @@
             android:id="@+id/tvTitleFine"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:elegantTextHeight="true"
             android:singleLine="true"
@@ -34,10 +33,10 @@
             android:id="@+id/tvSanction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
             android:text="@string/fines_money"
             android:textColor="@color/colorSecoundaryText"
             android:textSize="14sp"

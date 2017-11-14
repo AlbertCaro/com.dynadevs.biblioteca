@@ -13,13 +13,17 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -60,14 +64,14 @@ public class BookmarksFragment extends Fragment {
 
     private ArrayList<Book> BookList = new ArrayList<>();
     private ArrayList<Book> BookQuery = new ArrayList<>();
-    private BooksAdapter Adapter;
     private User user;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
     private SearchView searchView;
     private TextView TvAppTitle, TvMessage;
-    Activity activity;
+    private ImageView IvMessage;
+    BooksAdapter Adapter;
 
     public BookmarksFragment() {
         // Required empty public constructor
@@ -104,10 +108,11 @@ public class BookmarksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_bookmarks, container, false);
+        IvMessage = view.findViewById(R.id.ivEmptyBookmarks);
         Bundle bundle = getArguments();
         user = (User) bundle.getSerializable("user");
         fab = getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_refrescar);
+        fab.setImageResource(R.drawable.ic_refresh);
         fab.show();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,9 +120,10 @@ public class BookmarksFragment extends Fragment {
                 if (isNetAvailible(getActivity(), getContext())){
                     Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
                     doRequest(user.getCode());
-                }
-                else
+                } else {
+                    IvMessage.setImageResource(R.drawable.ic_not_signal);
                     setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+                }
             }
         });
         TvAppTitle = getActivity().findViewById(R.id.tvAppTitle);
@@ -171,10 +177,6 @@ public class BookmarksFragment extends Fragment {
                     fab.hide();
             }
         });
-        if (isNetAvailible(getActivity(), getContext()))
-            doRequest(user.getCode());
-        else
-            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(Adapter);
         return view;
@@ -207,18 +209,27 @@ public class BookmarksFragment extends Fragment {
                         }
                         Adapter.notifyDataSetChanged();
                     } else {
-                        setMessage(getString(R.string.empty_booklist), TvMessage, linearLayout, recyclerView);
+                        IvMessage.setImageResource(R.drawable.ic_empty_bookmarks);
+                        setMessage(getString(R.string.empty_bookmarklist), TvMessage, linearLayout, recyclerView);
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Error: "+e, Toast.LENGTH_SHORT).show();;
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                if (error instanceof TimeoutError) {
+                    IvMessage.setImageResource(R.drawable.ic_not_signal);
+                    setMessage(getString(R.string.unavalible_connection), TvMessage, linearLayout, recyclerView);
+                } else {
+                    Toast.makeText(getContext(), "VolleyError: "+error, Toast.LENGTH_LONG).show();
+                }
             }
         });
+        int socketTimeout = 300;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         requestQueue.add(request);
     }
 
@@ -239,6 +250,19 @@ public class BookmarksFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isNetAvailible(getActivity(), getContext()))
+            doRequest(user.getCode());
+        else {
+            IvMessage.setImageResource(R.drawable.ic_not_signal);
+            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+        }
+    }
+
+
 
     @Override
     public void onDetach() {

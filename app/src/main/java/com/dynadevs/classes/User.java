@@ -3,19 +3,20 @@ package com.dynadevs.classes;
 import java.io.Serializable;
 
 /**
- * Created by beto_ on 30/09/2017.
+ * Created by Alberto Caro Navarro on 30/09/2017.
+ * albertcaronava@gmail.com
  */
 
 public class User implements Serializable {
-    private String Code, Name, Email, University, Career, CareerAbrebiation, DrawerHeader;
+    private String Code, Name, Email, University, Career, Acronym, DrawerHeader;
 
-    public User(String code, String name, String email, String university, String career, String careerAbrebiation, String drawerHeader) {
+    public User(String code, String name, String email, String university, String career, String acronym, String drawerHeader) {
         Code = code;
         Name = name;
         Email = email;
         University = university;
         Career = career;
-        CareerAbrebiation = careerAbrebiation;
+        Acronym = acronym;
         DrawerHeader = drawerHeader;
     }
 
@@ -39,39 +40,19 @@ public class User implements Serializable {
         return Email;
     }
 
-    public void setEmail(String email) {
-        Email = email;
-    }
-
     public String getUniversity() {
         return University;
-    }
-
-    public void setUniversity(String university) {
-        University = university;
     }
 
     public String getCareer() {
         return Career;
     }
 
-    public void setCareer(String career) {
-        Career = career;
-    }
-
-    public String getCareerAbrebiation() {
-        return CareerAbrebiation;
-    }
-
-    public void setCareerAbrebiation(String careerAbrebiation) {
-        CareerAbrebiation = careerAbrebiation;
+    public String getAcronym() {
+        return Acronym;
     }
 
     public String getDrawerHeader() {
         return DrawerHeader;
-    }
-
-    public void setDrawerHeader(String drawerHeader) {
-        DrawerHeader = drawerHeader;
     }
 }

@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">Biblioteca</string>
-    <string name="server_url">http://albertocaro.000webhostapp.com/</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="app_name">UDG Biblioteca</string>
+    <string name="server_url" translatable="false">http://albertocaro.000webhostapp.com/</string>
+    <!--string name="server_url" translatable="false">http://192.168.105.2/albertocaro/</string-->
+    <string name="navigation_drawer_open">Abrir cajón de navegación</string>
+    <string name="navigation_drawer_close">Cerrar cajón de navegación</string>
     <string name="action_settings">Configuración</string>
     <string name="nav_main">Principal</string>
     <string name="nav_books">Libros</string>
@@ -13,13 +14,13 @@
     <string name="logout">Cerrar sesión</string>
     <string name="nav_help">Ayuda</string>
     <string name="nav_about">Acerca de</string>
-    <string name="login_user">Usuario</string>
+    <string name="login_user">Código</string>
     <string name="login_pass">Contraseña</string>
     <string name="login_button">Ingresar</string>
     <string name="login_invalid">Credenciales incorrectas</string>
     <string name="login_blank_user">El usuario no puede quedar vacío</string>
     <string name="login_blank_pass">La contraseña no puede quedar vacía</string>
-    <string name="detail_ISBN">ISBN: </string>
+    <string name="detail_ISBN" translatable="false">ISBN: </string>
     <string name="detail_pages">Número de páginas:</string>
     <string name="detail_editorial">Editorial:</string>
     <string name="detail_edition">Edición:</string>
@@ -35,11 +36,53 @@
     <string name="fines_title">Título</string>
     <string name="fines_money">Monto</string>
     <string name="empty_booklist">No hay libros registrados.</string>
+    <string name="empty_bookmarklist">No has agregado ningún libro a marcadores.</string>
     <string name="empty_fineslist">Deudas saldadas, sigue tu camino viajero/a.</string>
     <string name="empty_loanlist">No tienes libros en tu posesión.</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_book_list">Books</string>
     <string name="title_book_detail">Book Detail</string>
-    <string name="update_list">Actualizando la lista…</string>
+    <string name="update_list">Actualizando lista…</string>
     <string name="unavalible_internet">No hay conexión a internet.</string>
+    <string name="unavalible_connection">No se ha podido conectar al servidor</string>
+    <string name="added_bookmark">Se ha añadió el libro a marcadores.</string>
+    <string name="deleted_bookmark">Se ha eliminado el libro de marcadores.</string>
+    <string name="failed_bookmark_operation">Operación fallida.</string>
+    <string name="unexpected_response">Respuesta inesperada: </string>
+    <string name="settings">Configuración</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_sub">Elegir el tema de la aplicación.</string>
+    <string name="settings_events">Añadir al calendario</string>
+    <string name="settings_events_sub">Añadir eventos y recordatorios.</string>
+    <string name="settings_notification_time">Tiempo del recordatorio</string>
+    <string name="settings_notification_time_sub">Tiempo de aviso de notificación antes del evento.</string>
+    <string name="event_message">Devolución del libro para no generar multa.</string>
+    <string name="dynadev" translatable="false">DynaDevs</string>
+    <string name="about_description">Aplicación desarrollada en el Centro Universitario de los Valles para las bibliotecas de la red universitaria de la Universidad de Guadalajara.</string>
+    <string name="about_developed_by">Desarrollado por Dynamite Developers (DynaDevs)</string>
+    <string name="about_version">Versión de la aplicación: 1.0</string>
+    <string name="subject">Asunto</string>
+    <string name="subject_error">El asunto no puede quedar vacío.</string>
+    <string name="message">Mensaje</string>
+    <string name="message_error">El mensaje no puede quedar vacío.</string>
+    <string name="message_send">Enviado satisfactoriamente.</string>
+    <string name="send">Enviar</string>
+    <string name="need_internet">Necesita internet para solicitar ayuda.</string>
+    <string name="user_info">Información del usuario:</string>
+    <string-array name="theme_options">
+        <item>Institucional (predeterminado)</item>
+        <item>Rojo</item>
+        <item>Púrpura</item>
+        <item>Verde</item>
+        <item>Android</item>
+    </string-array>
+    <string-array name="notification_options">
+        <item>Sí</item>
+        <item>No</item>
+    </string-array>
+    <string-array name="time_options">
+        <item>5 minutos</item>
+        <item>30 minutos</item>
+        <item>12 horas</item>
+        <item>1 día</item>
+    </string-array>
 </resources>

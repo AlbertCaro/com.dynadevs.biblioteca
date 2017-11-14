@@ -12,12 +12,17 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -63,6 +68,7 @@ public class LoansFragment extends Fragment {
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
     private SearchView searchView;
+    private ImageView IvMessage;
     private TextView TvMessage;
 
     public LoansFragment() {
@@ -100,6 +106,7 @@ public class LoansFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_loans, container, false);
+        IvMessage = view.findViewById(R.id.ivEmptyLoans);
         TvMessage = view.findViewById(R.id.tvEmptyLoans);
         recyclerView = view.findViewById(R.id.rvLoans);
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
@@ -136,7 +143,7 @@ public class LoansFragment extends Fragment {
         Bundle bundle = getArguments();
         final User user = (User) bundle.getSerializable("user");
         fab = getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_refrescar);
+        fab.setImageResource(R.drawable.ic_refresh);
         fab.show();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,14 +151,18 @@ public class LoansFragment extends Fragment {
                 if (isNetAvailible(getActivity(), getContext())) {
                     Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
                     doRequest(user.getCode());
-                } else
+                } else {
+                    IvMessage.setImageResource(R.drawable.ic_not_signal);
                     setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+                }
             }
         });
         if (isNetAvailible(getActivity(), getContext()))
             doRequest(user.getCode());
-        else
+        else {
+            IvMessage.setImageResource(R.drawable.ic_not_signal);
             setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+        }
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -163,7 +174,7 @@ public class LoansFragment extends Fragment {
             }
         });
         recyclerView.setHasFixedSize(true);
-        Adapter = new LoansAdapter(LoanList, getContext());
+        Adapter = new LoansAdapter(LoanList, getContext(), getActivity());
         recyclerView.setAdapter(Adapter);
         return view;
     }
@@ -184,22 +195,34 @@ public class LoansFragment extends Fragment {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             LoanList.add(new Loan(
                                     jsonObject.getString("Titulo"),
-                                    jsonObject.getString("FechaLimite")));
+                                    jsonObject.getString("ISBN"),
+                                    Integer.parseInt(jsonObject.getString("Dia")),
+                                    Integer.parseInt(jsonObject.getString("Mes")),
+                                    Integer.parseInt(jsonObject.getString("Año"))));
                         }
                         Adapter.notifyDataSetChanged();
                     } else {
+                        IvMessage.setImageResource(R.drawable.ic_empty_loans);
                         setMessage(getString(R.string.empty_loanlist), TvMessage, linearLayout, recyclerView);
                     }
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                if (error instanceof TimeoutError) {
+                    IvMessage.setImageResource(R.drawable.ic_not_signal);
+                    setMessage(getString(R.string.unavalible_connection), TvMessage, linearLayout, recyclerView);
+                } else {
+                    Toast.makeText(getContext(), "VolleyError: "+error, Toast.LENGTH_LONG).show();
+                }
             }
         });
+        int socketTimeout = 300;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         requestQueue.add(request);
     }
 

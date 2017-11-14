@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#8BC34A</color>
+    <color name="colorPrimary">#00538F</color>
+    <color name="colorPrimaryDark">#004164</color>
+    <color name="colorAccent">#78B41E</color>
+    <color name="colorPrimaryPurple">#673AB7</color>
+    <color name="colorPrimaryDarkPurple">#512DA8</color>
+    <color name="colorPrimaryRed">#DB4437</color>
+    <color name="colorPrimaryDarkRed">#AF362C</color>
+    <color name="colorPrimaryGreen">#4CAF50</color>
+    <color name="colorPrimaryDarkGreen">#388E3C</color>
+    <color name="colorPrimaryAndroid">#273238</color>
+    <color name="colorPrimaryDarkAndroid">#161E21</color>
+    <color name="colorAccentAndroid">#079689</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecoundaryText">#757575</color>
     <color name="colorDividerColor">#BDBDBD</color>

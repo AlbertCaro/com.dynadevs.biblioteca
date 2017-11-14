@@ -7,7 +7,8 @@ import com.dynadevs.activities.R;
 import java.io.Serializable;
 
 /**
- * Created by beto_ on 29/09/2017.
+ * Created by Alberto Caro Navarro on 29/09/2017.
+ * albertcaronava@gmail.com
  */
 
 public class Book implements Serializable {
@@ -58,15 +59,7 @@ public class Book implements Serializable {
         return ISBN;
     }
 
-    public void setISBN(String ISBN) {
-        this.ISBN = ISBN;
-    }
-
     public int getCopies() {
         return copies;
-    }
-
-    public void setCopies(int copies) {
-        this.copies = copies;
     }
 }

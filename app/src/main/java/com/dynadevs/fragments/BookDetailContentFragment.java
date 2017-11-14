@@ -43,8 +43,7 @@ public class BookDetailContentFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    TextView TvISBN, TvAutor, TvEditorial, TvDescription, TvEdition, TvPages, TvCopies;
-    private String CopiesText;
+    private TextView TvISBN, TvAutor, TvEditorial, TvDescription, TvEdition, TvPages, TvCopies;
 
     public BookDetailContentFragment() {
         // Required empty public constructor
@@ -93,7 +92,7 @@ public class BookDetailContentFragment extends Fragment {
         final Book book;
 
         if (getArguments() != null) {
-            book = (Book) ObjectBook.getSerializable("Object");
+            book = (Book) ObjectBook.getSerializable("book");
 
             TvISBN.setText(getString(R.string.detail_ISBN)+" "+book.getISBN());
             TvAutor.setText(book.getAutor());

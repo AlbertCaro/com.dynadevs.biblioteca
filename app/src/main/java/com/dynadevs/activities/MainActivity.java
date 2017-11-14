@@ -1,5 +1,6 @@
 package com.dynadevs.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dynadevs.classes.User;
@@ -29,6 +31,10 @@ import com.dynadevs.fragments.FinesFragment;
 import com.dynadevs.fragments.LoansFragment;
 import com.dynadevs.fragments.MainFragment;
 import com.dynadevs.interfaces.FragmentsListenerInterface;
+
+import static com.dynadevs.classes.Utilities.isNetAvailible;
+import static com.dynadevs.classes.Utilities.loadSesion;
+import static com.dynadevs.classes.Utilities.setCurrentTheme;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentsListenerInterface {
@@ -45,35 +51,37 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setCurrentTheme(this);
+        bundle = getIntent().getExtras();
+        User user = (User) (bundle != null ? bundle.getSerializable("user") : loadSesion(this));
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
-        bundle = getIntent().getExtras();
-        TvAppTitle = (TextView) findViewById(R.id.tvAppTitle);
+        TvAppTitle = findViewById(R.id.tvAppTitle);
         TvAppTitle.setText(R.string.nav_main);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        User user = (User) (bundle != null ? bundle.getSerializable("user") : null);
         IvDrawerHeader = navView.findViewById(R.id.ivUniversity);
-        Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+(user != null ? user.getDrawerHeader() : null)).into(IvDrawerHeader);
+        Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+
+                (user != null ? user.getDrawerHeader() : loadSesion(this).getDrawerHeader())).into(IvDrawerHeader);
         TvUniversity = navView.findViewById(R.id.tvUniversity);
-        TvUniversity.setText(user != null ? user.getCareerAbrebiation() : null);
+        TvUniversity.setText(user != null ? user.getAcronym() : loadSesion(this).getAcronym());
         TvName = navView.findViewById(R.id.tvNameUser);
-        TvName.setText(user != null ? user.getName() : null);
+        TvName.setText(user != null ? user.getName() : loadSesion(this).getName());
         TvCareer = navView.findViewById(R.id.tvCareerUser);
-        TvCareer.setText(user != null ? user.getCareer() : null);
-        searchView = (SearchView) findViewById(R.id.search);
+        TvCareer.setText(user != null ? user.getCareer() : loadSesion(this).getCareer());
+        searchView = findViewById(R.id.search);
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -106,21 +114,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            intent = new Intent(MainActivity.this, SettingsActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         } else if (id == R.id.logout){
             SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
             preferences.edit().clear().apply();
@@ -138,10 +143,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         boolean activity = false;
+        boolean change = true;
 
         if (id == R.id.nav_main) {
             TvAppTitle.setText(R.string.nav_main);
             actionBar.setTitle(R.string.nav_main);
+            TvAppTitle.setVisibility(View.VISIBLE);
             fragment = new MainFragment();
             fab.hide();
         } else if(id == R.id.nav_books) {
@@ -161,22 +168,29 @@ public class MainActivity extends AppCompatActivity
             actionBar.setTitle(R.string.nav_fines);
             fragment = new FinesFragment();
         } else if (id == R.id.nav_help) {
-            intent = new Intent(MainActivity.this, HelpActivity.class);
-            activity = true;
+            if (isNetAvailible(this, this)) {
+                intent = new Intent(MainActivity.this, HelpActivity.class);
+                intent.putExtras(bundle);
+                activity = true;
+            } else {
+                Toast.makeText(this, getString(R.string.need_internet), Toast.LENGTH_SHORT).show();
+                change = false;
+            }
         } else if (id == R.id.nav_about) {
             intent = new Intent(MainActivity.this, AboutActivity.class);
             activity = true;
         }
 
-        if (activity)
-            startActivity(intent);
-        else {
-            fragment.setArguments(bundle);
-            getSupportFragmentManager().beginTransaction().replace(R.id.clContenedor, fragment).commit();
+        if (change) {
+            if (activity)
+                startActivity(intent);
+            else {
+                fragment.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.clContenedor, fragment).commit();
+            }
         }
 
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

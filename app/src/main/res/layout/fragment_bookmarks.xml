@@ -20,14 +20,16 @@
         <ImageView
             android:id="@+id/ivEmptyBookmarks"
             android:layout_width="match_parent"
-            android:layout_height="367dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/splashicon" />
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/ic_empty_bookmarks" />
 
         <TextView
             android:id="@+id/tvEmptyBookmarks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:text="@string/empty_booklist"
             android:textAlignment="center"
             android:textSize="18sp" />

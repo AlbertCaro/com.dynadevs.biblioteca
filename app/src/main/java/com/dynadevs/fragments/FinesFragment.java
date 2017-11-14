@@ -1,8 +1,6 @@
 package com.dynadevs.fragments;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,12 +12,17 @@ import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -65,6 +68,7 @@ public class FinesFragment extends Fragment {
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
     private SearchView searchView;
+    private ImageView IvMessage;
     private TextView TvMessage;
 
     public FinesFragment() {
@@ -102,6 +106,7 @@ public class FinesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_fines, container, false);
+        IvMessage = view.findViewById(R.id.ivEmptyFines);
         TvMessage = view.findViewById(R.id.tvEmptyFines);
         recyclerView = view.findViewById(R.id.rvFines);
         recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
@@ -138,7 +143,7 @@ public class FinesFragment extends Fragment {
         Bundle bundle = getArguments();
         final User user = (User) bundle.getSerializable("user");
         fab = getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_refrescar);
+        fab.setImageResource(R.drawable.ic_refresh);
         fab.show();
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,16 +151,12 @@ public class FinesFragment extends Fragment {
                 if (isNetAvailible(getActivity(), getContext())) {
                     Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
                     doRequest(user.getCode());
-                }
-                else
+                } else {
+                    IvMessage.setImageResource(R.drawable.ic_not_signal);
                     setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+                }
             }
         });
-        if (isNetAvailible(getActivity(), getContext()))
-            doRequest(user.getCode());
-        else
-            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -166,6 +167,12 @@ public class FinesFragment extends Fragment {
                     fab.hide();
             }
         });
+        if (isNetAvailible(getActivity(), getContext()))
+            doRequest(user.getCode());
+        else {
+            IvMessage.setImageResource(R.drawable.ic_not_signal);
+            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+        }
         recyclerView.setHasFixedSize(true);
         Adapter = new FinesAdapter(FineList, getContext());
         recyclerView.setAdapter(Adapter);
@@ -192,6 +199,7 @@ public class FinesFragment extends Fragment {
                         }
                         Adapter.notifyDataSetChanged();
                     } else {
+                        IvMessage.setImageResource(R.drawable.ic_empty_fines);
                         setMessage(getString(R.string.empty_fineslist), TvMessage, linearLayout, recyclerView);
                     }
                 } catch (JSONException e) {
@@ -201,9 +209,17 @@ public class FinesFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
+                if (error instanceof TimeoutError) {
+                    IvMessage.setImageResource(R.drawable.ic_not_signal);
+                    setMessage(getString(R.string.unavalible_connection), TvMessage, linearLayout, recyclerView);
+                } else {
+                    Toast.makeText(getContext(), "VolleyError: "+error, Toast.LENGTH_LONG).show();
+                }
             }
         });
+        int socketTimeout = 300;
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         requestQueue.add(request);
     }
 

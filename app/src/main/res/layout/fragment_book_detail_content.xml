@@ -28,6 +28,7 @@
         android:layout_marginTop="16dp"
         android:text="Editorial"
         android:textColor="@color/colorSecoundaryText"
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPages"
         tools:layout_constraintBottom_creator="1"
@@ -42,6 +43,7 @@
         android:layout_marginTop="16dp"
         android:text="Edition"
         android:textColor="@color/colorSecoundaryText"
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEditorial"
         tools:layout_constraintLeft_creator="1"
@@ -56,6 +58,7 @@
         android:layout_marginTop="16dp"
         android:text="Pages"
         android:textColor="@color/colorSecoundaryText"
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvISBN"
         tools:layout_constraintLeft_creator="1"
@@ -87,7 +90,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Copies"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvEdition" />
 
@@ -98,7 +101,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="ISBN"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDescription" />
 

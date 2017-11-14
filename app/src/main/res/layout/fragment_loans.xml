@@ -19,14 +19,16 @@
         <ImageView
             android:id="@+id/ivEmptyLoans"
             android:layout_width="match_parent"
-            android:layout_height="367dp"
-            android:scaleType="fitStart"
-            android:src="@drawable/splashicon" />
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/ic_empty_loans" />
 
         <TextView
             android:id="@+id/tvEmptyLoans"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
             android:text="@string/empty_loanlist"
             android:textAlignment="center"
             android:textSize="18sp" />
