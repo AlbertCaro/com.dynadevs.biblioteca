@@ -1,6 +1,5 @@
 package com.dynadevs.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import static com.dynadevs.classes.Utilities.isNetAvailible;
+import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.md5;
 import static com.dynadevs.classes.Utilities.setMessage;
 
@@ -68,8 +68,7 @@ public class BookmarksFragment extends Fragment {
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
-    private SearchView searchView;
-    private TextView TvAppTitle, TvMessage;
+    private TextView TvMessage;
     private ImageView IvMessage;
     BooksAdapter Adapter;
 
@@ -108,77 +107,78 @@ public class BookmarksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_bookmarks, container, false);
-        IvMessage = view.findViewById(R.id.ivEmptyBookmarks);
-        Bundle bundle = getArguments();
-        user = (User) bundle.getSerializable("user");
-        fab = getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_refresh);
-        fab.show();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetAvailible(getActivity(), getContext())){
-                    Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
-                    doRequest(user.getCode());
-                } else {
-                    IvMessage.setImageResource(R.drawable.ic_not_signal);
-                    setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
-                }
-            }
-        });
-        TvAppTitle = getActivity().findViewById(R.id.tvAppTitle);
-        TvMessage = view.findViewById(R.id.tvEmptyBookmarks);
-        recyclerView = view.findViewById(R.id.rvBookmarks);
-        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
-        linearLayout = view.findViewById(R.id.emptyListBookmark);
-        searchView = getActivity().findViewById(R.id.search);
-        searchView.setVisibility(View.VISIBLE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                BookQuery.clear();
-                for(int i = 0; i < BookList.size(); i++) {
-                    if(BookList.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                            BookList.get(i).getAutor().toLowerCase().contains(query.toLowerCase()) ||
-                            BookList.get(i).getISBN().toLowerCase().contains(query.toLowerCase()) ||
-                            BookList.get(i).getEditorial().toLowerCase().contains(query.toLowerCase()))  {
-                        BookQuery.add(BookList.get(i));
+        if (isAdded()) {
+            IvMessage = view.findViewById(R.id.ivEmptyBookmarks);
+            Bundle bundle = getArguments();
+            user = (User) bundle.getSerializable("user");
+            fab = getActivity().findViewById(R.id.fab);
+            fab.setImageResource(R.drawable.ic_refresh);
+            fab.show();
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isNetAvailible(getActivity())){
+                        Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
+                        doRequest(user != null ? user.getCode() : loadSesion(getActivity()).getCode());
+                    } else {
+                        IvMessage.setImageResource(R.drawable.ic_not_signal);
+                        setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
                     }
                 }
-                Adapter.setBookList(BookQuery);
-                Adapter.notifyDataSetChanged();
-                return false;
-            }
+            });
+            TvMessage = view.findViewById(R.id.tvEmptyBookmarks);
+            recyclerView = view.findViewById(R.id.rvBookmarks);
+            recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
+            linearLayout = view.findViewById(R.id.emptyListBookmark);
+            SearchView searchView = getActivity().findViewById(R.id.search);
+            searchView.setVisibility(View.VISIBLE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    BookQuery.clear();
+                    for(int i = 0; i < BookList.size(); i++) {
+                        if(BookList.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                                BookList.get(i).getAutor().toLowerCase().contains(query.toLowerCase()) ||
+                                BookList.get(i).getISBN().toLowerCase().contains(query.toLowerCase()) ||
+                                BookList.get(i).getEditorial().toLowerCase().contains(query.toLowerCase()))  {
+                            BookQuery.add(BookList.get(i));
+                        }
+                    }
+                    Adapter.setBookList(BookQuery);
+                    Adapter.notifyDataSetChanged();
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                BookQuery.clear();
-                for(int i = 0; i < BookList.size(); i++) {
-                    if(BookList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase()) ||
-                            BookList.get(i).getAutor().toLowerCase().contains(newText.toLowerCase()) ||
-                            BookList.get(i).getISBN().toLowerCase().contains(newText.toLowerCase()) ||
-                            BookList.get(i).getEditorial().toLowerCase().contains(newText.toLowerCase()))  {
-                        BookQuery.add(BookList.get(i));
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    BookQuery.clear();
+                    for(int i = 0; i < BookList.size(); i++) {
+                        if(BookList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase()) ||
+                                BookList.get(i).getAutor().toLowerCase().contains(newText.toLowerCase()) ||
+                                BookList.get(i).getISBN().toLowerCase().contains(newText.toLowerCase()) ||
+                                BookList.get(i).getEditorial().toLowerCase().contains(newText.toLowerCase()))  {
+                            BookQuery.add(BookList.get(i));
+                        }
                     }
+                    Adapter.setBookList(BookQuery);
+                    Adapter.notifyDataSetChanged();
+                    return false;
                 }
-                Adapter.setBookList(BookQuery);
-                Adapter.notifyDataSetChanged();
-                return false;
-            }
-        });
-        Adapter = new BooksAdapter(BookList, user, getContext(), getActivity());
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy < 1)
-                    fab.show();
-                else
-                    fab.hide();
-            }
-        });
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(Adapter);
+            });
+            Adapter = new BooksAdapter(BookList, user, getContext(), getActivity());
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (dy < 1)
+                        fab.show();
+                    else
+                        fab.hide();
+                }
+            });
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(Adapter);
+        }
         return view;
     }
 
@@ -213,7 +213,7 @@ public class BookmarksFragment extends Fragment {
                         setMessage(getString(R.string.empty_bookmarklist), TvMessage, linearLayout, recyclerView);
                     }
                 } catch (JSONException e) {
-                    Toast.makeText(getContext(), "Error: "+e, Toast.LENGTH_SHORT).show();;
+                    Toast.makeText(getContext(), "Error: "+e, Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -227,7 +227,7 @@ public class BookmarksFragment extends Fragment {
                 }
             }
         });
-        int socketTimeout = 300;
+        int socketTimeout = 800;
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
         requestQueue.add(request);
@@ -254,8 +254,8 @@ public class BookmarksFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (isNetAvailible(getActivity(), getContext()))
-            doRequest(user.getCode());
+        if (isNetAvailible(getActivity()))
+            doRequest(user != null ? user.getCode() : loadSesion(getActivity()).getCode());
         else {
             IvMessage.setImageResource(R.drawable.ic_not_signal);
             setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);

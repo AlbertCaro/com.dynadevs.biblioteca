@@ -1,5 +1,6 @@
 package com.dynadevs.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -45,8 +46,9 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
         return new ViewHolderBooks(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(ViewHolderBooks holder, final int position) {
+    public void onBindViewHolder(ViewHolderBooks holder, @SuppressLint("RecyclerView") final int position) {
         Glide.with(context).load(BookList.get(position).getPhoto(activity)).centerCrop().into(holder.IvPhoto);
         holder.TvTitle.setText(BookList.get(position).getTitle());
         holder.TvAutor.setText(BookList.get(position).getAutor()+" - "+BookList.get(position).getEditorial());
@@ -74,12 +76,12 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
         BookList = bookList;
     }
 
-    public static class ViewHolderBooks extends RecyclerView.ViewHolder {
+    static class ViewHolderBooks extends RecyclerView.ViewHolder {
         ImageView IvPhoto;
         TextView TvTitle;
         TextView TvAutor;
         Button BtnDetails;
-        public ViewHolderBooks(View itemView) {
+        ViewHolderBooks(View itemView) {
             super(itemView);
             IvPhoto = itemView.findViewById(R.id.ivPhoto);
             TvTitle = itemView.findViewById(R.id.tvTitleBook);

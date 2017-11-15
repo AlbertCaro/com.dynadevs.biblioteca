@@ -7,7 +7,7 @@ package com.dynadevs.classes;
 
 public class Loan {
     private String Title, ISBN;
-    int Day, Mounth, Year;
+    private int Day, Mounth, Year;
 
     public Loan(String title, String ISBN, int day, int mounth, int year) {
         Title = title;

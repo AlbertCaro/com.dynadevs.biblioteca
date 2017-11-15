@@ -1,11 +1,11 @@
 package com.dynadevs.adapters;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -45,6 +45,7 @@ public class LoansAdapter extends RecyclerView.Adapter<LoansAdapter.ViewHolderLo
         return new ViewHolderLoans(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(LoansAdapter.ViewHolderLoans holder, final int position) {
         holder.TvTitle.setText(LoanList.get(position).getTitle());
@@ -67,14 +68,14 @@ public class LoansAdapter extends RecyclerView.Adapter<LoansAdapter.ViewHolderLo
     class ViewHolderLoans extends RecyclerView.ViewHolder {
         TextView TvTitle, TvDate;
 
-        public ViewHolderLoans(View itemView) {
+        ViewHolderLoans(View itemView) {
             super(itemView);
             TvTitle = itemView.findViewById(R.id.tvTitleLoan);
             TvDate = itemView.findViewById(R.id.tvDate);
         }
     }
 
-    public void addRecordatory(Loan loan) {
+    private void addRecordatory(Loan loan) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_CALENDAR}, 1);
         } else {
@@ -100,7 +101,7 @@ public class LoansAdapter extends RecyclerView.Adapter<LoansAdapter.ViewHolderLo
                     valuesRemind.put(CalendarContract.Reminders.MINUTES, getNotificationTime());
                     valuesRemind.put(CalendarContract.Reminders.EVENT_ID, eventID);
                     valuesRemind.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
-                    Uri uri2 = cr.insert(CalendarContract.Reminders.CONTENT_URI, valuesRemind);
+                    cr.insert(CalendarContract.Reminders.CONTENT_URI, valuesRemind);
                     registreEventPreference(loan);
                 } catch (NullPointerException e) {
                     e.printStackTrace();

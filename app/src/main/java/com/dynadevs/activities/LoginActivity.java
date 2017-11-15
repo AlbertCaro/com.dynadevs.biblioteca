@@ -34,9 +34,7 @@ import static com.dynadevs.classes.Utilities.setCurrentTheme;
 public class LoginActivity extends AppCompatActivity {
     private TextInputLayout TiUser, TiPass;
     private EditText EtUser, EtPass;
-    private Button BtnLogin;
     private User user;
-    private ConstraintLayout ClLogin;
 
     String Code, Name, Email, University, Career, Acronym, Image;
 
@@ -45,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setCurrentTheme(this);
         setContentView(R.layout.activity_login);
-        ClLogin = findViewById(R.id.clLogin);
+        ConstraintLayout clLogin = findViewById(R.id.clLogin);
         TiUser = findViewById(R.id.tiCode);
         TiPass = findViewById(R.id.tiPass);
         EtUser = TiUser.getEditText();
@@ -82,9 +80,9 @@ public class LoginActivity extends AppCompatActivity {
                 TiPass.setErrorEnabled(false);
             }
         });
-        BtnLogin = findViewById(R.id.btnLogin);
-        setColor(ClLogin, BtnLogin);
-        BtnLogin.setOnClickListener(new View.OnClickListener() {
+        Button btnLogin = findViewById(R.id.btnLogin);
+        setColor(clLogin, btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 String Code = EtUser.getText().toString();
@@ -92,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (!Code.equals("") && !Pass.equals("")) {
                     String Url = getString(R.string.server_url)+"biblioteca/rest/usuarios.php?u="+md5(Code)+"&p="+md5(Pass);
-                    if (isNetAvailible(LoginActivity.this, LoginActivity.this)) {
+                    if (isNetAvailible(LoginActivity.this)) {
                         login(view, Url);
                     } else
                         Snackbar.make(view, getString(R.string.unavalible_internet), Snackbar.LENGTH_LONG).show();

@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 
-import com.dynadevs.classes.User;
 import com.dynadevs.classes.Utilities;
 
 import java.util.Timer;
@@ -22,29 +21,28 @@ import static com.dynadevs.classes.Utilities.setCurrentTheme;
  */
 
 public class SplashActivity extends AppCompatActivity {
-    private Intent mainIntent;
-    private ConstraintLayout ClSplash;
+    private Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCurrentTheme(this);
         setContentView(R.layout.activity_splash);
-        ClSplash = findViewById(R.id.clSplash);
-        setColor(ClSplash);
+        ConstraintLayout clSplash = findViewById(R.id.clSplash);
+        setColor(clSplash);
 
         if (loadSesion()) {
-            mainIntent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+            intent = new Intent().setClass(SplashActivity.this, MainActivity.class);
             Bundle bundle = new Bundle();
             bundle.putSerializable("user", Utilities.loadSesion(this));
-            mainIntent.putExtras(bundle);
+            intent.putExtras(bundle);
         } else
-            mainIntent = new Intent().setClass(SplashActivity.this, LoginActivity.class);
+            intent = new Intent().setClass(SplashActivity.this, LoginActivity.class);
 
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                startActivity(mainIntent);
+                startActivity(intent);
                 finish();
             }
         };

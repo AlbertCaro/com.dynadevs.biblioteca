@@ -1,5 +1,6 @@
 package com.dynadevs.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,7 +43,7 @@ public class BookDetailContentFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView TvISBN, TvAutor, TvEditorial, TvDescription, TvEdition, TvPages, TvCopies;
+    private TextView TvCopies;
 
     public BookDetailContentFragment() {
         // Required empty public constructor
@@ -76,16 +76,17 @@ public class BookDetailContentFragment extends Fragment {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_detail_content, container, false);
-        TvISBN = view.findViewById(R.id.tvISBN);
-        TvAutor = view.findViewById(R.id.tvAutor);
-        TvEditorial = view.findViewById(R.id.tvEditorial);
-        TvEdition = view.findViewById(R.id.tvEdition);
-        TvDescription = view.findViewById(R.id.tvDescription);
-        TvPages = view.findViewById(R.id.tvPages);
+        TextView tvISBN = view.findViewById(R.id.tvISBN);
+        TextView tvAutor = view.findViewById(R.id.tvAutor);
+        TextView tvEditorial = view.findViewById(R.id.tvEditorial);
+        TextView tvEdition = view.findViewById(R.id.tvEdition);
+        TextView tvDescription = view.findViewById(R.id.tvDescription);
+        TextView tvPages = view.findViewById(R.id.tvPages);
         TvCopies = view.findViewById(R.id.tvCopies);
 
         Bundle ObjectBook = getArguments();
@@ -94,12 +95,12 @@ public class BookDetailContentFragment extends Fragment {
         if (getArguments() != null) {
             book = (Book) ObjectBook.getSerializable("book");
 
-            TvISBN.setText(getString(R.string.detail_ISBN)+" "+book.getISBN());
-            TvAutor.setText(book.getAutor());
-            TvEditorial.setText(getString(R.string.detail_editorial)+" "+book.getEditorial());
-            TvEdition.setText(getString(R.string.detail_edition)+" "+book.getEdition());
-            TvDescription.setText(book.getDescription());
-            TvPages.setText(getString(R.string.detail_pages)+" "+book.getPages());
+            tvISBN.setText(getString(R.string.detail_ISBN)+" "+book.getISBN());
+            tvAutor.setText(book.getAutor());
+            tvEditorial.setText(getString(R.string.detail_editorial)+" "+book.getEditorial());
+            tvEdition.setText(getString(R.string.detail_edition)+" "+book.getEdition());
+            tvDescription.setText(book.getDescription());
+            tvPages.setText(getString(R.string.detail_pages)+" "+book.getPages());
 
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String Url = getString(R.string.server_url)+"biblioteca/rest/ejemplares_disp.php?id="+book.getISBN();

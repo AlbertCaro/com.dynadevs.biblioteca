@@ -2,6 +2,7 @@ package com.dynadevs.activities;
 
 import android.os.StrictMode;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.dynadevs.classes.User;
 
 import java.util.Properties;
+import java.util.concurrent.TimeoutException;
 
 import javax.mail.Address;
 import javax.mail.Authenticator;
@@ -32,8 +34,6 @@ import static com.dynadevs.classes.Utilities.setCurrentThemeActivity;
 public class HelpActivity extends AppCompatActivity {
     private TextInputLayout TiSubject, TiMessage;
     private EditText EtSubject, EtMessage;
-    private Button BtnSend;
-    private Session session;
     private User user;
 
     @Override
@@ -41,9 +41,11 @@ public class HelpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setCurrentThemeActivity(this);
         setContentView(R.layout.activity_help);
-        getSupportActionBar().setTitle(R.string.nav_help);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.nav_help);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
         Bundle bundle = getIntent().getExtras();
         user = (User) (bundle != null ? bundle.getSerializable("user") : loadSesion(this));
         TiSubject = findViewById(R.id.tiSubject);
@@ -82,9 +84,9 @@ public class HelpActivity extends AppCompatActivity {
                 TiMessage.setErrorEnabled(false);
             }
         });
-        BtnSend = findViewById(R.id.btnSend);
+        Button btnSend = findViewById(R.id.btnSend);
 
-        BtnSend.setOnClickListener(new View.OnClickListener() {
+        btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String Subject = user.getName()+": "+EtSubject.getText().toString();
@@ -120,7 +122,7 @@ public class HelpActivity extends AppCompatActivity {
         properties.put("mail.smtp.timeout", "1000");
 
         try {
-            session = Session.getDefaultInstance(properties, new Authenticator() {
+            Session session = Session.getDefaultInstance(properties, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication("dynadevsapps@gmail.com", "fiestaencasa");

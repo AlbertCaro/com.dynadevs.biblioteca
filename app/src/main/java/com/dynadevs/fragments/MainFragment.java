@@ -1,7 +1,6 @@
 package com.dynadevs.fragments;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 
 import com.dynadevs.activities.R;
 import com.dynadevs.classes.User;
+
+import static com.dynadevs.classes.Utilities.loadSesion;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,9 +32,6 @@ public class MainFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private SearchView searchView;
-    private TextView TvName, TvUniversity;
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,15 +71,17 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        Bundle bundle = getArguments();
-        User user = (User) bundle.getSerializable("user");
-        TvName = view.findViewById(R.id.tvNameUserMain);
-        TvName.setText(user != null ? user.getName() : null);
-        TvUniversity = view.findViewById(R.id.tvUniversityMain);
-        TvUniversity.setText(user != null ? user.getUniversity() : null);
-        searchView = getActivity().findViewById(R.id.search);
-        searchView.setIconified(true);
-        searchView.setVisibility(View.GONE);
+        if (isAdded()) {
+            Bundle bundle = getArguments();
+            User user = (User) bundle.getSerializable("user");
+            TextView tvName = view.findViewById(R.id.tvNameUserMain);
+            tvName.setText(user != null ? user.getName() : loadSesion(getActivity()).getName());
+            TextView tvUniversity = view.findViewById(R.id.tvUniversityMain);
+            tvUniversity.setText(user != null ? user.getUniversity() : loadSesion(getActivity()).getUniversity());
+            SearchView searchView = getActivity().findViewById(R.id.search);
+            searchView.setIconified(true);
+            searchView.setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -122,23 +122,5 @@ public class MainFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    private User loadSesion () {
-        String Code, Name, Email, University, Career, Acronym, Image;
-        SharedPreferences preferences = getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        if (preferences.contains("code")) {
-            return new User(
-                    preferences.getString("code",""),
-                    preferences.getString("name",""),
-                    preferences.getString("email",""),
-                    preferences.getString("university",""),
-                    preferences.getString("career",""),
-                    preferences.getString("acronym",""),
-                    preferences.getString("image","")
-            );
-        } else {
-            return null;
-        }
     }
 }

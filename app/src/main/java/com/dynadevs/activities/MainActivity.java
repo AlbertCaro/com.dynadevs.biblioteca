@@ -1,11 +1,11 @@
 package com.dynadevs.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -30,20 +30,22 @@ import com.dynadevs.fragments.BooksFragment;
 import com.dynadevs.fragments.FinesFragment;
 import com.dynadevs.fragments.LoansFragment;
 import com.dynadevs.fragments.MainFragment;
-import com.dynadevs.interfaces.FragmentsListenerInterface;
 
 import static com.dynadevs.classes.Utilities.isNetAvailible;
 import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentsListenerInterface {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        MainFragment.OnFragmentInteractionListener,
+        BooksFragment.OnFragmentInteractionListener,
+        BookmarksFragment.OnFragmentInteractionListener,
+        LoansFragment.OnFragmentInteractionListener,
+        FinesFragment.OnFragmentInteractionListener {
 
     private Bundle bundle;
     private Fragment fragment;
-    private TextView TvAppTitle, TvName, TvCareer, TvUniversity;
-    private ImageView IvDrawerHeader;
-    private SearchView searchView;
+    private TextView TvAppTitle;
     private Intent intent;
     private FloatingActionButton fab;
     private ActionBar actionBar;
@@ -72,16 +74,16 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View navView = navigationView.inflateHeaderView(R.layout.nav_header_main);
-        IvDrawerHeader = navView.findViewById(R.id.ivUniversity);
+        ImageView ivDrawerHeader = navView.findViewById(R.id.ivUniversity);
+        TextView tvUniversity = navView.findViewById(R.id.tvUniversity);
+        TextView tvName = navView.findViewById(R.id.tvNameUser);
+        TextView tvCareer = navView.findViewById(R.id.tvCareerUser);
         Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+
-                (user != null ? user.getDrawerHeader() : loadSesion(this).getDrawerHeader())).into(IvDrawerHeader);
-        TvUniversity = navView.findViewById(R.id.tvUniversity);
-        TvUniversity.setText(user != null ? user.getAcronym() : loadSesion(this).getAcronym());
-        TvName = navView.findViewById(R.id.tvNameUser);
-        TvName.setText(user != null ? user.getName() : loadSesion(this).getName());
-        TvCareer = navView.findViewById(R.id.tvCareerUser);
-        TvCareer.setText(user != null ? user.getCareer() : loadSesion(this).getCareer());
-        searchView = findViewById(R.id.search);
+                (user != null ? user.getDrawerHeader() : loadSesion(this).getDrawerHeader())).into(ivDrawerHeader);
+        tvUniversity.setText(user != null ? user.getAcronym() : loadSesion(this).getAcronym());
+        tvName.setText(user != null ? user.getName() : loadSesion(this).getName());
+        tvCareer.setText(user != null ? user.getCareer() : loadSesion(this).getCareer());
+        SearchView searchView = findViewById(R.id.search);
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         boolean activity = false;
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity
             actionBar.setTitle(R.string.nav_fines);
             fragment = new FinesFragment();
         } else if (id == R.id.nav_help) {
-            if (isNetAvailible(this, this)) {
+            if (isNetAvailible(this)) {
                 intent = new Intent(MainActivity.this, HelpActivity.class);
                 intent.putExtras(bundle);
                 activity = true;

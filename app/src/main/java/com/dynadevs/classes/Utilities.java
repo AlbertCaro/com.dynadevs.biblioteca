@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -23,11 +22,12 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public abstract class Utilities {
-    public static boolean isNetAvailible(Activity activity, Context context) {
+    public static boolean isNetAvailible(Activity activity) {
         ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
-        return (actNetInfo != null && ( actNetInfo.isConnected() && actNetInfo.isAvailable()
-                && actNetInfo.isConnectedOrConnecting()));
+        NetworkInfo info = null;
+        if (connectivityManager != null)
+            info = connectivityManager.getActiveNetworkInfo();
+        return (info != null && ( info.isConnected() && info.isAvailable() && info.isConnectedOrConnecting()));
     }
 
     public static void setMessage(String Message, TextView textView, LinearLayout layout, RecyclerView recyclerView) {

@@ -43,11 +43,11 @@ public class AboutAdapter extends RecyclerView.Adapter<AboutAdapter.ViewHolder> 
         return PersonList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView TvNombre, TvEmail, TvCareer;
         ImageView IvPhoto;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             TvNombre = itemView.findViewById(R.id.tvName);
             TvEmail = itemView.findViewById(R.id.tvEmail);

@@ -35,19 +35,20 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
     private User user;
     private Book book;
     private FloatingActionButton fab;
-    private ImageView IvPhoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCurrentTheme(this);
         Bundle bundle = getIntent().getExtras();
-        book = (Book) (bundle != null ? bundle.getSerializable("book") : null);
+        if (bundle != null)
+            book = (Book) bundle.getSerializable("book");
         user = (User) (bundle != null ? bundle.getSerializable("user") : loadSesion(this));
         setContentView(R.layout.activity_book_detail);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         BookDetailContentFragment bookDetail = new BookDetailContentFragment();
-        IvPhoto = findViewById(R.id.ivPhoto);
+        ImageView ivPhoto = findViewById(R.id.ivPhoto);
         fab = findViewById(R.id.fab);
         consultBookmarks();
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,10 +58,11 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
             }
         });
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(book.getTitle());
-        Glide.with(this).load(book.getPhoto(BookDetailActivity.this)).centerCrop().into(IvPhoto);
+            actionBar.setTitle(book.getTitle());
+        }
+        Glide.with(this).load(book.getPhoto(BookDetailActivity.this)).centerCrop().into(ivPhoto);
         bookDetail.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.book_detail_container, bookDetail).addToBackStack(null).commit();
     }

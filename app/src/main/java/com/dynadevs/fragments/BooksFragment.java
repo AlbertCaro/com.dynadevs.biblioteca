@@ -69,8 +69,7 @@ public class BooksFragment extends Fragment {
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
-    private SearchView searchView;
-    private TextView TvAppTitle, TvMessage;
+    private TextView TvMessage;
     private ImageView IvMessage;
     Activity activity;
 
@@ -109,83 +108,84 @@ public class BooksFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_books, container, false);
-        IvMessage = view.findViewById(R.id.ivEmptyBooks);
-        TvMessage = view.findViewById(R.id.tvEmptyBooks);
-        recyclerView = view.findViewById(R.id.rvBooks);
-        linearLayout = view.findViewById(R.id.emptyListBook);
-        Bundle bundle = getArguments();
-        User user = (User) bundle.getSerializable("user");
-        fab = getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_refresh);
-        fab.show();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetAvailible(getActivity(), getContext())){
-                    Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
-                    doRequest();
-                } else {
-                    IvMessage.setImageResource(R.drawable.ic_not_signal);
-                    setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
-                }
-            }
-        });
-        TvAppTitle = getActivity().findViewById(R.id.tvAppTitle);
-        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
-        searchView = getActivity().findViewById(R.id.search);
-        searchView.setVisibility(View.VISIBLE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                BookQuery.clear();
-                for(int i = 0; i < BookList.size(); i++) {
-                    if(BookList.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                            BookList.get(i).getAutor().toLowerCase().contains(query.toLowerCase()) ||
-                            BookList.get(i).getISBN().toLowerCase().contains(query.toLowerCase()) ||
-                            BookList.get(i).getEditorial().toLowerCase().contains(query.toLowerCase()))  {
-                        BookQuery.add(BookList.get(i));
+        if (isAdded()) {
+            IvMessage = view.findViewById(R.id.ivEmptyBooks);
+            TvMessage = view.findViewById(R.id.tvEmptyBooks);
+            recyclerView = view.findViewById(R.id.rvBooks);
+            linearLayout = view.findViewById(R.id.emptyListBook);
+            Bundle bundle = getArguments();
+            User user = (User) bundle.getSerializable("user");
+            fab = getActivity().findViewById(R.id.fab);
+            fab.setImageResource(R.drawable.ic_refresh);
+            fab.show();
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isNetAvailible(getActivity())){
+                        Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
+                        doRequest();
+                    } else {
+                        IvMessage.setImageResource(R.drawable.ic_not_signal);
+                        setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
                     }
                 }
-                Adapter.setBookList(BookQuery);
-                Adapter.notifyDataSetChanged();
-                return false;
-            }
+            });
+            recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
+            SearchView searchView = getActivity().findViewById(R.id.search);
+            searchView.setVisibility(View.VISIBLE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    BookQuery.clear();
+                    for(int i = 0; i < BookList.size(); i++) {
+                        if(BookList.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                                BookList.get(i).getAutor().toLowerCase().contains(query.toLowerCase()) ||
+                                BookList.get(i).getISBN().toLowerCase().contains(query.toLowerCase()) ||
+                                BookList.get(i).getEditorial().toLowerCase().contains(query.toLowerCase()))  {
+                            BookQuery.add(BookList.get(i));
+                        }
+                    }
+                    Adapter.setBookList(BookQuery);
+                    Adapter.notifyDataSetChanged();
+                    return false;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                BookQuery.clear();
-                for(int i = 0; i < BookList.size(); i++) {
-                    if(BookList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase()) ||
-                            BookList.get(i).getAutor().toLowerCase().contains(newText.toLowerCase()) ||
-                            BookList.get(i).getISBN().toLowerCase().contains(newText.toLowerCase()) ||
-                            BookList.get(i).getEditorial().toLowerCase().contains(newText.toLowerCase()))  {
-                        BookQuery.add(BookList.get(i));
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    BookQuery.clear();
+                    for(int i = 0; i < BookList.size(); i++) {
+                        if(BookList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase()) ||
+                                BookList.get(i).getAutor().toLowerCase().contains(newText.toLowerCase()) ||
+                                BookList.get(i).getISBN().toLowerCase().contains(newText.toLowerCase()) ||
+                                BookList.get(i).getEditorial().toLowerCase().contains(newText.toLowerCase()))  {
+                            BookQuery.add(BookList.get(i));
+                        }
                     }
+                    Adapter.setBookList(BookQuery);
+                    Adapter.notifyDataSetChanged();
+                    return false;
                 }
-                Adapter.setBookList(BookQuery);
-                Adapter.notifyDataSetChanged();
-                return false;
+            });
+            Adapter = new BooksAdapter(BookList, user, getContext(), getActivity());
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (dy < 1)
+                        fab.show();
+                    else
+                        fab.hide();
+                }
+            });
+            if (isNetAvailible(getActivity()))
+                doRequest();
+            else {
+                IvMessage.setImageResource(R.drawable.ic_not_signal);
+                setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
             }
-        });
-        Adapter = new BooksAdapter(BookList, user, getContext(), getActivity());
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy < 1)
-                    fab.show();
-                else
-                    fab.hide();
-            }
-        });
-        if (isNetAvailible(getActivity(), getContext()))
-            doRequest();
-        else {
-            IvMessage.setImageResource(R.drawable.ic_not_signal);
-            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setAdapter(Adapter);
         }
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(Adapter);
         return view;
     }
 
@@ -234,7 +234,7 @@ public class BooksFragment extends Fragment {
                 }
             }
         });
-        int socketTimeout = 300;
+        int socketTimeout = 800;
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
         requestQueue.add(request);

@@ -1,22 +1,20 @@
 package com.dynadevs.activities;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.dynadevs.adapters.AboutAdapter;
 import com.dynadevs.classes.Person;
 
 import java.util.ArrayList;
 
-import static com.dynadevs.classes.Utilities.setCurrentTheme;
 import static com.dynadevs.classes.Utilities.setCurrentThemeActivity;
 
 public class AboutActivity extends AppCompatActivity {
-    private RecyclerView recyclerView;
     private ArrayList<Person> PersonList = new ArrayList<>();
 
     @Override
@@ -24,15 +22,18 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setCurrentThemeActivity(this);
         setContentView(R.layout.activity_about);
-        getSupportActionBar().setTitle(R.string.nav_about);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(R.string.nav_about);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         PersonList.add(new Person("Alberto Caro Navarro", "Tecnologías de la Información", "alberto.cnavarro@alumnos.udg.mx", R.drawable.alberto));
         PersonList.add(new Person("Jonathan Iván Pérez Uribe", "Tecnologías de la Información", "jonathanperez@alumnos.udg.mx", R.drawable.jonathan));
         PersonList.add(new Person("Luis Ángel García Castro", "Tecnologías de la Información", "luisgarcia@alumnos.udg.mx", R.drawable.luis));
 
         AboutAdapter adapter = new AboutAdapter(PersonList);
-        recyclerView = findViewById(R.id.rvAbout);
+        RecyclerView recyclerView = findViewById(R.id.rvAbout);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(adapter);

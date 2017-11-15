@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import static com.dynadevs.classes.Utilities.isNetAvailible;
+import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.md5;
 import static com.dynadevs.classes.Utilities.setMessage;
 
@@ -67,7 +68,6 @@ public class LoansFragment extends Fragment {
     private LoansAdapter Adapter;
     private FloatingActionButton fab;
     private LinearLayout linearLayout;
-    private SearchView searchView;
     private ImageView IvMessage;
     private TextView TvMessage;
 
@@ -106,76 +106,78 @@ public class LoansFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_loans, container, false);
-        IvMessage = view.findViewById(R.id.ivEmptyLoans);
-        TvMessage = view.findViewById(R.id.tvEmptyLoans);
-        recyclerView = view.findViewById(R.id.rvLoans);
-        recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
-        linearLayout = view.findViewById(R.id.emptyListLoan);
-        searchView = getActivity().findViewById(R.id.search);
-        searchView.setVisibility(View.VISIBLE);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                LoanQuery.clear();
-                for(int i = 0; i < LoanList.size(); i++) {
-                    if(LoanList.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) {
-                        LoanQuery.add(LoanList.get(i));
+        if (isAdded()) {
+            IvMessage = view.findViewById(R.id.ivEmptyLoans);
+            TvMessage = view.findViewById(R.id.tvEmptyLoans);
+            recyclerView = view.findViewById(R.id.rvLoans);
+            recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
+            linearLayout = view.findViewById(R.id.emptyListLoan);
+            SearchView searchView = getActivity().findViewById(R.id.search);
+            searchView.setVisibility(View.VISIBLE);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    LoanQuery.clear();
+                    for(int i = 0; i < LoanList.size(); i++) {
+                        if(LoanList.get(i).getTitle().toLowerCase().contains(query.toLowerCase())) {
+                            LoanQuery.add(LoanList.get(i));
+                        }
                     }
+                    Adapter.setLoanList(LoanQuery);
+                    Adapter.notifyDataSetChanged();
+                    return false;
                 }
-                Adapter.setLoanList(LoanQuery);
-                Adapter.notifyDataSetChanged();
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                LoanQuery.clear();
-                for(int i = 0; i < LoanList.size(); i++) {
-                    if(LoanList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase())) {
-                        LoanQuery.add(LoanList.get(i));
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    LoanQuery.clear();
+                    for(int i = 0; i < LoanList.size(); i++) {
+                        if(LoanList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                            LoanQuery.add(LoanList.get(i));
+                        }
+                    }
+                    Adapter.setLoanList(LoanQuery);
+                    Adapter.notifyDataSetChanged();
+                    return false;
+                }
+            });
+            Bundle bundle = getArguments();
+            final User user = (User) bundle.getSerializable("user");
+            fab = getActivity().findViewById(R.id.fab);
+            fab.setImageResource(R.drawable.ic_refresh);
+            fab.show();
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isNetAvailible(getActivity())) {
+                        Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
+                        doRequest(user != null ? user.getCode() : loadSesion(getActivity()).getCode());
+                    } else {
+                        IvMessage.setImageResource(R.drawable.ic_not_signal);
+                        setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
                     }
                 }
-                Adapter.setLoanList(LoanQuery);
-                Adapter.notifyDataSetChanged();
-                return false;
+            });
+            if (isNetAvailible(getActivity()))
+                doRequest(user != null ? user.getCode() : loadSesion(getActivity()).getCode());
+            else {
+                IvMessage.setImageResource(R.drawable.ic_not_signal);
+                setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
             }
-        });
-        Bundle bundle = getArguments();
-        final User user = (User) bundle.getSerializable("user");
-        fab = getActivity().findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_refresh);
-        fab.show();
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isNetAvailible(getActivity(), getContext())) {
-                    Snackbar.make(view, getString(R.string.update_list), Snackbar.LENGTH_SHORT).show();
-                    doRequest(user.getCode());
-                } else {
-                    IvMessage.setImageResource(R.drawable.ic_not_signal);
-                    setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (dy < 1)
+                        fab.show();
+                    else
+                        fab.hide();
                 }
-            }
-        });
-        if (isNetAvailible(getActivity(), getContext()))
-            doRequest(user.getCode());
-        else {
-            IvMessage.setImageResource(R.drawable.ic_not_signal);
-            setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+            });
+            recyclerView.setHasFixedSize(true);
+            Adapter = new LoansAdapter(LoanList, getContext(), getActivity());
+            recyclerView.setAdapter(Adapter);
         }
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy < 1)
-                    fab.show();
-                else
-                    fab.hide();
-            }
-        });
-        recyclerView.setHasFixedSize(true);
-        Adapter = new LoansAdapter(LoanList, getContext(), getActivity());
-        recyclerView.setAdapter(Adapter);
         return view;
     }
 
@@ -220,7 +222,7 @@ public class LoansFragment extends Fragment {
                 }
             }
         });
-        int socketTimeout = 300;
+        int socketTimeout = 800;
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
         requestQueue.add(request);
