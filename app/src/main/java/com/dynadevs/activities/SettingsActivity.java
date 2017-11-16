@@ -21,7 +21,9 @@ import android.widget.TextView;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.dynadevs.classes.Utilities.setCurrentTheme;
 import static com.dynadevs.classes.Utilities.setCurrentThemeActivity;
+import static com.dynadevs.classes.Utilities.verifyLoadedSesion;
 
 public class SettingsActivity extends AppCompatActivity {
     private List<String[]> ListOptions = new LinkedList<>();
@@ -43,8 +45,10 @@ public class SettingsActivity extends AppCompatActivity {
         }
         ListView lvSettings = findViewById(R.id.lvSettings);
         ListOptions.add(new String[]{getString(R.string.settings_theme), getString(R.string.settings_theme_sub)});
-        ListOptions.add(new String[]{getString(R.string.settings_events), getString(R.string.settings_events_sub)});
-        ListOptions.add(new String[]{getString(R.string.settings_notification_time), getString(R.string.settings_notification_time_sub)});
+        if (verifyLoadedSesion(this)) {
+            ListOptions.add(new String[]{getString(R.string.settings_events), getString(R.string.settings_events_sub)});
+            ListOptions.add(new String[]{getString(R.string.settings_notification_time), getString(R.string.settings_notification_time_sub)});
+        }
         ArrayAdapter<String[]> adapter = new ArrayAdapter<String[]>(this, android.R.layout.simple_list_item_2, android.R.id.text1, ListOptions){
             @NonNull
             @Override
@@ -86,7 +90,8 @@ public class SettingsActivity extends AppCompatActivity {
                 saveCurrentTheme(which);
                 if (which != currentTheme) {
                     Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                    intent.putExtras(bundle);
+                    if (verifyLoadedSesion(SettingsActivity.this))
+                        intent.putExtras(bundle);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();

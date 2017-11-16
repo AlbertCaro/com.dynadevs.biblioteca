@@ -71,7 +71,8 @@ public class BooksFragment extends Fragment {
     private LinearLayout linearLayout;
     private TextView TvMessage;
     private ImageView IvMessage;
-    Activity activity;
+    private Activity activity;
+    private User user;
 
     public BooksFragment() {
         // Required empty public constructor
@@ -113,8 +114,10 @@ public class BooksFragment extends Fragment {
             TvMessage = view.findViewById(R.id.tvEmptyBooks);
             recyclerView = view.findViewById(R.id.rvBooks);
             linearLayout = view.findViewById(R.id.emptyListBook);
-            Bundle bundle = getArguments();
-            User user = (User) bundle.getSerializable("user");
+            if (getArguments() != null) {
+                Bundle bundle = getArguments();
+                user = (User) bundle.getSerializable("user");
+            }
             fab = getActivity().findViewById(R.id.fab);
             fab.setImageResource(R.drawable.ic_refresh);
             fab.show();

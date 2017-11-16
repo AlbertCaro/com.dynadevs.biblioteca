@@ -11,6 +11,7 @@
     <string name="nav_loans">Prestamos</string>
     <string name="nav_fines">Multas</string>
     <string name="nav_info">Información</string>
+    <string name="login">Iniciar sesión</string>
     <string name="logout">Cerrar sesión</string>
     <string name="nav_help">Ayuda</string>
     <string name="nav_about">Acerca de</string>
@@ -68,6 +69,9 @@
     <string name="send">Enviar</string>
     <string name="need_internet">Necesita internet para solicitar ayuda.</string>
     <string name="user_info">Información del usuario:</string>
+    <string name="udg" translatable="false">UDG</string>
+    <string name="universidad_udg" translatable="false">Universidad de Guadalajara</string>
+    <string name="not_logged">No has iniciado sesión</string>
     <string-array name="theme_options">
         <item>Institucional (predeterminado)</item>
         <item>Rojo</item>

@@ -32,8 +32,8 @@ import com.dynadevs.fragments.LoansFragment;
 import com.dynadevs.fragments.MainFragment;
 
 import static com.dynadevs.classes.Utilities.isNetAvailible;
-import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
+import static com.dynadevs.classes.Utilities.verifyLoadedSesion;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -49,15 +49,14 @@ public class MainActivity extends AppCompatActivity
     private Intent intent;
     private FloatingActionButton fab;
     private ActionBar actionBar;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCurrentTheme(this);
-        bundle = getIntent().getExtras();
-        User user = (User) (bundle != null ? bundle.getSerializable("user") : loadSesion(this));
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.bar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
 
@@ -78,12 +77,32 @@ public class MainActivity extends AppCompatActivity
         TextView tvUniversity = navView.findViewById(R.id.tvUniversity);
         TextView tvName = navView.findViewById(R.id.tvNameUser);
         TextView tvCareer = navView.findViewById(R.id.tvCareerUser);
-        Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+
-                (user != null ? user.getDrawerHeader() : loadSesion(this).getDrawerHeader())).into(ivDrawerHeader);
-        tvUniversity.setText(user != null ? user.getAcronym() : loadSesion(this).getAcronym());
-        tvName.setText(user != null ? user.getName() : loadSesion(this).getName());
-        tvCareer.setText(user != null ? user.getCareer() : loadSesion(this).getCareer());
         SearchView searchView = findViewById(R.id.search);
+
+        if (getIntent().getExtras() != null) {
+            bundle = getIntent().getExtras();
+            user = (User) bundle.getSerializable("user");
+            Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+
+                    (user != null ? user.getDrawerHeader() : "1.png")).fitCenter().into(ivDrawerHeader);
+        } else {
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.nav_bookmarks).setVisible(false);
+            menu.findItem(R.id.nav_loans).setVisible(false);
+            menu.findItem(R.id.nav_fines).setVisible(false);
+            menu.findItem(R.id.nav_help).setVisible(false);
+            navView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        tvUniversity.setText(user != null ? user.getAcronym() : getString(R.string.udg));
+        tvName.setText(user != null ? user.getName() : getString(R.string.login));
+        tvCareer.setText(user != null ? user.getCareer() : getString(R.string.not_logged));
+
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +136,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        MenuItem sessionItem = menu.findItem(R.id.session_item);
+        if (verifyLoadedSesion(this))
+            sessionItem.setTitle(getString(R.string.logout));
+        else
+            sessionItem.setTitle(getString(R.string.login));
         return true;
     }
 
@@ -126,14 +150,21 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.action_settings) {
             intent = new Intent(MainActivity.this, SettingsActivity.class);
-            intent.putExtras(bundle);
+            if (getIntent().getExtras() != null)
+                intent.putExtras(bundle);
             startActivity(intent);
-        } else if (id == R.id.logout){
-            SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-            preferences.edit().clear().apply();
-            intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
+        } else if (id == R.id.session_item){
+            if (verifyLoadedSesion(this)) {
+                SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                preferences.edit().clear().apply();
+                intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+
         }
 
         return super.onOptionsItemSelected(item);

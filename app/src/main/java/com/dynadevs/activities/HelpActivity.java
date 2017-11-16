@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.dynadevs.classes.User;
 
 import java.util.Properties;
-import java.util.concurrent.TimeoutException;
 
 import javax.mail.Address;
 import javax.mail.Authenticator;

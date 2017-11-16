@@ -107,4 +107,9 @@ public abstract class Utilities {
             return null;
         }
     }
+
+    public static boolean verifyLoadedSesion(Activity activity) {
+        SharedPreferences preferences = activity.getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        return preferences.contains("code");
+    }
 }

@@ -34,23 +34,28 @@ import static com.dynadevs.classes.Utilities.setCurrentTheme;
 public class BookDetailActivity extends AppCompatActivity implements BookDetailContentFragment.OnFragmentInteractionListener {
     private User user;
     private Book book;
+    private Bundle bundle;
     private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCurrentTheme(this);
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null)
-            book = (Book) bundle.getSerializable("book");
-        user = (User) (bundle != null ? bundle.getSerializable("user") : loadSesion(this));
         setContentView(R.layout.activity_book_detail);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         BookDetailContentFragment bookDetail = new BookDetailContentFragment();
         ImageView ivPhoto = findViewById(R.id.ivPhoto);
         fab = findViewById(R.id.fab);
-        consultBookmarks();
+        bundle = getIntent().getExtras();
+        book = (Book) bundle.getSerializable("book");
+
+        if (bundle.getSerializable("user") != null) {
+            user = (User) bundle.getSerializable("user");
+            consultBookmarks();
+        } else
+            fab.setVisibility(View.GONE);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

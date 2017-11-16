@@ -14,7 +14,8 @@
         android:id="@+id/ivUniversity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/nav_background" />
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/udg_general" />
 
     <ImageView
         android:id="@+id/ivBackground"

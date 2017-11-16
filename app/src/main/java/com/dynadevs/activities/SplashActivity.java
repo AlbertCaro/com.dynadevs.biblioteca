@@ -14,6 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
+import static com.dynadevs.classes.Utilities.verifyLoadedSesion;
 
 /**
  * Created by Alberto Caro Navarro on 28/09/2017.
@@ -30,14 +31,13 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ConstraintLayout clSplash = findViewById(R.id.clSplash);
         setColor(clSplash);
+        intent = new Intent().setClass(SplashActivity.this, MainActivity.class);
 
-        if (loadSesion()) {
-            intent = new Intent().setClass(SplashActivity.this, MainActivity.class);
+        if (verifyLoadedSesion(this)) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("user", Utilities.loadSesion(this));
             intent.putExtras(bundle);
-        } else
-            intent = new Intent().setClass(SplashActivity.this, LoginActivity.class);
+        }
 
         TimerTask task = new TimerTask() {
             @Override
@@ -48,11 +48,6 @@ public class SplashActivity extends AppCompatActivity {
         };
         Timer timer = new Timer();
         timer.schedule(task, 3000);
-    }
-
-    private boolean loadSesion () {
-        SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        return preferences.contains("code");
     }
 
     private void setColor(ConstraintLayout constraintLayout) {

@@ -32,6 +32,7 @@ public class MainFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private User user;
 
     private OnFragmentInteractionListener mListener;
 
@@ -72,12 +73,16 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         if (isAdded()) {
-            Bundle bundle = getArguments();
-            User user = (User) bundle.getSerializable("user");
             TextView tvName = view.findViewById(R.id.tvNameUserMain);
-            tvName.setText(user != null ? user.getName() : loadSesion(getActivity()).getName());
             TextView tvUniversity = view.findViewById(R.id.tvUniversityMain);
-            tvUniversity.setText(user != null ? user.getUniversity() : loadSesion(getActivity()).getUniversity());
+
+            if (getArguments() != null) {
+                Bundle bundle = getArguments();
+                user = (User) bundle.getSerializable("user");
+            }
+
+            tvName.setText(user != null ? user.getName() : getString(R.string.not_logged));
+            tvUniversity.setText(user != null ? user.getUniversity() : getString(R.string.universidad_udg));
             SearchView searchView = getActivity().findViewById(R.id.search);
             searchView.setIconified(true);
             searchView.setVisibility(View.GONE);

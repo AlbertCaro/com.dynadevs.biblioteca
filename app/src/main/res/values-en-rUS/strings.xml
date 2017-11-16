@@ -82,4 +82,6 @@
     <string name="need_internet">You need internet to request help.</string>
     <string name="user_info">User info:</string>
     <string name="unavalible_connection">Can\'t connect with the server.</string>
+    <string name="login">Login</string>
+    <string name="not_logged">" You are not logged in."</string>
 </resources>

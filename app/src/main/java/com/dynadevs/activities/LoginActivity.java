@@ -8,8 +8,10 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -44,6 +46,10 @@ public class LoginActivity extends AppCompatActivity {
         setCurrentTheme(this);
         setContentView(R.layout.activity_login);
         ConstraintLayout clLogin = findViewById(R.id.clLogin);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(getString(R.string.login));
         TiUser = findViewById(R.id.tiCode);
         TiPass = findViewById(R.id.tiPass);
         EtUser = TiUser.getEditText();
@@ -128,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("user",user);
                             login.putExtras(bundle);
+                            login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(login);
                             finish();
                         } else {
@@ -182,5 +189,15 @@ public class LoginActivity extends AppCompatActivity {
                 button.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDarkAndroid));
                 break;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
