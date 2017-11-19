@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -41,6 +42,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import static com.dynadevs.classes.Utilities.isNetAvailible;
+import static com.dynadevs.classes.Utilities.setCurrentAccent;
 import static com.dynadevs.classes.Utilities.setMessage;
 
 /**
@@ -114,6 +116,20 @@ public class BooksFragment extends Fragment {
             TvMessage = view.findViewById(R.id.tvEmptyBooks);
             recyclerView = view.findViewById(R.id.rvBooks);
             linearLayout = view.findViewById(R.id.emptyListBook);
+            final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.srBooks);
+            setCurrentAccent(swipeRefreshLayout, getActivity());
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (isNetAvailible(getActivity())){
+                        doRequest();
+                    } else {
+                        IvMessage.setImageResource(R.drawable.ic_not_signal);
+                        setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
             if (getArguments() != null) {
                 Bundle bundle = getArguments();
                 user = (User) bundle.getSerializable("user");

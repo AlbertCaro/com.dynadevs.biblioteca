@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import static com.dynadevs.classes.Utilities.isNetAvailible;
 import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.md5;
+import static com.dynadevs.classes.Utilities.setCurrentAccent;
 import static com.dynadevs.classes.Utilities.setMessage;
 
 /**
@@ -143,6 +145,20 @@ public class LoansFragment extends Fragment {
             });
             Bundle bundle = getArguments();
             final User user = (User) bundle.getSerializable("user");
+            final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.srLoans);
+            setCurrentAccent(swipeRefreshLayout, getActivity());
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    if (isNetAvailible(getActivity())){
+                        doRequest(user.getCode());
+                    } else {
+                        IvMessage.setImageResource(R.drawable.ic_not_signal);
+                        setMessage(getString(R.string.unavalible_internet), TvMessage, linearLayout, recyclerView);
+                    }
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
             fab = getActivity().findViewById(R.id.fab);
             fab.show();
             fab.setOnClickListener(new View.OnClickListener() {

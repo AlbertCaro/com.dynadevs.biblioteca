@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -89,6 +90,17 @@ public abstract class Utilities {
                 break;
         }
         return preferences;
+    }
+
+    public static void setCurrentAccent(SwipeRefreshLayout swipeRefreshLayout, Activity activity) {
+        SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        switch (preferences.getInt("theme", 0)) {
+            case 0:
+                swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+                break;
+            default:
+                swipeRefreshLayout.setColorSchemeResources(R.color.colorAccentAndroid);
+        }
     }
 
     public static User loadSesion (Activity activity) {
