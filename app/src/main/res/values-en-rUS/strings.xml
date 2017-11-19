@@ -71,7 +71,7 @@
     <string name="settings_notification_time_sub">Notification notice time before the event.</string>
     <string name="event_message">" Return of the book so as not to generate a fine."</string>
     <string name="about_developed_by">Developed by Dynamite Developers (DynaDevs)</string>
-    <string name="about_version">Application version: 1.0</string>
+    <string name="about_version">"Application version: "</string>
     <string name="about_description">Application developed in the Centro Universitario de los Valles for the universitary red of Universidad de Guadalajara.</string>
     <string name="subject">Subject</string>
     <string name="message">Message</string>
@@ -84,4 +84,10 @@
     <string name="unavalible_connection">Can\'t connect with the server.</string>
     <string name="login">Login</string>
     <string name="not_logged">" You are not logged in."</string>
+    <string name="nav_audiobooks">Audiobooks</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="logout_question">Are you sure of want logout?</string>
+    <string name="out">Exit</string>
+    <string name="out_message">Do you want exit?</string>
 </resources>

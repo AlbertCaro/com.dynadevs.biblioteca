@@ -26,7 +26,6 @@ import com.bumptech.glide.Glide;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.md5;
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
 
@@ -81,7 +80,7 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
                 try {
                     JSONArray jsonArray = new JSONArray(response);
                     if (jsonArray.length() < 1)
-                        fab.setImageResource(R.drawable.ic_bookmark);
+                        fab.setImageResource(R.drawable.ic_bookmark_unselected);
                     else
                         fab.setImageResource(R.drawable.ic_bookmark_selected);
                 } catch (JSONException e) {
@@ -109,7 +108,7 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
                         Snackbar.make(view, getString(R.string.added_bookmark), Snackbar.LENGTH_SHORT).show();
                         break;
                     case "delete":
-                        fab.setImageResource(R.drawable.ic_bookmark);
+                        fab.setImageResource(R.drawable.ic_bookmark_unselected);
                         Snackbar.make(view, getString(R.string.deleted_bookmark), Snackbar.LENGTH_SHORT).show();
                         break;
                     case "failed":

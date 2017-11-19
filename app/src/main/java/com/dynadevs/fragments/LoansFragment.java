@@ -144,7 +144,6 @@ public class LoansFragment extends Fragment {
             Bundle bundle = getArguments();
             final User user = (User) bundle.getSerializable("user");
             fab = getActivity().findViewById(R.id.fab);
-            fab.setImageResource(R.drawable.ic_refresh);
             fab.show();
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override

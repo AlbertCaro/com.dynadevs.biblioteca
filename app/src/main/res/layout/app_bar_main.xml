@@ -29,7 +29,6 @@
                     android:layout_height="wrap_content"
                     android:fontFeatureSettings="@string/"
                     android:paddingVertical="14dp"
-                    android:text="TextView"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textIsSelectable="false"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -55,6 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/ic_refresh" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,14 +1,20 @@
 package com.dynadevs.activities;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -25,12 +31,15 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dynadevs.classes.User;
+import com.dynadevs.fragments.AudiobooksFragment;
 import com.dynadevs.fragments.BookmarksFragment;
 import com.dynadevs.fragments.BooksFragment;
 import com.dynadevs.fragments.FinesFragment;
 import com.dynadevs.fragments.LoansFragment;
 import com.dynadevs.fragments.MainFragment;
+import com.dynadevs.services.LoansService;
 
+import static com.dynadevs.classes.Utilities.getEventSettings;
 import static com.dynadevs.classes.Utilities.isNetAvailible;
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
 import static com.dynadevs.classes.Utilities.verifyLoadedSesion;
@@ -41,7 +50,8 @@ public class MainActivity extends AppCompatActivity
         BooksFragment.OnFragmentInteractionListener,
         BookmarksFragment.OnFragmentInteractionListener,
         LoansFragment.OnFragmentInteractionListener,
-        FinesFragment.OnFragmentInteractionListener {
+        FinesFragment.OnFragmentInteractionListener,
+        AudiobooksFragment.OnFragmentInteractionListener{
 
     private Bundle bundle;
     private Fragment fragment;
@@ -50,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton fab;
     private ActionBar actionBar;
     private User user;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +89,28 @@ public class MainActivity extends AppCompatActivity
         TextView tvName = navView.findViewById(R.id.tvNameUser);
         TextView tvCareer = navView.findViewById(R.id.tvCareerUser);
         SearchView searchView = findViewById(R.id.search);
+        menu = navigationView.getMenu();
+        menu.findItem(R.id.nav_main).setChecked(true);
 
         if (getIntent().getExtras() != null) {
             bundle = getIntent().getExtras();
             user = (User) bundle.getSerializable("user");
             Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+
                     (user != null ? user.getDrawerHeader() : "1.png")).fitCenter().into(ivDrawerHeader);
+            /*
+            if (getEventSettings(this)) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CALENDAR}, 1);
+                } else {
+                    Intent intent = new Intent(this, LoansService.class);
+                    intent.putExtras(bundle);
+                    startService(intent);
+                }
+            }*/
+            MenuItem itemLogin = menu.findItem(R.id.nav_login);
+            itemLogin.setIcon(R.drawable.ic_logout);
+            itemLogin.setTitle(R.string.logout);
         } else {
-            Menu menu = navigationView.getMenu();
             menu.findItem(R.id.nav_bookmarks).setVisible(false);
             menu.findItem(R.id.nav_loans).setVisible(false);
             menu.findItem(R.id.nav_fines).setVisible(false);
@@ -121,26 +146,65 @@ public class MainActivity extends AppCompatActivity
         fragment.setArguments(bundle);
         actionBar.setTitle(R.string.nav_main);
         getSupportFragmentManager().beginTransaction().replace(R.id.clContenedor, fragment).commit();
+
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START))
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        else if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            new AlertDialog.Builder(this)
+                    .setTitle(getString(R.string.out)).setMessage(getString(R.string.out_message))
+                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
+        } else
             super.onBackPressed();
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.clContenedor);
+        if (fragment instanceof MainFragment) {
+            TvAppTitle.setText(R.string.nav_main);
+            actionBar.setTitle(R.string.nav_main);
+            menu.findItem(R.id.nav_main).setChecked(true);
+            fab.hide();
+        } else if (fragment instanceof BooksFragment) {
+            TvAppTitle.setText(R.string.nav_books);
+            actionBar.setTitle(R.string.nav_books);
+            menu.findItem(R.id.nav_books).setChecked(true);
+            fab.show();
+        } else if (fragment instanceof FinesFragment) {
+            TvAppTitle.setText(R.string.nav_fines);
+            actionBar.setTitle(R.string.nav_fines);
+            menu.findItem(R.id.nav_fines).setChecked(true);
+            fab.show();
+        } else if (fragment instanceof LoansFragment) {
+            TvAppTitle.setText(R.string.nav_loans);
+            actionBar.setTitle(R.string.nav_loans);
+            menu.findItem(R.id.nav_loans).setChecked(true);
+            fab.show();
+        } else if (fragment instanceof BookmarksFragment) {
+            TvAppTitle.setText(R.string.nav_bookmarks);
+            actionBar.setTitle(R.string.nav_bookmarks);
+            menu.findItem(R.id.nav_bookmarks).setChecked(true);
+            fab.show();
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem sessionItem = menu.findItem(R.id.session_item);
-        if (verifyLoadedSesion(this))
-            sessionItem.setTitle(getString(R.string.logout));
-        else
-            sessionItem.setTitle(getString(R.string.login));
         return true;
     }
 
@@ -153,18 +217,6 @@ public class MainActivity extends AppCompatActivity
             if (getIntent().getExtras() != null)
                 intent.putExtras(bundle);
             startActivity(intent);
-        } else if (id == R.id.session_item){
-            if (verifyLoadedSesion(this)) {
-                SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-                preferences.edit().clear().apply();
-                intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -176,6 +228,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         boolean activity = false;
+        boolean logout = false;
         boolean change = true;
 
         if (id == R.id.nav_main) {
@@ -188,7 +241,11 @@ public class MainActivity extends AppCompatActivity
             TvAppTitle.setText(R.string.nav_books);
             actionBar.setTitle(R.string.nav_books);
             fragment = new BooksFragment();
-        } else if (id == R.id.nav_bookmarks) {
+        }/* else if(id == R.id.nav_audiobooks) {
+            TvAppTitle.setText(R.string.nav_audiobooks);
+            actionBar.setTitle(R.string.nav_audiobooks);
+            fragment = new AudiobooksFragment();
+        }*/ else if (id == R.id.nav_bookmarks) {
             TvAppTitle.setText(R.string.nav_bookmarks);
             actionBar.setTitle(R.string.nav_bookmarks);
             fragment = new BookmarksFragment();
@@ -200,6 +257,15 @@ public class MainActivity extends AppCompatActivity
             TvAppTitle.setText(R.string.nav_fines);
             actionBar.setTitle(R.string.nav_fines);
             fragment = new FinesFragment();
+        } else if (id == R.id.nav_login) {
+            activity = true;
+            if (getIntent().getExtras() != null) {
+                SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                preferences.edit().clear().apply();
+                logout = true;
+                intent = new Intent(MainActivity.this, MainActivity.class);
+            } else
+                intent = new Intent(MainActivity.this, LoginActivity.class);
         } else if (id == R.id.nav_help) {
             if (isNetAvailible(this)) {
                 intent = new Intent(MainActivity.this, HelpActivity.class);
@@ -215,11 +281,15 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (change) {
-            if (activity)
+            if (activity) {
                 startActivity(intent);
-            else {
+                if (logout)
+                    finish();
+            } else {
                 fragment.setArguments(bundle);
-                getSupportFragmentManager().beginTransaction().replace(R.id.clContenedor, fragment).commit();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.clContenedor, fragment);
+                transaction.addToBackStack("Screen").commit();
             }
         }
 
@@ -232,4 +302,6 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
 }

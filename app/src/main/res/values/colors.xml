@@ -15,4 +15,5 @@
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecoundaryText">#757575</color>
     <color name="colorDividerColor">#BDBDBD</color>
+    <color name="colorListBackground">#f2f2f2</color>
 </resources>

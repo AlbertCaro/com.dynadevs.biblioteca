@@ -119,7 +119,6 @@ public class BooksFragment extends Fragment {
                 user = (User) bundle.getSerializable("user");
             }
             fab = getActivity().findViewById(R.id.fab);
-            fab.setImageResource(R.drawable.ic_refresh);
             fab.show();
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override

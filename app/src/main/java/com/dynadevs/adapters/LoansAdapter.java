@@ -8,6 +8,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.ActivityCompat;
@@ -22,6 +23,11 @@ import com.dynadevs.classes.Loan;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import static com.dynadevs.classes.Utilities.findEvent;
+import static com.dynadevs.classes.Utilities.getEventSettings;
+import static com.dynadevs.classes.Utilities.getNotificationTime;
+import static com.dynadevs.classes.Utilities.registreEventPreference;
 
 /**
  * Created by Alberto Caro Navarro on 29/09/2017.
@@ -50,8 +56,8 @@ public class LoansAdapter extends RecyclerView.Adapter<LoansAdapter.ViewHolderLo
     public void onBindViewHolder(LoansAdapter.ViewHolderLoans holder, final int position) {
         holder.TvTitle.setText(LoanList.get(position).getTitle());
         holder.TvDate.setText(LoanList.get(position).getDay()+"/"+LoanList.get(position).getMounth()+"/"+LoanList.get(position).getYear());
-        if (!findEvent(LoanList.get(position))) {
-            if (getEventSettings())
+        if (getEventSettings(context)) {
+            if (!findEvent(LoanList.get(position), context))
                 addRecordatory(LoanList.get(position));
         }
     }
@@ -98,39 +104,17 @@ public class LoansAdapter extends RecyclerView.Adapter<LoansAdapter.ViewHolderLo
                 try {
                     long eventID = Long.parseLong(uri != null ? uri.getLastPathSegment() : null);
                     ContentValues valuesRemind = new ContentValues();
-                    valuesRemind.put(CalendarContract.Reminders.MINUTES, getNotificationTime());
+                    valuesRemind.put(CalendarContract.Reminders.MINUTES, getNotificationTime(context));
                     valuesRemind.put(CalendarContract.Reminders.EVENT_ID, eventID);
                     valuesRemind.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
                     cr.insert(CalendarContract.Reminders.CONTENT_URI, valuesRemind);
-                    registreEventPreference(loan);
-                } catch (NullPointerException e) {
+                    registreEventPreference(loan, context);
+                } catch (NullPointerException | SQLiteException e) {
                     e.printStackTrace();
                 }
-            } catch (NullPointerException e) {
+            } catch (NullPointerException | SQLiteException e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    private boolean findEvent(Loan loan) {
-        SharedPreferences preferences = context.getSharedPreferences("events", Context.MODE_PRIVATE);
-        return preferences.contains(loan.getISBN());
-    }
-
-    private void registreEventPreference(Loan loan) {
-        SharedPreferences preferences = context.getSharedPreferences("events", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(loan.getISBN(), "true");
-        editor.apply();
-    }
-
-    private boolean getEventSettings() {
-        SharedPreferences preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-        return preferences.getBoolean("event", true);
-    }
-
-    private int getNotificationTime() {
-        SharedPreferences preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
-        return preferences.getInt("notification_time", 5);
     }
 }

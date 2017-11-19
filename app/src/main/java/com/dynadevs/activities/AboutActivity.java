@@ -1,11 +1,14 @@
 package com.dynadevs.activities;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.dynadevs.adapters.AboutAdapter;
 import com.dynadevs.classes.Person;
@@ -22,6 +25,14 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setCurrentThemeActivity(this);
         setContentView(R.layout.activity_about);
+        TextView TvVersion = findViewById(R.id.about_version);
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            String versionName = packageInfo.versionName;
+            TvVersion.setText(getString(R.string.about_version)+" "+versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.nav_about);

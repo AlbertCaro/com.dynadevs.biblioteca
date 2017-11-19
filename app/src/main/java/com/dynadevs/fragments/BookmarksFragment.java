@@ -112,7 +112,6 @@ public class BookmarksFragment extends Fragment {
             Bundle bundle = getArguments();
             user = (User) bundle.getSerializable("user");
             fab = getActivity().findViewById(R.id.fab);
-            fab.setImageResource(R.drawable.ic_refresh);
             fab.show();
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override

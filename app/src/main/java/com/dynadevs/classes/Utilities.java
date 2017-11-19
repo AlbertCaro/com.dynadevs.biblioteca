@@ -112,4 +112,28 @@ public abstract class Utilities {
         SharedPreferences preferences = activity.getSharedPreferences("user_info", Context.MODE_PRIVATE);
         return preferences.contains("code");
     }
+
+    public static boolean getEventSettings(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        return preferences.getBoolean("event", true);
+    }
+
+
+
+    public static void registreEventPreference(Loan loan, Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("events", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(loan.getISBN(), "true");
+        editor.apply();
+    }
+
+    public static int getNotificationTime(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        return preferences.getInt("notification_time", 5);
+    }
+
+    public static boolean findEvent(Loan loan, Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("events", Context.MODE_PRIVATE);
+        return preferences.contains(loan.getISBN());
+    }
 }

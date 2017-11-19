@@ -61,6 +61,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.dynadevs.activities.MainActivity" />
         </activity>
+
+        <service android:name="com.dynadevs.services.LoansService" />
     </application>
 
 </manifest>

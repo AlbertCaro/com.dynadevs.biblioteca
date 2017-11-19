@@ -7,6 +7,7 @@
     <string name="action_settings">Configuración</string>
     <string name="nav_main">Principal</string>
     <string name="nav_books">Libros</string>
+    <string name="nav_audiobooks">Audio libros</string>
     <string name="nav_bookmarks">Marcadores</string>
     <string name="nav_loans">Prestamos</string>
     <string name="nav_fines">Multas</string>
@@ -58,9 +59,13 @@
     <string name="settings_notification_time_sub">Tiempo de aviso de notificación antes del evento.</string>
     <string name="event_message">Devolución del libro para no generar multa.</string>
     <string name="dynadev" translatable="false">DynaDevs</string>
-    <string name="about_description">Aplicación desarrollada en el Centro Universitario de los Valles para las bibliotecas de la red universitaria de la Universidad de Guadalajara.</string>
-    <string name="about_developed_by">Desarrollado por Dynamite Developers (DynaDevs)</string>
-    <string name="about_version">Versión de la aplicación: 1.0</string>
+    <string name="about_description">
+        Aplicación desarrollada en el Centro Universitario de los Valles por alumnos de la carrera
+        de Tecnologías de la Información en conjunto con la Coordinación de Tecnologías para el
+        Aprendizaje, para las bibliotecas de la red universitaria de la Universidad de Guadalajara.
+    </string>
+    <string name="about_developed_by">Desarrollado en CUValles</string>
+    <string name="about_version">Versión de la aplicación: </string>
     <string name="subject">Asunto</string>
     <string name="subject_error">El asunto no puede quedar vacío.</string>
     <string name="message">Mensaje</string>
@@ -72,6 +77,11 @@
     <string name="udg" translatable="false">UDG</string>
     <string name="universidad_udg" translatable="false">Universidad de Guadalajara</string>
     <string name="not_logged">No has iniciado sesión</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="logout_question">¿Está seguro de querer cerrar la sesión?</string>
+    <string name="out">Salir</string>
+    <string name="out_message">¿Está seguro de querer salir?</string>
     <string-array name="theme_options">
         <item>Institucional (predeterminado)</item>
         <item>Rojo</item>
@@ -89,4 +99,7 @@
         <item>12 horas</item>
         <item>1 día</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 </resources>
