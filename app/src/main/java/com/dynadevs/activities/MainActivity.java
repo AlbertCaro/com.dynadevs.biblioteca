@@ -37,10 +37,9 @@ import com.dynadevs.fragments.FinesFragment;
 import com.dynadevs.fragments.LoansFragment;
 import com.dynadevs.fragments.MainFragment;
 
-import static com.dynadevs.classes.Utilities.getEventSettings;
 import static com.dynadevs.classes.Utilities.isNetAvailible;
+import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
-import static com.dynadevs.classes.Utilities.verifyLoadedSesion;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -96,7 +95,7 @@ public class MainActivity extends AppCompatActivity
             bundle = getIntent().getExtras();
             user = (User) bundle.getSerializable("user");
             Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+
-                    (user != null ? user.getDrawerHeader() : "1.png")).fitCenter().into(ivDrawerHeader);
+                    (user != null ? user.getDrawerHeader() : loadSesion(this).getDrawerHeader())).fitCenter().into(ivDrawerHeader);
             /*
             if (getEventSettings(this)) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -294,7 +293,7 @@ public class MainActivity extends AppCompatActivity
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.clContenedor, fragment);
-                transaction.addToBackStack("Screen").commit();
+                transaction.addToBackStack("screen").commit();
             }
         }
 

@@ -1,10 +1,8 @@
 package com.dynadevs.activities;
 
-import android.app.ProgressDialog;
 import android.os.StrictMode;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dynadevs.classes.User;
@@ -112,7 +109,6 @@ public class HelpActivity extends AppCompatActivity {
     }
 
     public void sendMessage(String Subject, String Content) {
-        ProgressDialog dialog = ProgressDialog.show(this, "", getString(R.string.loggin_in), true);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         Properties properties = new Properties();

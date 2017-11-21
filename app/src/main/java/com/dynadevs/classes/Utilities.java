@@ -23,6 +23,11 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public abstract class Utilities {
+    /**
+     * Función que verifica si se está conectado a WiFi o datos.
+     * @param activity De esta activity usa los métodos como getSystemService
+     * @return Retorna un boleano que determina si hay o no datos o WiFi
+     */
     public static boolean isNetAvailible(Activity activity) {
         ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = null;
@@ -31,24 +36,41 @@ public abstract class Utilities {
         return (info != null && ( info.isConnected() && info.isAvailable() && info.isConnectedOrConnecting()));
     }
 
+    /**
+     * Función que establece el mensaje en el LinearLayout cuando no hay conexión o la lista está
+     * vacía, además que hace visible el layout.
+     * @param Message Mensaje a mostrar en el TextView
+     * @param textView Componente al que se le añade el mensaje
+     * @param layout Contenedor en el que se ubica el mensaje y su imagen
+     * @param recyclerView La lista a ocultar
+     */
     public static void setMessage(String Message, TextView textView, LinearLayout layout, RecyclerView recyclerView) {
         textView.setText(Message);
         layout.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
 
+    /**
+     * Función para encriptar cadena a MD5
+     * @param string Cadena a ser encriptada.
+     * @return Retorna la cadena encriptada.
+     */
     public static String md5(String string) {
-        MessageDigest MD = null;
+        MessageDigest messageDigest = null;
         try {
-            MD = MessageDigest.getInstance("MD5");
+            messageDigest = MessageDigest.getInstance("MD5");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        if (MD != null)
-            MD.update(string.getBytes(),0, string.length());
-        return new BigInteger(1, MD != null ? MD.digest() : new byte[0]).toString(16);
+        if (messageDigest != null)
+            messageDigest.update(string.getBytes(),0, string.length());
+        return new BigInteger(1, messageDigest != null ? messageDigest.digest() : new byte[0]).toString(16);
     }
 
+    /**
+     * Coloca el tema guardado en los SharedPreferences dependiendo del entero que estos contengan.
+     * @param activity Requiere de la activity a la que se le aplicará.
+     */
     public static void setCurrentThemeActivity (Activity activity) {
         SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
         switch (preferences.getInt("theme", 0)) {
@@ -70,7 +92,11 @@ public abstract class Utilities {
         }
     }
 
-    public static SharedPreferences setCurrentTheme(Activity activity) {
+    /**
+     * Lo mismo que el anterior, sólo que este está destinado a activitys que no tienen action bar.
+     * @param activity Requiere de la activity a la que se le aplicará.
+     */
+    public static void setCurrentTheme(Activity activity) {
         SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
         switch (preferences.getInt("theme", 0)) {
             case 0:
@@ -89,9 +115,13 @@ public abstract class Utilities {
                 activity.setTheme(R.style.AndroidTheme_NoActionBar);
                 break;
         }
-        return preferences;
     }
 
+    /**
+     * Coloca el accent dependiendo del tema a los SwipeRefreshLayouts de los fragments
+     * @param swipeRefreshLayout Obviamente el layout al que se le aplicará el tema
+     * @param activity Actividad de la que se obtendrá el método getSharedPreferences
+     */
     public static void setCurrentAccent(SwipeRefreshLayout swipeRefreshLayout, Activity activity) {
         SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
         switch (preferences.getInt("theme", 0)) {
@@ -103,6 +133,11 @@ public abstract class Utilities {
         }
     }
 
+    /**
+     * Método que determina la existencia de una sesión guardada en los SharedPreferences.
+     * @param activity Actividad de la que se obtiene el método getSharedPreferences
+     * @return Retorna un objeto tipo usuario.
+     */
     public static User loadSesion (Activity activity) {
         SharedPreferences preferences = activity.getSharedPreferences("user_info", Context.MODE_PRIVATE);
         if (preferences.contains("code")) {
@@ -120,32 +155,49 @@ public abstract class Utilities {
         }
     }
 
-    public static boolean verifyLoadedSesion(Activity activity) {
-        SharedPreferences preferences = activity.getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        return preferences.contains("code");
-    }
-
+    /**
+     * Obtiene el boleano que determina si el usuario quiere, o no, agregar los eventos de sus
+     * prestamos al calendario.
+     * @param context Requiere un contexto para obtener el método getSharedPreferences.
+     * @return Retorna el boleano antes mencionado.
+     */
     public static boolean getEventSettings(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
         return preferences.getBoolean("event", true);
     }
 
-
-
+    /**
+     * Método que guarda en SharedPreferences un boleano que determina si ya se agregó o no el evento
+     * de cada libro al calendario.
+     * @param loan La información del prestamo del libro.
+     * @param context Contexto para obtener el método getSharedPreferences.
+     */
     public static void registreEventPreference(Loan loan, Context context) {
         SharedPreferences preferences = context.getSharedPreferences("events", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(loan.getISBN(), "true");
+        editor.putBoolean(loan.getISBN(), true);
         editor.apply();
     }
 
+    /**
+     * Obtiene el tiempo de la notificación determinada por el usuario.
+     * @param context Contexto del cual obtiene el método getSharedPreferences.
+     * @return Retorna el entero del tiempo.
+     */
     public static int getNotificationTime(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
         return preferences.getInt("notification_time", 5);
     }
 
+    /**
+     * Método del cual se obtiene el boleano guardado en {@link #registreEventPreference(Loan, Context)}
+     * para determinar si ya existe o no el evento en el calendario.
+     * @param loan Información del prestamo
+     * @param context Contexto del cual se obtiene getSharedPreferences
+     * @return retorna el boleano.
+     */
     public static boolean findEvent(Loan loan, Context context) {
         SharedPreferences preferences = context.getSharedPreferences("events", Context.MODE_PRIVATE);
-        return preferences.contains(loan.getISBN());
+        return preferences.getBoolean(loan.getISBN(), false);
     }
 }

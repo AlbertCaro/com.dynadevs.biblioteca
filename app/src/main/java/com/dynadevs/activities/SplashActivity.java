@@ -8,13 +8,14 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 
+import com.dynadevs.classes.User;
 import com.dynadevs.classes.Utilities;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
-import static com.dynadevs.classes.Utilities.verifyLoadedSesion;
 
 /**
  * Created by Alberto Caro Navarro on 28/09/2017.
@@ -33,9 +34,10 @@ public class SplashActivity extends AppCompatActivity {
         setColor(clSplash);
         intent = new Intent().setClass(SplashActivity.this, MainActivity.class);
 
-        if (verifyLoadedSesion(this)) {
+        User user = loadSesion(this);
+        if (user != null) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("user", Utilities.loadSesion(this));
+            bundle.putSerializable("user", user);
             intent.putExtras(bundle);
         }
 
