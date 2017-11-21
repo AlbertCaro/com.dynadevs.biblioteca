@@ -1,16 +1,15 @@
 package com.dynadevs.activities;
 
-import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -37,7 +36,6 @@ import com.dynadevs.fragments.BooksFragment;
 import com.dynadevs.fragments.FinesFragment;
 import com.dynadevs.fragments.LoansFragment;
 import com.dynadevs.fragments.MainFragment;
-import com.dynadevs.services.LoansService;
 
 import static com.dynadevs.classes.Utilities.getEventSettings;
 import static com.dynadevs.classes.Utilities.isNetAvailible;
@@ -76,6 +74,8 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         fab = findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
@@ -228,7 +228,6 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         boolean activity = false;
-        boolean logout = false;
         boolean change = true;
 
         if (id == R.id.nav_main) {
@@ -260,10 +259,18 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_login) {
             activity = true;
             if (getIntent().getExtras() != null) {
-                SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
-                preferences.edit().clear().apply();
-                logout = true;
-                intent = new Intent(MainActivity.this, MainActivity.class);
+                change = false;
+                new AlertDialog.Builder(this)
+                        .setMessage(getString(R.string.logout_message)).setCancelable(false)
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                SharedPreferences preferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+                                preferences.edit().clear().apply();
+                                intent = new Intent(MainActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }).setNegativeButton(getString(R.string.no), null).show();
             } else
                 intent = new Intent(MainActivity.this, LoginActivity.class);
         } else if (id == R.id.nav_help) {
@@ -283,8 +290,6 @@ public class MainActivity extends AppCompatActivity
         if (change) {
             if (activity) {
                 startActivity(intent);
-                if (logout)
-                    finish();
             } else {
                 fragment.setArguments(bundle);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();

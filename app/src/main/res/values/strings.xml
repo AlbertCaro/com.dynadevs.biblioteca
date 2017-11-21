@@ -82,6 +82,8 @@
     <string name="logout_question">¿Está seguro de querer cerrar la sesión?</string>
     <string name="out">Salir</string>
     <string name="out_message">¿Está seguro de querer salir?</string>
+    <string name="logout_message">¿De verdad desea cerrar sesión?</string>
+    <string name="loggin_in">Iniciando sesión…</string>
     <string-array name="theme_options">
         <item>Institucional (predeterminado)</item>
         <item>Rojo</item>

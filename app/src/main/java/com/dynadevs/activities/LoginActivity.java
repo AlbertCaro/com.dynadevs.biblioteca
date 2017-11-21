@@ -1,5 +1,6 @@
 package com.dynadevs.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dynadevs.classes.User;
@@ -111,45 +113,47 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(final View view, String Url) {
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        JSONArray jsonArray  = new JSONArray(response);
-                        if (jsonArray.length() != 0) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            Name = jsonObject.getString("Nombre")+" "+
-                                    jsonObject.getString("ApPaterno")+" "+
-                                    jsonObject.getString("ApMaterno");
-                            Code = jsonObject.getString("Codigo");
-                            Email = jsonObject.getString("Correo");
-                            University = jsonObject.getString("Universidad");
-                            Career = jsonObject.getString("Carrera");
-                            Acronym = jsonObject.getString("Siglas");
-                            Image = jsonObject.getString("Imagen");
-                            user = new User(Code, Name, Email, University, Career, Acronym, Image);
-                            saveSession();
-                            Intent login = new Intent().setClass(LoginActivity.this, MainActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("user",user);
-                            login.putExtras(bundle);
-                            login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(login);
-                            finish();
-                        } else {
-                            Snackbar.make(view, R.string.login_invalid, Snackbar.LENGTH_LONG).show();
-                        }
-                    } catch (JSONException e) {
-                        Toast.makeText(LoginActivity.this, "Error: "+e, Toast.LENGTH_SHORT).show();
+        final ProgressDialog dialog = ProgressDialog.show(this, "", getString(R.string.loggin_in), true);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray  = new JSONArray(response);
+                    if (jsonArray.length() != 0) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        Name = jsonObject.getString("Nombre")+" "+
+                                jsonObject.getString("ApPaterno")+" "+
+                                jsonObject.getString("ApMaterno");
+                        Code = jsonObject.getString("Codigo");
+                        Email = jsonObject.getString("Correo");
+                        University = jsonObject.getString("Universidad");
+                        Career = jsonObject.getString("Carrera");
+                        Acronym = jsonObject.getString("Siglas");
+                        Image = jsonObject.getString("Imagen");
+                        user = new User(Code, Name, Email, University, Career, Acronym, Image);
+                        saveSession();
+                        Intent login = new Intent().setClass(LoginActivity.this, MainActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("user",user);
+                        login.putExtras(bundle);
+                        login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(login);
+                        finish();
+                    } else {
+                        Snackbar.make(view, R.string.login_invalid, Snackbar.LENGTH_LONG).show();
                     }
+                    dialog.dismiss();
+                } catch (JSONException e) {
+                    Toast.makeText(LoginActivity.this, "Error: "+e, Toast.LENGTH_SHORT).show();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(LoginActivity.this, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
-                }});
-            requestQueue.add(request);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(LoginActivity.this, "Error: "+error.getMessage(), Toast.LENGTH_SHORT).show();
+            }});
+        requestQueue.add(request);
     }
 
     private void saveSession () {

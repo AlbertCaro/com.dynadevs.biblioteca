@@ -90,4 +90,6 @@
     <string name="logout_question">Are you sure of want logout?</string>
     <string name="out">Exit</string>
     <string name="out_message">Do you want exit?</string>
+    <string name="loggin_in">" Logging in..."</string>
+    <string name="logout_message">" Are you sure you want to log out?"</string>
 </resources>

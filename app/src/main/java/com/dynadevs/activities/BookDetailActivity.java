@@ -29,7 +29,6 @@ import org.json.JSONException;
 import static com.dynadevs.classes.Utilities.md5;
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
 
-
 public class BookDetailActivity extends AppCompatActivity implements BookDetailContentFragment.OnFragmentInteractionListener {
     private User user;
     private Book book;
