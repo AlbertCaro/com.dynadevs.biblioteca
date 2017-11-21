@@ -23,7 +23,6 @@ import java.util.List;
 
 import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.setCurrentThemeActivity;
-import static com.dynadevs.classes.Utilities.verifyLoadedSesion;
 
 public class SettingsActivity extends AppCompatActivity {
     private List<String[]> ListOptions = new LinkedList<>();

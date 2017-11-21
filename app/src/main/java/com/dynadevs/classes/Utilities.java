@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -138,6 +139,7 @@ public abstract class Utilities {
      * @param activity Actividad de la que se obtiene el método getSharedPreferences
      * @return Retorna un objeto tipo usuario.
      */
+    @Nullable
     public static User loadSesion (Activity activity) {
         SharedPreferences preferences = activity.getSharedPreferences("user_info", Context.MODE_PRIVATE);
         if (preferences.contains("code")) {
