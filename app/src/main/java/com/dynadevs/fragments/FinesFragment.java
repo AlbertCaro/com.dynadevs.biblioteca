@@ -146,7 +146,7 @@ public class FinesFragment extends Fragment {
             Bundle bundle = getArguments();
             final User user = (User) bundle.getSerializable("user");
             final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.srFines);
-            setCurrentAccent(swipeRefreshLayout, getActivity());
+            setCurrentAccent(swipeRefreshLayout, getActivity(), user);
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {

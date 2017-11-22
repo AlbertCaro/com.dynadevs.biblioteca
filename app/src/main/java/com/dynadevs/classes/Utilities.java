@@ -72,7 +72,7 @@ public abstract class Utilities {
      * Coloca el tema guardado en los SharedPreferences dependiendo del entero que estos contengan.
      * @param activity Requiere de la activity a la que se le aplicará.
      */
-    public static void setCurrentThemeActivity (Activity activity) {
+    public static int setCurrentThemeActivity (Activity activity) {
         SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
         switch (preferences.getInt("theme", 0)) {
             case 0:
@@ -91,13 +91,23 @@ public abstract class Utilities {
                 activity.setTheme(R.style.AndroidTheme);
                 break;
         }
+        return preferences.getInt("theme", 0);
+    }
+
+    public static void setCurrentThemeActivity (Activity activity, User user) {
+        int theme = setCurrentThemeActivity(activity);
+        if (theme == 0) {
+            if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias exactas e ingenierias")) {
+                activity.setTheme(R.style.CUCEI);
+            }
+        }
     }
 
     /**
      * Lo mismo que el anterior, sólo que este está destinado a activitys que no tienen action bar.
      * @param activity Requiere de la activity a la que se le aplicará.
      */
-    public static void setCurrentTheme(Activity activity) {
+    public static int setCurrentTheme(Activity activity) {
         SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
         switch (preferences.getInt("theme", 0)) {
             case 0:
@@ -116,6 +126,15 @@ public abstract class Utilities {
                 activity.setTheme(R.style.AndroidTheme_NoActionBar);
                 break;
         }
+        return preferences.getInt("theme", 0);
+    }
+
+    public static void setCurrentTheme(Activity activity, User user) {
+        int theme = setCurrentTheme(activity);
+        if (theme == 0) {
+            if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
+                activity.setTheme(R.style.CUCEI_NoActionBar);
+        }
     }
 
     /**
@@ -123,11 +142,16 @@ public abstract class Utilities {
      * @param swipeRefreshLayout Obviamente el layout al que se le aplicará el tema
      * @param activity Actividad de la que se obtendrá el método getSharedPreferences
      */
-    public static void setCurrentAccent(SwipeRefreshLayout swipeRefreshLayout, Activity activity) {
+    public static void setCurrentAccent(SwipeRefreshLayout swipeRefreshLayout, Activity activity, User user) {
         SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
         switch (preferences.getInt("theme", 0)) {
             case 0:
-                swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+                if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
+                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCEI);
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de arte arquitectura y diseño"))
+                    swipeRefreshLayout.setColorSchemeResources(R.color.CUAAD);
+                else
+                    swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
                 break;
             default:
                 swipeRefreshLayout.setColorSchemeResources(R.color.colorAccentAndroid);

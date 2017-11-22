@@ -114,7 +114,7 @@ public class BookmarksFragment extends Fragment {
             Bundle bundle = getArguments();
             user = (User) bundle.getSerializable("user");
             final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.srBookmarks);
-            setCurrentAccent(swipeRefreshLayout, getActivity());
+            setCurrentAccent(swipeRefreshLayout, getActivity(), user);
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {

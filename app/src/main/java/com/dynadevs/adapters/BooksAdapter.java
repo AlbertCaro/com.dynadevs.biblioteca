@@ -63,7 +63,12 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
                 context.startActivity(intent);
             }
         });
-        if(getTheme() != 0)
+        if(getTheme() == 0) {
+            if (user != null) {
+                if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCEI));
+            }
+        } else
             holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.colorAccentAndroid));
     }
 

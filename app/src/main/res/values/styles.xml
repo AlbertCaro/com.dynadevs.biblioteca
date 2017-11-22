@@ -3,7 +3,63 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/CUValles</item>
+    </style>
+
+    <style name="CUAAD" parent="AppTheme">
+        <item name="colorAccent">@color/CUAAD</item>
+    </style>
+
+    <style name="CUCBA" parent="AppTheme">
+        <item name="colorAccent">@color/CUCBA</item>
+    </style>
+
+    <style name="CUCEA" parent="AppTheme">
+        <item name="colorAccent">@color/CUCEA</item>
+    </style>
+
+    <style name="CUCEI" parent="AppTheme">
+        <item name="colorAccent">@color/CUCEI</item>
+    </style>
+
+    <style name="CUCSH" parent="AppTheme">
+        <item name="colorAccent">@color/CUCSH</item>
+    </style>
+
+    <style name="CUCS" parent="AppTheme">
+        <item name="colorAccent">@color/CUCS</item>
+    </style>
+
+    <style name="CUAltos" parent="AppTheme">
+        <item name="colorAccent">@color/CUAltos</item>
+    </style>
+
+    <style name="CUCienega" parent="AppTheme">
+        <item name="colorAccent">@color/CUCienega</item>
+    </style>
+
+    <style name="CUCosta" parent="AppTheme">
+        <item name="colorAccent">@color/CUCosta</item>
+    </style>
+
+    <style name="CUNorte" parent="AppTheme">
+        <item name="colorAccent">@color/CUNorte</item>
+    </style>
+
+    <style name="CUCSur" parent="AppTheme">
+        <item name="colorAccent">@color/CUCSur</item>
+    </style>
+
+    <style name="CUSur" parent="AppTheme">
+        <item name="colorAccent">@color/CUSur</item>
+    </style>
+
+    <style name="CULagos" parent="AppTheme">
+        <item name="colorAccent">@color/CULagos</item>
+    </style>
+
+    <style name="CUTonala" parent="AppTheme">
+        <item name="colorAccent">@color/CUTonala</item>
     </style>
 
     <style name="RedTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -51,6 +107,76 @@
     </style>
 
     <style name="AndroidTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUAAD.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUCBA.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUCEA.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUCEI.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUCSH.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUCS.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUAltos.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUCienega.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUCosta.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUNorte.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUCSur.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUSur.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CULagos.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="CUTonala.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

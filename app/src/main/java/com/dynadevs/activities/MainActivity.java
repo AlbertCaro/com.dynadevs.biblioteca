@@ -58,17 +58,23 @@ public class MainActivity extends AppCompatActivity
     private ActionBar actionBar;
     private User user;
     private Menu menu;
+    private DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCurrentTheme(this);
+        if (getIntent().getExtras() != null) {
+            bundle = getIntent().getExtras();
+            user = (User) bundle.getSerializable("user");
+            setCurrentTheme(this, user);
+        } else
+            setCurrentTheme(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.bar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -92,8 +98,6 @@ public class MainActivity extends AppCompatActivity
         menu.findItem(R.id.nav_main).setChecked(true);
 
         if (getIntent().getExtras() != null) {
-            bundle = getIntent().getExtras();
-            user = (User) bundle.getSerializable("user");
             Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+
                     (user != null ? user.getDrawerHeader() : loadSesion(this).getDrawerHeader())).fitCenter().into(ivDrawerHeader);
             /*
@@ -224,7 +228,6 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         boolean activity = false;
         boolean change = true;
@@ -297,7 +300,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -18,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.dynadevs.classes.User;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,9 +36,13 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCurrentThemeActivity(this);
+        if (getIntent().getExtras() != null) {
+            bundle = getIntent().getExtras();
+            User user = (User) bundle.getSerializable("user");
+            setCurrentThemeActivity(this, user);
+        } else
+            setCurrentThemeActivity(this);
         setContentView(R.layout.activity_settings);
-        bundle = getIntent().getExtras();
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(getString(R.string.settings));

@@ -57,7 +57,6 @@ public class BookDetailContentFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment BookDetailContentFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static BookDetailContentFragment newInstance(String param1, String param2) {
         BookDetailContentFragment fragment = new BookDetailContentFragment();
         Bundle args = new Bundle();

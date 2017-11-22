@@ -38,20 +38,23 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCurrentTheme(this);
+        bundle = getIntent().getExtras();
+        book = (Book) bundle.getSerializable("book");
+        if (bundle.getSerializable("user") != null) {
+            user = (User) bundle.getSerializable("user");
+            setCurrentTheme(this, user);
+        } else
+            setCurrentTheme(this);
         setContentView(R.layout.activity_book_detail);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         BookDetailContentFragment bookDetail = new BookDetailContentFragment();
         ImageView ivPhoto = findViewById(R.id.ivPhoto);
         fab = findViewById(R.id.fab);
-        bundle = getIntent().getExtras();
-        book = (Book) bundle.getSerializable("book");
 
-        if (bundle.getSerializable("user") != null) {
-            user = (User) bundle.getSerializable("user");
+        if (bundle.getSerializable("user") != null)
             consultBookmarks();
-        } else
+        else
             fab.setVisibility(View.GONE);
 
         fab.setOnClickListener(new View.OnClickListener() {

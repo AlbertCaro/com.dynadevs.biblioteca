@@ -112,12 +112,16 @@ public class BooksFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_books, container, false);
         if (isAdded()) {
+            if (getArguments() != null) {
+                Bundle bundle = getArguments();
+                user = (User) bundle.getSerializable("user");
+            }
             IvMessage = view.findViewById(R.id.ivEmptyBooks);
             TvMessage = view.findViewById(R.id.tvEmptyBooks);
             recyclerView = view.findViewById(R.id.rvBooks);
             linearLayout = view.findViewById(R.id.emptyListBook);
             final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.srBooks);
-            setCurrentAccent(swipeRefreshLayout, getActivity());
+            setCurrentAccent(swipeRefreshLayout, getActivity(), user);
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -130,10 +134,6 @@ public class BooksFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                 }
             });
-            if (getArguments() != null) {
-                Bundle bundle = getArguments();
-                user = (User) bundle.getSerializable("user");
-            }
             fab = getActivity().findViewById(R.id.fab);
             fab.show();
             fab.setOnClickListener(new View.OnClickListener() {

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Tema principal institucional (CUValles) -->
     <color name="colorPrimary">#00538F</color>
     <color name="colorPrimaryDark">#004164</color>
     <color name="colorAccent">#78B41E</color>
+    <!-- Temas no insitucionales Material Design -->
     <color name="colorPrimaryPurple">#673AB7</color>
     <color name="colorPrimaryDarkPurple">#512DA8</color>
     <color name="colorPrimaryRed">#DB4437</color>
@@ -17,4 +19,25 @@
     <color name="colorDividerColor">#BDBDBD</color>
     <color name="colorListBackground">#f2f2f2</color>
     <color name="colorTransparent">#00000000</color>
+    <!-- Colores institucionales -->
+    <color name="RecGeneral">#053359</color>
+    <color name="VicerrectoriaEjecutiva">#515F84</color>
+    <color name="SecretariaGeneral">#BFAB86</color>
+    <color name="CUAAD">#663366</color>
+    <color name="CUCBA">#339933</color>
+    <color name="CUCEA">#16325C</color>
+    <color name="CUCEI">#E87400</color>
+    <color name="CUCSH">#993300</color>
+    <color name="CUCS">#46051B</color>
+    <color name="CUAltos">#CD5700</color>
+    <color name="CUCienega">#CD5700</color>
+    <color name="CUCosta">#6699CC</color>
+    <color name="CUNorte">#666633</color>
+    <color name="CUCSur">#006666</color>
+    <color name="CUSur">#00A86B</color>
+    <color name="CULagos">#EEB402</color>
+    <color name="CUTonala">#6E2240</color>
+    <color name="CUValles">#999900</color>
+    <color name="UDGVirtual">#005588</color>
+    <color name="SEMS">#890831</color>
 </resources>

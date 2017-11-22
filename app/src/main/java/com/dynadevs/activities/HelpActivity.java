@@ -38,15 +38,19 @@ public class HelpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCurrentThemeActivity(this);
+        if (getIntent().getExtras() != null) {
+            Bundle bundle = getIntent().getExtras();
+            user = (User) (bundle != null ? bundle.getSerializable("user") : loadSesion(this));
+            setCurrentThemeActivity(this, user);
+        } else
+            setCurrentThemeActivity(this);
         setContentView(R.layout.activity_help);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle(R.string.nav_help);
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        Bundle bundle = getIntent().getExtras();
-        user = (User) (bundle != null ? bundle.getSerializable("user") : loadSesion(this));
+
         TiSubject = findViewById(R.id.tiSubject);
         TiMessage = findViewById(R.id.tiMessage);
         EtSubject = TiSubject.getEditText();
