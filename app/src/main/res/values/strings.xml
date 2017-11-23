@@ -22,11 +22,14 @@
     <string name="login_invalid">Credenciales incorrectas</string>
     <string name="login_blank_user">El usuario no puede quedar vacío</string>
     <string name="login_blank_pass">La contraseña no puede quedar vacía</string>
-    <string name="detail_ISBN" translatable="false">ISBN: </string>
-    <string name="detail_pages">Número de páginas:</string>
-    <string name="detail_editorial">Editorial:</string>
-    <string name="detail_edition">Edición:</string>
-    <string name="detail_copies">Número de ejemplares disponibles:</string>
+    <string name="detail_ISBN" translatable="false">ISBN</string>
+    <string name="detail_autor" translatable="false">Autor</string>
+    <string name="detail_description">Descripción</string>
+    <string name="detail_pages">Número de páginas</string>
+    <string name="detail_editorial">Editorial</string>
+    <string name="detail_edition">Edición</string>
+    <string name="detail_copies">Número de ejemplares disponibles</string>
+    <string name="detail_classification">Clasificación</string>
     <string name="search">Buscar</string>
     <string name="user_name">Nombre completo</string>
     <string name="user_mail">Correo eléctronico</string>

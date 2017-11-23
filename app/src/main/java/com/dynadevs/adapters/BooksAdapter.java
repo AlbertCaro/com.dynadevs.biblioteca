@@ -67,6 +67,32 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
             if (user != null) {
                 if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
                     holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCEI));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de arte, arquitectura y diseño"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUAAD));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de los altos"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUAltos));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias biologicas y agropecuarias"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCBA));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias economico administrativas"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCEA));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de la cienega"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCienega));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de la costa"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCosta));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias de la salud"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCS));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias sociales y humanidades"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCSH));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de la costa sur"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUCSur));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de los lagos"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CULagos));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario del norte"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUNorte));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario del sur"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUSur));
+                else if (user.getUniversity().toLowerCase().equals("centro universitario de tonala"))
+                    holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.CUTonala));
             }
         } else
             holder.BtnDetails.setTextColor(activity.getResources().getColor(R.color.colorAccentAndroid));

@@ -5,9 +5,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -18,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.dynadevs.activities.R;
 import com.dynadevs.classes.Book;
+import com.dynadevs.classes.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,26 +83,35 @@ public class BookDetailContentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_detail_content, container, false);
-        TextView tvISBN = view.findViewById(R.id.tvISBN);
-        TextView tvAutor = view.findViewById(R.id.tvAutor);
-        TextView tvEditorial = view.findViewById(R.id.tvEditorial);
-        TextView tvEdition = view.findViewById(R.id.tvEdition);
-        TextView tvDescription = view.findViewById(R.id.tvDescription);
-        TextView tvPages = view.findViewById(R.id.tvPages);
+        TextView TvDetail = view.findViewById(R.id.tvDetail);
+        ImageView IvBookIcon = view.findViewById(R.id.ivBookIcon);
+        TextView TvISBN = view.findViewById(R.id.tvISBN);
+        TextView TvAutor = view.findViewById(R.id.tvAutor);
+        TextView TvEditorial = view.findViewById(R.id.tvEditorial);
+        TextView TvEdition = view.findViewById(R.id.tvEdition);
+        TextView TvDescription = view.findViewById(R.id.tvDescription);
+        TextView TvPages = view.findViewById(R.id.tvPages);
         TvCopies = view.findViewById(R.id.tvCopies);
+        TextView TvClassification = view.findViewById(R.id.tvClassification);
 
-        Bundle ObjectBook = getArguments();
+        Bundle bundle = getArguments();
         final Book book;
 
         if (getArguments() != null) {
-            book = (Book) ObjectBook.getSerializable("book");
+            book = (Book) bundle.getSerializable("book");
 
-            tvISBN.setText(getString(R.string.detail_ISBN)+" "+book.getISBN());
-            tvAutor.setText(book.getAutor());
-            tvEditorial.setText(getString(R.string.detail_editorial)+" "+book.getEditorial());
-            tvEdition.setText(getString(R.string.detail_edition)+" "+book.getEdition());
-            tvDescription.setText(book.getDescription());
-            tvPages.setText(getString(R.string.detail_pages)+" "+book.getPages());
+            TvISBN.setText(book.getISBN());
+            TvAutor.setText(book.getAutor());
+            TvEditorial.setText(book.getEditorial());
+            TvEdition.setText(book.getEdition());
+            TvDescription.setText(book.getDescription());
+            TvPages.setText(Integer.toString(book.getPages()));
+            TvClassification.setText(book.getClassification());
+            if (bundle.getSerializable("user") != null) {
+                User user = (User) bundle.getSerializable("user");
+                TvDetail.setTextColor(ContextCompat.getColor(getContext(), user.getAccentColor()));
+                IvBookIcon.setColorFilter(ContextCompat.getColor(getContext(), user.getAccentColor()));
+            }
 
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
             String Url = getString(R.string.server_url)+"biblioteca/rest/ejemplares_disp.php?id="+book.getISBN();

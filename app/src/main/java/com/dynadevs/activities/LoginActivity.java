@@ -40,7 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText EtUser, EtPass;
     private User user;
 
-    String Code, Name, Email, University, Career, Acronym, Image;
+    private String Code, Name, Email, University, Career, Acronym, Image;
+    private int accentColor, noActionBarTheme, theme;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,39 +130,99 @@ public class LoginActivity extends AppCompatActivity {
                         Email = jsonObject.getString("Correo");
                         University = jsonObject.getString("Universidad");
                         Career = jsonObject.getString("Carrera");
-                        Acronym = jsonObject.getString("Siglas");
-                        if (University.toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
+                        if (University.toLowerCase().equals("centro universitario de ciencias exactas e ingenierias")) {
+                            accentColor = R.color.CUCEI;
+                            noActionBarTheme = R.style.CUCEI_NoActionBar;
+                            theme = R.style.CUCEI;
+                            Acronym = "CUCEI";
                             Image = "2.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de arte arquitectura y diseño"))
+                        } else if (University.toLowerCase().equals("centro universitario de arte, arquitectura y diseño")) {
+                            accentColor = R.color.CUAAD;
+                            noActionBarTheme = R.style.CUAAD_NoActionBar;
+                            theme = R.style.CUAAD;
+                            Acronym = "CUAAD";
                             Image = "3.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de los altos"))
+                        } else if (University.toLowerCase().equals("centro universitario de los altos")) {
+                            accentColor = R.color.CUAltos;
+                            noActionBarTheme = R.style.CUAltos_NoActionBar;
+                            theme = R.style.CUAltos;
+                            Acronym = "CUAltos";
                             Image = "4.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de ciencias biologicas y agropecuarias"))
+                        } else if (University.toLowerCase().equals("centro universitario de ciencias biologicas y agropecuarias")) {
+                            accentColor = R.color.CUCBA;
+                            noActionBarTheme = R.style.CUCBA_NoActionBar;
+                            theme = R.style.CUCBA;
+                            Acronym = "CUCBA";
                             Image = "5.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de ciencias economico administrativas"))
+                        } else if (University.toLowerCase().equals("centro universitario de ciencias economico administrativas")) {
+                            accentColor = R.color.CUCEA;
+                            noActionBarTheme = R.style.CUCEA_NoActionBar;
+                            theme = R.style.CUCEA;
+                            Acronym = "CUCEA";
                             Image = "6.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de la cienega"))
+                        } else if (University.toLowerCase().equals("centro universitario de la cienega")) {
+                            accentColor = R.color.CUCienega;
+                            noActionBarTheme = R.style.CUCienega_NoActionBar;
+                            theme = R.style.CUCienega;
+                            Acronym = "CUCienega";
                             Image = "7.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de la costa"))
+                        } else if (University.toLowerCase().equals("centro universitario de la costa")) {
+                            accentColor = R.color.CUCosta;
+                            noActionBarTheme = R.style.CUCosta_NoActionBar;
+                            theme = R.style.CUCosta;
+                            Acronym = "CUCosta";
                             Image = "8.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de ciencias de la salud"))
+                        } else if (University.toLowerCase().equals("centro universitario de ciencias de la salud")) {
+                            accentColor = R.color.CUCS;
+                            noActionBarTheme = R.style.CUCS_NoActionBar;
+                            theme = R.style.CUCS;
+                            Acronym = "CUCS";
                             Image = "9.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de ciencias sociales y humanidades"))
+                        } else if (University.toLowerCase().equals("centro universitario de ciencias sociales y humanidades")) {
+                            accentColor = R.color.CUCSH;
+                            noActionBarTheme = R.style.CUCSH_NoActionBar;
+                            theme = R.style.CUCSH;
+                            Acronym = "CUCSH";
                             Image = "10.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de la costa sur"))
+                        } else if (University.toLowerCase().equals("centro universitario de la costa sur")) {
+                            accentColor = R.color.CUCSur;
+                            noActionBarTheme = R.style.CUCSur_NoActionBar;
+                            theme = R.style.CUCSur;
+                            Acronym = "CUCSur";
                             Image = "11.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de los lagos"))
+                        } else if (University.toLowerCase().equals("centro universitario de los lagos")) {
+                            accentColor = R.color.CULagos;
+                            noActionBarTheme = R.style.CULagos_NoActionBar;
+                            theme = R.style.CULagos;
+                            Acronym = "CULagos";
                             Image = "12.jpg";
-                        else if (University.toLowerCase().equals("centro universitario del norte"))
+                        } else if (University.toLowerCase().equals("centro universitario del norte")) {
+                            accentColor = R.color.CUNorte;
+                            noActionBarTheme = R.style.CUNorte_NoActionBar;
+                            theme = R.style.CUNorte;
+                            Acronym = "CUNorte";
                             Image = "13.jpg";
-                        else if (University.toLowerCase().equals("centro universitario del sur"))
+                        } else if (University.toLowerCase().equals("centro universitario del sur")) {
+                            accentColor = R.color.CUSur;
+                            noActionBarTheme = R.style.CUSur_NoActionBar;
+                            theme = R.style.CUSur;
+                            Acronym = "CUSur";
                             Image = "14.jpg";
-                        else if (University.toLowerCase().equals("centro universitario de tonala"))
-                            Image = "15.jpg";
-                        else
+                        } else if (University.toLowerCase().equals("centro universitario de tonala")) {
+                            accentColor = R.color.CUTonala;
+                            noActionBarTheme = R.style.CUTonala_NoActionBar;
+                            theme = R.style.CUTonala;
+                            Acronym = "CUTonala";
+                            Image = "15.png";
+                        } else {
+                            accentColor = R.color.colorAccent;
+                            noActionBarTheme = R.style.AppTheme_NoActionBar;
+                            theme = R.style.AppTheme;
+                            Acronym = "CUValles";
                             Image = "1.png";
+                        }
 
-                        user = new User(Code, Name, Email, University, Career, Acronym, Image);
+                        user = new User(Code, Name, Email, University, Career, Acronym, Image, accentColor, noActionBarTheme, theme);
                         saveSession();
                         Intent login = new Intent().setClass(LoginActivity.this, MainActivity.class);
                         Bundle bundle = new Bundle();
@@ -196,6 +257,9 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("career", Career);
         editor.putString("acronym", Acronym);
         editor.putString("image", Image);
+        editor.putInt("accent", accentColor);
+        editor.putInt("noActionBarTheme", noActionBarTheme);
+        editor.putInt("theme", theme);
         editor.apply();
     }
 

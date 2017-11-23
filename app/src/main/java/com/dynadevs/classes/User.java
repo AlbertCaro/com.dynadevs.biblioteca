@@ -9,8 +9,9 @@ import java.io.Serializable;
 
 public class User implements Serializable {
     private String Code, Name, Email, University, Career, Acronym, DrawerHeader;
+    private int accentColor, noActionBarTheme, Theme;
 
-    public User(String code, String name, String email, String university, String career, String acronym, String drawerHeader) {
+    public User(String code, String name, String email, String university, String career, String acronym, String drawerHeader, int accentColor, int noActionBarTheme, int theme) {
         Code = code;
         Name = name;
         Email = email;
@@ -18,6 +19,9 @@ public class User implements Serializable {
         Career = career;
         Acronym = acronym;
         DrawerHeader = drawerHeader;
+        this.accentColor = accentColor;
+        this.noActionBarTheme = noActionBarTheme;
+        Theme = theme;
     }
 
     public String getCode() {
@@ -46,5 +50,17 @@ public class User implements Serializable {
 
     public String getDrawerHeader() {
         return DrawerHeader;
+    }
+
+    public int getAccentColor() {
+        return accentColor;
+    }
+
+    public int getNoActionBarTheme() {
+        return noActionBarTheme;
+    }
+
+    public int getTheme() {
+        return Theme;
     }
 }

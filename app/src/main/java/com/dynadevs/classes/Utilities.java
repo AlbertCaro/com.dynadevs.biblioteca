@@ -97,34 +97,7 @@ public abstract class Utilities {
     public static void setCurrentThemeActivity (Activity activity, User user) {
         int theme = setCurrentThemeActivity(activity);
         if (theme == 0) {
-            if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
-                activity.setTheme(R.style.CUCEI);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de arte arquitectura y diseño"))
-                activity.setTheme(R.style.CUAAD);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de los altos"))
-                activity.setTheme(R.style.CUAltos);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias biologicas y agropecuarias"))
-                activity.setTheme(R.style.CUCBA);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias economico administrativas"))
-                activity.setTheme(R.style.CUCEA);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de la cienega"))
-                activity.setTheme(R.style.CUCienega);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de la costa"))
-                activity.setTheme(R.style.CUCosta);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias de la salud"))
-                activity.setTheme(R.style.CUCS);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias sociales y humanidades"))
-                activity.setTheme(R.style.CUCSH);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de la costa sur"))
-                activity.setTheme(R.style.CUCSur);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de los lagos"))
-                activity.setTheme(R.style.CULagos);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario del norte"))
-                activity.setTheme(R.style.CUNorte);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario del sur"))
-                activity.setTheme(R.style.CUSur);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de tonala"))
-                activity.setTheme(R.style.CUTonala);
+            activity.setTheme(user.getTheme());
         }
     }
 
@@ -157,34 +130,7 @@ public abstract class Utilities {
     public static void setCurrentTheme(Activity activity, User user) {
         int theme = setCurrentTheme(activity);
         if (theme == 0) {
-            if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
-                activity.setTheme(R.style.CUCEI_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de arte arquitectura y diseño"))
-                activity.setTheme(R.style.CUAAD_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de los altos"))
-                activity.setTheme(R.style.CUAltos_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias biologicas y agropecuarias"))
-                activity.setTheme(R.style.CUCBA_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias economico administrativas"))
-                activity.setTheme(R.style.CUCEA_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de la cienega"))
-                activity.setTheme(R.style.CUCienega_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de la costa"))
-                activity.setTheme(R.style.CUCosta_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias de la salud"))
-                activity.setTheme(R.style.CUCS_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias sociales y humanidades"))
-                activity.setTheme(R.style.CUCSH_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de la costa sur"))
-                activity.setTheme(R.style.CUCSur_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de los lagos"))
-                activity.setTheme(R.style.CULagos_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario del norte"))
-                activity.setTheme(R.style.CUNorte_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario del sur"))
-                activity.setTheme(R.style.CUSur_NoActionBar);
-            else if (user.getUniversity().toLowerCase().equals("centro universitario de tonala"))
-                activity.setTheme(R.style.CUTonala_NoActionBar);
+            activity.setTheme(user.getNoActionBarTheme());
         }
     }
 
@@ -197,36 +143,7 @@ public abstract class Utilities {
         SharedPreferences preferences = activity.getSharedPreferences("settings", Context.MODE_PRIVATE);
         switch (preferences.getInt("theme", 0)) {
             case 0:
-                if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCEI);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de arte arquitectura y diseño"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUAAD);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de los altos"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUAltos);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias biologicas y agropecuarias"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCBA);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias economico administrativas"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCEA);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de la cienega"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCienega);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de la costa"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCosta);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias de la salud"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCS);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de ciencias sociales y humanidades"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCSH);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de la costa sur"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUCSur);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de los lagos"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CULagos);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario del norte"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUNorte);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario del sur"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUSur);
-                else if (user.getUniversity().toLowerCase().equals("centro universitario de tonala"))
-                    swipeRefreshLayout.setColorSchemeResources(R.color.CUTonala);
-                else
-                    swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+                swipeRefreshLayout.setColorSchemeResources(user.getAccentColor());
                 break;
             default:
                 swipeRefreshLayout.setColorSchemeResources(R.color.colorAccentAndroid);
@@ -242,46 +159,17 @@ public abstract class Utilities {
     public static User loadSesion (Activity activity) {
         SharedPreferences preferences = activity.getSharedPreferences("user_info", Context.MODE_PRIVATE);
         if (preferences.contains("code")) {
-            String Image;
-            String University = preferences.getString("university","");
-            if (University.toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
-                Image = "2.jpg";
-            else if (University.toLowerCase().equals("centro universitario de arte arquitectura y diseño"))
-                Image = "3.jpg";
-            else if (University.toLowerCase().equals("centro universitario de los altos"))
-                Image = "4.jpg";
-            else if (University.toLowerCase().equals("centro universitario de ciencias biologicas y agropecuarias"))
-                Image = "5.jpg";
-            else if (University.toLowerCase().equals("centro universitario de ciencias economico administrativas"))
-                Image = "6.jpg";
-            else if (University.toLowerCase().equals("centro universitario de la cienega"))
-                Image = "7.jpg";
-            else if (University.toLowerCase().equals("centro universitario de la costa"))
-                Image = "8.jpg";
-            else if (University.toLowerCase().equals("centro universitario de ciencias de la salud"))
-                Image = "9.jpg";
-            else if (University.toLowerCase().equals("centro universitario de ciencias sociales y humanidades"))
-                Image = "10.jpg";
-            else if (University.toLowerCase().equals("centro universitario de la costa sur"))
-                Image = "11.jpg";
-            else if (University.toLowerCase().equals("centro universitario de los lagos"))
-                Image = "12.jpg";
-            else if (University.toLowerCase().equals("centro universitario del norte"))
-                Image = "13.jpg";
-            else if (University.toLowerCase().equals("centro universitario del sur"))
-                Image = "14.jpg";
-            else if (University.toLowerCase().equals("centro universitario de tonala"))
-                Image = "15.jpg";
-            else
-                Image = "1.png";
             return new User(
                     preferences.getString("code",""),
                     preferences.getString("name",""),
                     preferences.getString("email",""),
-                    University,
+                    preferences.getString("university",""),
                     preferences.getString("career",""),
                     preferences.getString("acronym",""),
-                    Image
+                    preferences.getString("image", ""),
+                    preferences.getInt("accent", R.color.colorAccent),
+                    preferences.getInt("noActionBarTheme", R.style.AppTheme_NoActionBar),
+                    preferences.getInt("theme", R.style.AppTheme)
             );
         } else {
             return null;

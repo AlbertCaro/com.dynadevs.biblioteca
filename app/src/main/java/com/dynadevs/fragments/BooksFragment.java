@@ -121,7 +121,11 @@ public class BooksFragment extends Fragment {
             recyclerView = view.findViewById(R.id.rvBooks);
             linearLayout = view.findViewById(R.id.emptyListBook);
             final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.srBooks);
-            setCurrentAccent(swipeRefreshLayout, getActivity(), user);
+            if (getArguments() != null) {
+                setCurrentAccent(swipeRefreshLayout, getActivity(), user);
+            } else {
+                swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+            }
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -229,6 +233,7 @@ public class BooksFragment extends Fragment {
                                     jsonObject.getString("Edicion"),
                                     jsonObject.getString("Descripcion"),
                                     jsonObject.getString("Portada"),
+                                    jsonObject.getString("Categoria"),
                                     Integer.parseInt(jsonObject.getString("Paginas")),
                                     Integer.parseInt(jsonObject.getString("Ejemplares"))));
                         }

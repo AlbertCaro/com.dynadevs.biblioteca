@@ -219,6 +219,7 @@ public class BookmarksFragment extends Fragment {
                                     jsonObject.getString("Edicion"),
                                     jsonObject.getString("Descripcion"),
                                     jsonObject.getString("Portada"),
+                                    jsonObject.getString("Categoria"),
                                     Integer.parseInt(jsonObject.getString("Paginas")),
                                     Integer.parseInt(jsonObject.getString("Ejemplares"))));
                         }

@@ -96,8 +96,7 @@ public class MainActivity extends AppCompatActivity
         menu.findItem(R.id.nav_main).setChecked(true);
 
         if (getIntent().getExtras() != null) {
-            Glide.with(this).load("http://proyecto-muestra.hol.es/biblioteca/images/"+user.getDrawerHeader()).fitCenter().into(ivDrawerHeader);
-            //Toast.makeText(this, "http://proyecto-muestra.hol.es/biblioteca/images/"+user.getDrawerHeader(), Toast.LENGTH_LONG).show();
+            Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+user.getDrawerHeader()).fitCenter().into(ivDrawerHeader);
             /*
             if (getEventSettings(this)) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
