@@ -55,6 +55,26 @@ public class HelpActivity extends AppCompatActivity {
         TiMessage = findViewById(R.id.tiMessage);
         EtSubject = TiSubject.getEditText();
         EtMessage = TiMessage.getEditText();
+
+        EtSubject.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b)
+                    EtSubject.setHint("Duda o sugerencia");
+                else
+                    EtSubject.setHint(null);
+            }
+        });
+        EtMessage.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (b)
+                    EtMessage.setHint("Escribe la descripción de tu duda o sugerencia.");
+                else
+                    EtMessage.setHint(null);
+            }
+        });
+
         EtSubject.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
