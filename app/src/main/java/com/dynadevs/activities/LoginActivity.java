@@ -130,7 +130,37 @@ public class LoginActivity extends AppCompatActivity {
                         University = jsonObject.getString("Universidad");
                         Career = jsonObject.getString("Carrera");
                         Acronym = jsonObject.getString("Siglas");
-                        Image = jsonObject.getString("Imagen");
+                        if (University.toLowerCase().equals("centro universitario de ciencias exactas e ingenierias"))
+                            Image = "2.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de arte arquitectura y diseño"))
+                            Image = "3.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de los altos"))
+                            Image = "4.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de ciencias biologicas y agropecuarias"))
+                            Image = "5.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de ciencias economico administrativas"))
+                            Image = "6.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de la cienega"))
+                            Image = "7.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de la costa"))
+                            Image = "8.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de ciencias de la salud"))
+                            Image = "9.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de ciencias sociales y humanidades"))
+                            Image = "10.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de la costa sur"))
+                            Image = "11.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de los lagos"))
+                            Image = "12.jpg";
+                        else if (University.toLowerCase().equals("centro universitario del norte"))
+                            Image = "13.jpg";
+                        else if (University.toLowerCase().equals("centro universitario del sur"))
+                            Image = "14.jpg";
+                        else if (University.toLowerCase().equals("centro universitario de tonala"))
+                            Image = "15.jpg";
+                        else
+                            Image = "1.png";
+
                         user = new User(Code, Name, Email, University, Career, Acronym, Image);
                         saveSession();
                         Intent login = new Intent().setClass(LoginActivity.this, MainActivity.class);

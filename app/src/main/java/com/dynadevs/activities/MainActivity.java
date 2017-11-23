@@ -1,6 +1,5 @@
 package com.dynadevs.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,7 +37,6 @@ import com.dynadevs.fragments.LoansFragment;
 import com.dynadevs.fragments.MainFragment;
 
 import static com.dynadevs.classes.Utilities.isNetAvailible;
-import static com.dynadevs.classes.Utilities.loadSesion;
 import static com.dynadevs.classes.Utilities.setCurrentTheme;
 
 public class MainActivity extends AppCompatActivity
@@ -98,8 +96,8 @@ public class MainActivity extends AppCompatActivity
         menu.findItem(R.id.nav_main).setChecked(true);
 
         if (getIntent().getExtras() != null) {
-            Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+
-                    (user != null ? user.getDrawerHeader() : loadSesion(this).getDrawerHeader())).fitCenter().into(ivDrawerHeader);
+            Glide.with(this).load("http://proyecto-muestra.hol.es/biblioteca/images/"+user.getDrawerHeader()).fitCenter().into(ivDrawerHeader);
+            //Toast.makeText(this, "http://proyecto-muestra.hol.es/biblioteca/images/"+user.getDrawerHeader(), Toast.LENGTH_LONG).show();
             /*
             if (getEventSettings(this)) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
