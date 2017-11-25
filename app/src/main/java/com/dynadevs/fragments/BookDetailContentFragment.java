@@ -123,7 +123,7 @@ public class BookDetailContentFragment extends Fragment {
                         JSONArray jsonArray = new JSONArray(response);
                         for(int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            TvCopies.setText(getString(R.string.detail_copies)+" "+jsonObject.getString("Disponibles")+"/"+book.getCopies());
+                            TvCopies.setText(jsonObject.getString("Disponibles")+"/"+book.getCopies());
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

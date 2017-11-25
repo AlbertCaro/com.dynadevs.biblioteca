@@ -1,9 +1,10 @@
 package com.dynadevs.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -39,8 +41,10 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout TiUser, TiPass;
     private EditText EtUser, EtPass;
     private User user;
+    private ProgressBar progressBar;
+    private LinearLayout linearLayout;
 
-    private String Code, Name, Email, University, Career, Acronym, Image;
+    private String Code, Name, Email, University, Career, Acronym, Image, Url;
     private int accentColor, noActionBarTheme, theme;
 
     @Override
@@ -53,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getString(R.string.login));
+        progressBar = findViewById(R.id.progressBar);
+        linearLayout = findViewById(R.id.loginLayout);
         TiUser = findViewById(R.id.tiCode);
         TiPass = findViewById(R.id.tiPass);
         EtUser = TiUser.getEditText();
@@ -98,9 +104,9 @@ public class LoginActivity extends AppCompatActivity {
                 String Pass = EtPass.getText().toString();
 
                 if (!Code.equals("") && !Pass.equals("")) {
-                    String Url = getString(R.string.server_url)+"biblioteca/rest/usuarios.php?u="+md5(Code)+"&p="+md5(Pass);
+                    Url = getString(R.string.server_url)+"biblioteca/rest/usuarios.php?u="+md5(Code)+"&p="+md5(Pass);
                     if (isNetAvailible(LoginActivity.this)) {
-                        login(view, Url);
+                        new AsyncTaskLogin().execute(view);
                     } else
                         Snackbar.make(view, getString(R.string.unavalible_internet), Snackbar.LENGTH_LONG).show();
                 } else {
@@ -114,7 +120,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(final View view, String Url) {
-        final ProgressDialog dialog = ProgressDialog.show(this, "", getString(R.string.loggin_in), true);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
             @Override
@@ -232,9 +237,10 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(login);
                         finish();
                     } else {
+                        linearLayout.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.GONE);
                         Snackbar.make(view, R.string.login_invalid, Snackbar.LENGTH_LONG).show();
                     }
-                    dialog.dismiss();
                 } catch (JSONException e) {
                     Toast.makeText(LoginActivity.this, "Error: "+e, Toast.LENGTH_SHORT).show();
                 }
@@ -297,5 +303,31 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public class AsyncTaskLogin extends AsyncTask<View, Integer, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            linearLayout.setVisibility(View.GONE);
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(View... views) {
+            int pause = 0;
+            while (pause < 100) {
+                pause++;
+                publishProgress(pause);
+                SystemClock.sleep(1);
+            }
+            login(views[0], Url);
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            progressBar.setProgress(values[0]);
+        }
     }
 }
