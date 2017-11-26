@@ -46,7 +46,7 @@ public class BookDetailContentFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView TvCopies;
+    private TextView TvCopiesAvailiable, TvCopies;
 
     public BookDetailContentFragment() {
         // Required empty public constructor
@@ -84,15 +84,16 @@ public class BookDetailContentFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_book_detail_content, container, false);
         TextView TvDetail = view.findViewById(R.id.tvDetail);
+        TextView TvCopiesDetail = view.findViewById(R.id.tvCopiesDetail);
         ImageView IvBookIcon = view.findViewById(R.id.ivBookIcon);
+        ImageView IvCopiesIcon = view.findViewById(R.id.ivCopiesIcon);
         TextView TvISBN = view.findViewById(R.id.tvISBN);
         TextView TvAutor = view.findViewById(R.id.tvAutor);
-        TextView TvEditorial = view.findViewById(R.id.tvEditorial);
         TextView TvEdition = view.findViewById(R.id.tvEdition);
-        TextView TvDescription = view.findViewById(R.id.tvDescription);
-        TextView TvPages = view.findViewById(R.id.tvPages);
-        TvCopies = view.findViewById(R.id.tvCopies);
+        TextView TvEstatus = view.findViewById(R.id.tvEstatus);
         TextView TvClassification = view.findViewById(R.id.tvClassification);
+        TvCopiesAvailiable = view.findViewById(R.id.tvCopiesAvailiable);
+        TvCopies = view.findViewById(R.id.tvCopies);
 
         Bundle bundle = getArguments();
         final Book book;
@@ -102,15 +103,15 @@ public class BookDetailContentFragment extends Fragment {
 
             TvISBN.setText(book.getISBN());
             TvAutor.setText(book.getAutor());
-            TvEditorial.setText(book.getEditorial());
             TvEdition.setText(book.getEdition());
-            TvDescription.setText(book.getDescription());
-            TvPages.setText(Integer.toString(book.getPages()));
+            TvEstatus.setText(book.getEstatus());
             TvClassification.setText(book.getClassification());
             if (bundle.getSerializable("user") != null) {
                 User user = (User) bundle.getSerializable("user");
                 TvDetail.setTextColor(ContextCompat.getColor(getContext(), user.getAccentColor()));
                 IvBookIcon.setColorFilter(ContextCompat.getColor(getContext(), user.getAccentColor()));
+                TvCopiesDetail.setTextColor(ContextCompat.getColor(getContext(), user.getAccentColor()));
+                IvCopiesIcon.setColorFilter(ContextCompat.getColor(getContext(), user.getAccentColor()));
             }
 
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -123,7 +124,28 @@ public class BookDetailContentFragment extends Fragment {
                         JSONArray jsonArray = new JSONArray(response);
                         for(int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            TvCopies.setText(jsonObject.getString("Disponibles")+"/"+book.getCopies());
+                            TvCopiesAvailiable.setText(jsonObject.getString("Disponibles"));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
+
+            Url = getString(R.string.server_url)+"biblioteca/rest/ejemplares.php?id="+book.getISBN();
+            StringRequest requestCopies = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONArray jsonArray = new JSONArray(response);
+                        for(int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            TvCopies.setText(jsonObject.getString("Ejemplares"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -136,6 +158,7 @@ public class BookDetailContentFragment extends Fragment {
                 }
             });
             requestQueue.add(request);
+            requestQueue.add(requestCopies);
         }
 
         return view;

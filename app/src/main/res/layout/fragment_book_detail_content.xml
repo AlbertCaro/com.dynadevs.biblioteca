@@ -1,233 +1,255 @@
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorListBackground"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true"
+    android:orientation="vertical"
     tools:context="com.dynadevs.fragments.BookDetailContentFragment">
 
-
-    <android.support.constraint.ConstraintLayout
+    <android.support.v7.widget.CardView
+        android:id="@+id/detailsCard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorListBackground"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
 
-
-        <ImageView
-            android:id="@+id/ivBookIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="30dp"
-            android:src="@drawable/ic_book"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDetail" />
-
-        <TextView
-            android:id="@+id/tvDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Detalles"
-            android:textColor="@color/colorAccent"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivBookIcon"
-            app:layout_constraintTop_toBottomOf="@+id/tvDetail">
-
-            <TextView
-                android:id="@+id/tvAutor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="16dp"
-                android:text="Autor"
-                android:textColor="@color/colorPrimaryText"
-                tools:layout_editor_absoluteX="90dp"
-                tools:layout_editor_absoluteY="60dp" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/detail_autor"
-                android:textSize="12sp" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:alpha=".12"
-                android:src="@android:color/black" />
+                android:id="@+id/ivBookIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/ic_book"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDetail" />
 
             <TextView
-                android:id="@+id/tvISBN"
+                android:id="@+id/tvDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ISBN"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14sp" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/book_details_title"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/detailLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/detail_ISBN"
-                android:textSize="12sp" />
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivBookIcon"
+                app:layout_constraintTop_toBottomOf="@+id/tvDetail">
+
+                <TextView
+                    android:id="@+id/tvAutor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="16dp"
+                    android:text="Autor"
+                    android:textColor="@color/colorPrimaryText"
+                    tools:layout_editor_absoluteX="90dp"
+                    tools:layout_editor_absoluteY="60dp" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_autor"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:alpha=".12"
+                    android:src="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/tvISBN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ISBN"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_ISBN"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:alpha=".12"
+                    android:src="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/tvEdition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edition"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_edition"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:alpha=".12"
+                    android:src="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/tvEstatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estatus"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_estatus"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:alpha=".12"
+                    android:src="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/tvClassification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Categoría"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/detail_classification"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorListBackground"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:alpha=".12"
-                android:src="@android:color/black" />
+                android:id="@+id/ivCopiesIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/ic_copies"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvCopiesDetail" />
 
             <TextView
-                android:id="@+id/tvDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:paddingEnd="16dp"
-                android:text="Description"
-                android:textColor="@color/colorPrimaryText" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/detail_description"
-                android:textSize="12sp" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:alpha=".12"
-                android:src="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvEditorial"
+                android:id="@+id/tvCopiesDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Editorial"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/detail_editorial"
-                android:textSize="12sp" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:alpha=".12"
-                android:src="@android:color/black" />
+                android:text="@string/book_copies_title"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tvEdition"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/copiesLayout"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Edition"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14sp" />
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivCopiesIcon"
+                app:layout_constraintTop_toBottomOf="@+id/tvCopiesDetail">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/detail_edition"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tvCopiesAvailiable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_copies_availiable"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14sp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:alpha=".12"
-                android:src="@android:color/black" />
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_copies_avaliable"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:id="@+id/tvPages"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Pages"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14sp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:alpha=".12"
+                    android:src="@android:color/black" />
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/detail_pages"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/tvCopies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/not_copies"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14sp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:alpha=".12"
-                android:src="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:text="@string/detail_copies"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvCopies"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Copies"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/detail_copies"
-                android:textSize="12sp" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginTop="16dp"
-                android:alpha=".12"
-                android:src="@android:color/black" />
-
-            <TextView
-                android:id="@+id/tvClassification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Categoría"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:text="@string/detail_classification"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-    </android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -15,6 +15,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     private User user;
     private ProgressBar progressBar;
     private LinearLayout linearLayout;
+    private InputMethodManager methodManager;
 
     private String Code, Name, Email, University, Career, Acronym, Image, Url;
     private int accentColor, noActionBarTheme, theme;
@@ -61,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         linearLayout = findViewById(R.id.loginLayout);
         TiUser = findViewById(R.id.tiCode);
         TiPass = findViewById(R.id.tiPass);
+        TiUser.setErrorEnabled(true);
+        TiPass.setErrorEnabled(true);
         EtUser = TiUser.getEditText();
         EtPass = TiPass.getEditText();
         EtUser.addTextChangedListener(new TextWatcher() {
@@ -77,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 TiUser.setErrorEnabled(false);
+                TiUser.setErrorEnabled(true);
             }
         });
         EtPass.addTextChangedListener(new TextWatcher() {
@@ -93,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 TiPass.setErrorEnabled(false);
+                TiPass.setErrorEnabled(true);
             }
         });
         Button btnLogin = findViewById(R.id.btnLogin);
@@ -106,6 +112,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (!Code.equals("") && !Pass.equals("")) {
                     Url = getString(R.string.server_url)+"biblioteca/rest/usuarios.php?u="+md5(Code)+"&p="+md5(Pass);
                     if (isNetAvailible(LoginActivity.this)) {
+                        methodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        methodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         new AsyncTaskLogin().execute(view);
                     } else
                         Snackbar.make(view, getString(R.string.unavalible_internet), Snackbar.LENGTH_LONG).show();
@@ -317,7 +325,7 @@ public class LoginActivity extends AppCompatActivity {
         protected Void doInBackground(View... views) {
             int pause = 0;
             while (pause < 100) {
-                pause++;
+                pause+=10;
                 publishProgress(pause);
                 SystemClock.sleep(1);
             }

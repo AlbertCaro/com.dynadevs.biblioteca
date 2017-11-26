@@ -19,10 +19,8 @@
     <string name="login_invalid">Bad credentials</string>
     <string name="login_blank_user">The user can\'t be empty</string>
     <string name="login_blank_pass">The password can\'t be empty</string>
-    <string name="detail_pages">Pages:</string>
-    <string name="detail_editorial">Editorial</string>
-    <string name="detail_edition">Edition:</string>
-    <string name="detail_copies">Available copies:</string>
+    <string name="detail_edition">Edition</string>
+    <string name="detail_copies">Available copies</string>
     <string name="search">Search</string>
     <string name="user_name">Full name</string>
     <string name="user_mail">Email</string>
@@ -93,6 +91,11 @@
     <string name="loggin_in">" Logging in..."</string>
     <string name="logout_message">" Are you sure you want to log out?"</string>
     <string name="sending_message">Sending message…</string>
-    <string name="detail_description">Description</string>
     <string name="detail_classification">Classification</string>
+    <string name="detail_estatus">Estatus</string>
+    <string name="detail_copies_avaliable">Copies</string>
+    <string name="book_details_title">Book info</string>
+    <string name="book_copies_title">Copies info</string>
+    <string name="not_copies_availiable">Not copies availiables</string>
+    <string name="not_copies">Not copies registered</string>
 </resources>

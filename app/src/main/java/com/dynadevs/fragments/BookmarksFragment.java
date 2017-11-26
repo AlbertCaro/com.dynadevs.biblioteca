@@ -155,7 +155,7 @@ public class BookmarksFragment extends Fragment {
                         if(BookList.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) ||
                                 BookList.get(i).getAutor().toLowerCase().contains(query.toLowerCase()) ||
                                 BookList.get(i).getISBN().toLowerCase().contains(query.toLowerCase()) ||
-                                BookList.get(i).getEditorial().toLowerCase().contains(query.toLowerCase()))  {
+                                BookList.get(i).getEdition().toLowerCase().contains(query.toLowerCase()))  {
                             BookQuery.add(BookList.get(i));
                         }
                     }
@@ -171,7 +171,7 @@ public class BookmarksFragment extends Fragment {
                         if(BookList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase()) ||
                                 BookList.get(i).getAutor().toLowerCase().contains(newText.toLowerCase()) ||
                                 BookList.get(i).getISBN().toLowerCase().contains(newText.toLowerCase()) ||
-                                BookList.get(i).getEditorial().toLowerCase().contains(newText.toLowerCase()))  {
+                                BookList.get(i).getEdition().toLowerCase().contains(newText.toLowerCase()))  {
                             BookQuery.add(BookList.get(i));
                         }
                     }
@@ -215,13 +215,10 @@ public class BookmarksFragment extends Fragment {
                                     jsonObject.getString("ISBN"),
                                     jsonObject.getString("Titulo"),
                                     jsonObject.getString("Autor"),
-                                    jsonObject.getString("Editorial"),
                                     jsonObject.getString("Edicion"),
-                                    jsonObject.getString("Descripcion"),
                                     jsonObject.getString("Portada"),
-                                    jsonObject.getString("Categoria"),
-                                    Integer.parseInt(jsonObject.getString("Paginas")),
-                                    Integer.parseInt(jsonObject.getString("Ejemplares"))));
+                                    jsonObject.getString("Estatus"),
+                                    jsonObject.getString("Clasificacion")));
                         }
                         Adapter.notifyDataSetChanged();
                     } else {

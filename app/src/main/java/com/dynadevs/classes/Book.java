@@ -12,20 +12,16 @@ import java.io.Serializable;
  */
 
 public class Book implements Serializable {
-    private String ISBN, Title, Autor, Editorial, Edition, Description, Photo, Classification;
-    private int pages, copies;
+    private String ISBN, Title, Autor, Edition, Photo, Estatus, Classification;
 
-    public Book(String ISBN, String title, String autor, String editorial, String edition, String description, String photo, String classification, int pages, int copies) {
+    public Book(String ISBN, String title, String autor, String edition, String photo, String estatus, String classification) {
         this.ISBN = ISBN;
         Title = title;
         Autor = autor;
-        Editorial = editorial;
         Edition = edition;
-        Description = description;
         Photo = photo;
+        Estatus = estatus;
         Classification = classification;
-        this.pages = pages;
-        this.copies = copies;
     }
 
     public String getISBN() {
@@ -40,31 +36,19 @@ public class Book implements Serializable {
         return Autor;
     }
 
-    public String getEditorial() {
-        return Editorial;
-    }
-
     public String getEdition() {
         return Edition;
-    }
-
-    public String getDescription() {
-        return Description;
     }
 
     public String getPhoto(Activity activity) {
         return activity.getString(R.string.server_url)+"biblioteca/images/"+Photo;
     }
 
+    public String getEstatus() {
+        return Estatus;
+    }
+
     public String getClassification() {
         return Classification;
-    }
-
-    public int getPages() {
-        return pages;
-    }
-
-    public int getCopies() {
-        return copies;
     }
 }

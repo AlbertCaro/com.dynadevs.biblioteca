@@ -24,12 +24,11 @@
     <string name="login_blank_pass">La contraseña no puede quedar vacía</string>
     <string name="detail_ISBN" translatable="false">ISBN</string>
     <string name="detail_autor" translatable="false">Autor</string>
-    <string name="detail_description">Descripción</string>
-    <string name="detail_pages">Número de páginas</string>
-    <string name="detail_editorial">Editorial</string>
+    <string name="detail_estatus">Estatus de prestamo</string>
     <string name="detail_edition">Edición</string>
-    <string name="detail_copies">Número de ejemplares disponibles</string>
+    <string name="detail_copies_avaliable">Número de ejemplares disponibles</string>
     <string name="detail_classification">Clasificación</string>
+    <string name="detail_copies">Número total de ejemplares</string>
     <string name="search">Buscar</string>
     <string name="user_name">Nombre completo</string>
     <string name="user_mail">Correo eléctronico</string>
@@ -88,6 +87,10 @@
     <string name="logout_message">¿De verdad desea cerrar sesión?</string>
     <string name="loggin_in">Iniciando sesión…</string>
     <string name="sending_message">Enviando mensaje…</string>
+    <string name="book_details_title">Información del libro</string>
+    <string name="book_copies_title">Información de ejemplares</string>
+    <string name="not_copies_availiable">No hay ejemplares disponibles.</string>
+    <string name="not_copies">No hay ejemplares registrados.</string>
     <string-array name="theme_options">
         <item>Institucional (predeterminado)</item>
         <item>Rojo</item>
