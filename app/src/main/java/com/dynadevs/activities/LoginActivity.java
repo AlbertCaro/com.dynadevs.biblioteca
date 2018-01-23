@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -46,7 +47,8 @@ public class LoginActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private InputMethodManager methodManager;
 
-    private String Code, Name, Email, University, Career, Acronym, Image, Url;
+    private String Code, Name, Email, University, Career, Acronym, Image, Pass;
+    protected String Url;
     private int accentColor, noActionBarTheme, theme;
 
     @Override
@@ -106,11 +108,9 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                String Code = EtUser.getText().toString();
-                String Pass = EtPass.getText().toString();
-
+                Code = EtUser.getText().toString();
+                Pass = EtPass.getText().toString();
                 if (!Code.equals("") && !Pass.equals("")) {
-                    Url = getString(R.string.server_url)+"biblioteca/rest/usuarios.php?u="+md5(Code)+"&p="+md5(Pass);
                     if (isNetAvailible(LoginActivity.this)) {
                         methodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         methodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -127,22 +127,24 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void login(final View view, String Url) {
+    public void login(final View view) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        Url = getString(R.string.server_url)+"/rest/usuarios.php?u="+md5(Code)+"&p="+md5(Pass);
         StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("Response: ", response);
                 try {
                     JSONArray jsonArray  = new JSONArray(response);
                     if (jsonArray.length() != 0) {
                         JSONObject jsonObject = jsonArray.getJSONObject(0);
-                        Name = jsonObject.getString("Nombre")+" "+
-                                jsonObject.getString("ApPaterno")+" "+
-                                jsonObject.getString("ApMaterno");
-                        Code = jsonObject.getString("Codigo");
-                        Email = jsonObject.getString("Correo");
-                        University = jsonObject.getString("Universidad");
-                        Career = jsonObject.getString("Carrera");
+                        Name = jsonObject.getString("nombre")+" "+
+                                jsonObject.getString("appaterno")+" "+
+                                jsonObject.getString("apmaterno");
+                        Code = jsonObject.getString("codigo");
+                        Email = jsonObject.getString("correo");
+                        University = jsonObject.getString("universidad");
+                        Career = jsonObject.getString("carrera");
                         if (University.toLowerCase().equals("centro universitario de ciencias exactas e ingenierias")) {
                             accentColor = R.color.CUCEI;
                             noActionBarTheme = R.style.CUCEI_NoActionBar;
@@ -245,9 +247,8 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(login);
                         finish();
                     } else {
-                        linearLayout.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
                         Snackbar.make(view, R.string.login_invalid, Snackbar.LENGTH_LONG).show();
+                        showLogin();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(LoginActivity.this, "Error: "+e, Toast.LENGTH_SHORT).show();
@@ -303,6 +304,11 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public void showLogin() {
+        linearLayout.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -322,14 +328,38 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         @Override
-        protected Void doInBackground(View... views) {
+        protected Void doInBackground(final View... views) {
             int pause = 0;
             while (pause < 100) {
                 pause+=10;
                 publishProgress(pause);
                 SystemClock.sleep(1);
             }
-            login(views[0], Url);
+
+            String Url = "http://148.202.89.11/api_alumnos/valida.php?id="+Code;
+            RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
+            StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        if (jsonObject.getString("respuesta").equalsIgnoreCase("existe"))
+                            login(views[0]);
+                        else {
+                            Snackbar.make(views[0], getString(R.string.invalid_code), Snackbar.LENGTH_LONG).show();
+                            showLogin();
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(LoginActivity.this, "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+                        Log.d("Error: ", e.getMessage());
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(LoginActivity.this, "Error: "+error.getMessage(), Toast.LENGTH_LONG).show();
+                }});
+            requestQueue.add(request);
             return null;
         }
 

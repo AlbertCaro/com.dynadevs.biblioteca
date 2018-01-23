@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,6 +75,7 @@ public class BooksFragment extends Fragment {
     private TextView TvMessage;
     private ImageView IvMessage;
     private Activity activity;
+    private RetryPolicy policy;
     private User user;
 
     public BooksFragment() {
@@ -154,19 +156,51 @@ public class BooksFragment extends Fragment {
             });
             recyclerView.setLayoutManager(new GridLayoutManager(container.getContext(),1));
             SearchView searchView = getActivity().findViewById(R.id.search);
+            searchView.setIconified(true);
             searchView.setVisibility(View.VISIBLE);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
                     BookQuery.clear();
-                    for(int i = 0; i < BookList.size(); i++) {
-                        if(BookList.get(i).getTitle().toLowerCase().contains(query.toLowerCase()) ||
-                                BookList.get(i).getAutor().toLowerCase().contains(query.toLowerCase()) ||
-                                BookList.get(i).getISBN().toLowerCase().contains(query.toLowerCase()) ||
-                                BookList.get(i).getEdition().toLowerCase().contains(query.toLowerCase()))  {
-                            BookQuery.add(BookList.get(i));
+                    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                    String Url = getString(R.string.server_url) + "rest/libros.php?search=" + query;
+                    StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                if (jsonArray.length() == 0) {
+                                    IvMessage.setImageResource(R.drawable.ic_not_results);
+                                    setMessage("No se encontraron libros que concuerden con la búsqueda.", TvMessage, linearLayout, recyclerView);
+                                } else {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                        BookQuery.add(new Book(
+                                                jsonObject.getString("isbn"),
+                                                jsonObject.getString("titulo"),
+                                                jsonObject.getString("autor"),
+                                                jsonObject.getString("edicion"),
+                                                jsonObject.getString("portada"),
+                                                jsonObject.getString("clasificacion")));
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(getActivity(), "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
                         }
-                    }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            if (error instanceof TimeoutError) {
+                                IvMessage.setImageResource(R.drawable.ic_not_signal);
+                                setMessage(getString(R.string.unavalible_connection), TvMessage, linearLayout, recyclerView);
+                            } else {
+                                Toast.makeText(getContext(), "VolleyError: "+error.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+                    request.setRetryPolicy(policy);
+                    requestQueue.add(request);
                     Adapter.setBookList(BookQuery);
                     Adapter.notifyDataSetChanged();
                     return false;
@@ -174,7 +208,7 @@ public class BooksFragment extends Fragment {
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    BookQuery.clear();
+                    /*BookQuery.clear();
                     for(int i = 0; i < BookList.size(); i++) {
                         if(BookList.get(i).getTitle().toLowerCase().contains(newText.toLowerCase()) ||
                                 BookList.get(i).getAutor().toLowerCase().contains(newText.toLowerCase()) ||
@@ -184,7 +218,7 @@ public class BooksFragment extends Fragment {
                         }
                     }
                     Adapter.setBookList(BookQuery);
-                    Adapter.notifyDataSetChanged();
+                    Adapter.notifyDataSetChanged();*/
                     return false;
                 }
             });
@@ -214,7 +248,7 @@ public class BooksFragment extends Fragment {
     public void doRequest() {
         BookList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        String url = getString(R.string.server_url)+"biblioteca/rest/libros.php";
+        String url = getString(R.string.server_url) + "rest/libros.php";
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -226,13 +260,12 @@ public class BooksFragment extends Fragment {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             BookList.add(new Book(
-                                    jsonObject.getString("ISBN"),
-                                    jsonObject.getString("Titulo"),
-                                    jsonObject.getString("Autor"),
-                                    jsonObject.getString("Edicion"),
-                                    jsonObject.getString("Portada"),
-                                    jsonObject.getString("Estatus"),
-                                    jsonObject.getString("Clasificacion")));
+                                    jsonObject.getString("isbn"),
+                                    jsonObject.getString("titulo"),
+                                    jsonObject.getString("autor"),
+                                    jsonObject.getString("edicion"),
+                                    jsonObject.getString("portada"),
+                                    jsonObject.getString("clasificacion")));
                         }
                         Adapter.notifyDataSetChanged();
                     } else {
@@ -254,8 +287,7 @@ public class BooksFragment extends Fragment {
                 }
             }
         });
-        int socketTimeout = 800;
-        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        policy = new DefaultRetryPolicy(800, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
         requestQueue.add(request);
     }

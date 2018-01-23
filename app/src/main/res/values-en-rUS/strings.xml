@@ -98,4 +98,5 @@
     <string name="book_copies_title">Copies info</string>
     <string name="not_copies_availiable">Not copies availiables</string>
     <string name="not_copies">Not copies registered</string>
+    <string name="invalid_code">The student code is invalid</string>
 </resources>

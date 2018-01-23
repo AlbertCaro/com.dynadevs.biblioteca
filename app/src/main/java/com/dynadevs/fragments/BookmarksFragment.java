@@ -200,7 +200,7 @@ public class BookmarksFragment extends Fragment {
     public void doRequest(String Code) {
         BookList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        String url = getString(R.string.server_url)+"biblioteca/rest/marcadores.php?id="+md5(Code);
+        String url = getString(R.string.server_url)+"/rest/marcadores.php?id="+md5(Code);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -212,13 +212,12 @@ public class BookmarksFragment extends Fragment {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             BookList.add(new Book(
-                                    jsonObject.getString("ISBN"),
-                                    jsonObject.getString("Titulo"),
-                                    jsonObject.getString("Autor"),
-                                    jsonObject.getString("Edicion"),
-                                    jsonObject.getString("Portada"),
-                                    jsonObject.getString("Estatus"),
-                                    jsonObject.getString("Clasificacion")));
+                                    jsonObject.getString("isbn"),
+                                    jsonObject.getString("titulo"),
+                                    jsonObject.getString("autor"),
+                                    jsonObject.getString("edicion"),
+                                    jsonObject.getString("portada"),
+                                    jsonObject.getString("clasificacion")));
                         }
                         Adapter.notifyDataSetChanged();
                     } else {

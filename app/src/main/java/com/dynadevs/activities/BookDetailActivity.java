@@ -75,7 +75,7 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
 
     private void consultBookmarks() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = getString(R.string.server_url)+"biblioteca/rest/marcadores.php?id="+md5(user.getCode())+"&isbn="+md5(book.getISBN());
+        String url = getString(R.string.server_url)+"/rest/marcadores.php?id="+md5(user.getCode())+"&isbn="+md5(book.getISBN());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -100,7 +100,7 @@ public class BookDetailActivity extends AppCompatActivity implements BookDetailC
 
     private void doRequest (final View view) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = getString(R.string.server_url)+"biblioteca/rest/add_marcador.php?id="+user.getCode()+"&isbn="+book.getISBN();
+        String url = getString(R.string.server_url)+"/rest/add_marcador.php?id="+user.getCode()+"&isbn="+book.getISBN();
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

@@ -90,7 +90,6 @@ public class BookDetailContentFragment extends Fragment {
         TextView TvISBN = view.findViewById(R.id.tvISBN);
         TextView TvAutor = view.findViewById(R.id.tvAutor);
         TextView TvEdition = view.findViewById(R.id.tvEdition);
-        TextView TvEstatus = view.findViewById(R.id.tvEstatus);
         TextView TvClassification = view.findViewById(R.id.tvClassification);
         TvCopiesAvailiable = view.findViewById(R.id.tvCopiesAvailiable);
         TvCopies = view.findViewById(R.id.tvCopies);
@@ -104,7 +103,6 @@ public class BookDetailContentFragment extends Fragment {
             TvISBN.setText(book.getISBN());
             TvAutor.setText(book.getAutor());
             TvEdition.setText(book.getEdition());
-            TvEstatus.setText(book.getEstatus());
             TvClassification.setText(book.getClassification());
             if (bundle.getSerializable("user") != null) {
                 User user = (User) bundle.getSerializable("user");
@@ -115,7 +113,7 @@ public class BookDetailContentFragment extends Fragment {
             }
 
             RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-            String Url = getString(R.string.server_url)+"biblioteca/rest/ejemplares_disp.php?id="+book.getISBN();
+            String Url = getString(R.string.server_url)+"/rest/ejemplares_disp.php?id="+book.getISBN();
 
             StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
                 @Override
@@ -124,7 +122,7 @@ public class BookDetailContentFragment extends Fragment {
                         JSONArray jsonArray = new JSONArray(response);
                         for(int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            TvCopiesAvailiable.setText(jsonObject.getString("Disponibles"));
+                            TvCopiesAvailiable.setText(jsonObject.getString("disponibles"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -137,7 +135,7 @@ public class BookDetailContentFragment extends Fragment {
                 }
             });
 
-            Url = getString(R.string.server_url)+"biblioteca/rest/ejemplares.php?id="+book.getISBN();
+            Url = getString(R.string.server_url)+"/rest/ejemplares.php?id="+book.getISBN();
             StringRequest requestCopies = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -145,7 +143,7 @@ public class BookDetailContentFragment extends Fragment {
                         JSONArray jsonArray = new JSONArray(response);
                         for(int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            TvCopies.setText(jsonObject.getString("Ejemplares"));
+                            TvCopies.setText(jsonObject.getString("ejemplares"));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

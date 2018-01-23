@@ -116,6 +116,7 @@ public class FinesFragment extends Fragment {
             linearLayout = view.findViewById(R.id.emptyListFines);
             SearchView searchView = getActivity().findViewById(R.id.search);
             searchView.setVisibility(View.VISIBLE);
+            searchView.setIconified(true);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -199,7 +200,7 @@ public class FinesFragment extends Fragment {
     public void doRequest (String Code) {
         FineList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        String url = getString(R.string.server_url)+"biblioteca/rest/multas.php?id="+md5(Code);
+        String url = getString(R.string.server_url)+"/rest/multas.php?id="+md5(Code);
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

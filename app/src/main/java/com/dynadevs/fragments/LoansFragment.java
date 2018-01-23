@@ -116,6 +116,7 @@ public class LoansFragment extends Fragment {
             linearLayout = view.findViewById(R.id.emptyListLoan);
             SearchView searchView = getActivity().findViewById(R.id.search);
             searchView.setVisibility(View.VISIBLE);
+            searchView.setIconified(true);
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -199,7 +200,7 @@ public class LoansFragment extends Fragment {
     public void doRequest(String Code) {
         LoanList.clear();
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        String Url = getString(R.string.server_url)+"biblioteca/rest/prestamos.php?id="+md5(Code);
+        String Url = getString(R.string.server_url)+"/rest/prestamos.php?id="+md5(Code);
         StringRequest request = new StringRequest(Request.Method.GET, Url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -211,11 +212,11 @@ public class LoansFragment extends Fragment {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             LoanList.add(new Loan(
-                                    jsonObject.getString("Titulo"),
-                                    jsonObject.getString("ISBN"),
-                                    Integer.parseInt(jsonObject.getString("Dia")),
-                                    Integer.parseInt(jsonObject.getString("Mes")),
-                                    Integer.parseInt(jsonObject.getString("Año"))));
+                                    jsonObject.getString("titulo"),
+                                    jsonObject.getString("isbn"),
+                                    Integer.parseInt(jsonObject.getString("dia")),
+                                    Integer.parseInt(jsonObject.getString("mes")),
+                                    Integer.parseInt(jsonObject.getString("año"))));
                         }
                         Adapter.notifyDataSetChanged();
                     } else {

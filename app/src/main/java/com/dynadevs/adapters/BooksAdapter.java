@@ -49,7 +49,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolderBooks holder, @SuppressLint("RecyclerView") final int position) {
-        Glide.with(context).load(BookList.get(position).getPhoto(activity)).centerCrop().into(holder.IvPhoto);
+        Glide.with(context).load(R.drawable.generic_book).centerCrop().into(holder.IvPhoto);
         holder.TvTitle.setText(BookList.get(position).getTitle());
         holder.TvAutor.setText(BookList.get(position).getAutor()+" - "+BookList.get(position).getEdition());
         holder.BtnDetails.setOnClickListener(new View.OnClickListener() {

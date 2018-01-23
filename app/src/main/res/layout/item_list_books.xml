@@ -23,7 +23,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:color/white" />
+            app:srcCompat="@drawable/generic_book" />
 
         <ImageView
             android:id="@+id/ivBanner"

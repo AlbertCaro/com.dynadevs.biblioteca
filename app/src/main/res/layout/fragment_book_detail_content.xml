@@ -124,29 +124,6 @@
                     android:src="@android:color/black" />
 
                 <TextView
-                    android:id="@+id/tvEstatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Estatus"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/detail_estatus"
-                    android:textSize="12sp" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="16dp"
-                    android:alpha=".12"
-                    android:src="@android:color/black" />
-
-                <TextView
                     android:id="@+id/tvClassification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

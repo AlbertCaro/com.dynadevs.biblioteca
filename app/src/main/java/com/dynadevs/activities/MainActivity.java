@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
     private User user;
     private Menu menu;
     private DrawerLayout drawer;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +93,12 @@ public class MainActivity extends AppCompatActivity
         TextView tvUniversity = navView.findViewById(R.id.tvUniversity);
         TextView tvName = navView.findViewById(R.id.tvNameUser);
         TextView tvCareer = navView.findViewById(R.id.tvCareerUser);
-        SearchView searchView = findViewById(R.id.search);
+        searchView = findViewById(R.id.search);
         menu = navigationView.getMenu();
         menu.findItem(R.id.nav_main).setChecked(true);
 
         if (getIntent().getExtras() != null) {
-            Glide.with(this).load(getString(R.string.server_url)+"biblioteca/images/biblios/"+user.getDrawerHeader()).fitCenter().into(ivDrawerHeader);
+            Glide.with(this).load(getString(R.string.server_url)+"/images/biblios/"+user.getDrawerHeader()).fitCenter().into(ivDrawerHeader);
             /*
             if (getEventSettings(this)) {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -173,7 +174,6 @@ public class MainActivity extends AppCompatActivity
                     }).show();
         } else
             super.onBackPressed();
-
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.clContenedor);
         if (fragment instanceof MainFragment) {
             TvAppTitle.setText(R.string.nav_main);
