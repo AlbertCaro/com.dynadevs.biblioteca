@@ -40,6 +40,12 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
         this.activity = activity;
     }
 
+    public BooksAdapter(ArrayList<Book> bookList, Context context, Activity activity) {
+        BookList = bookList;
+        this.context = context;
+        this.activity = activity;
+    }
+
     @Override
     public ViewHolderBooks onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_books, parent, false);
@@ -56,7 +62,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ViewHolderBo
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("user", user);
+                if (user != null)
+                    bundle.putSerializable("user", user);
                 bundle.putSerializable("book", BookList.get(position));
                 Intent intent = new Intent(context, BookDetailActivity.class);
                 intent.putExtras(bundle);

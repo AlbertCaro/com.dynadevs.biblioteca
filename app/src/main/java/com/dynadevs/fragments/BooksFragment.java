@@ -222,7 +222,12 @@ public class BooksFragment extends Fragment {
                     return false;
                 }
             });
-            Adapter = new BooksAdapter(BookList, user, getContext(), getActivity());
+
+            if (getArguments() != null)
+                Adapter = new BooksAdapter(BookList, user, getContext(), getActivity());
+            else
+                Adapter = new BooksAdapter(BookList, getContext(), getActivity());
+
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
